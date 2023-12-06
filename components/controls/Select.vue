@@ -18,14 +18,7 @@
       <div
         class="bg-white border-2 border-dark flex flex-col gap-3 p-6 serif overflow-y-scroll max-h-[430px] max-w-[340px]"
       >
-        <div class="flex bg-white border-[1px] border-dark px-3 py-2">
-          <input
-            v-model="searchString"
-            placeholder="Napíšte kľúčové slovo"
-            class="w-full border-transparent !outline-none"
-          />
-          <Icon name="search" class="w-5" />
-        </div>
+        <Search v-model="searchString" />
 
         <div
           v-for="option in sortedOptions"
@@ -51,6 +44,7 @@ import Popper from 'vue3-popper'
 import levenshtein from 'levenshtein-array'
 
 import { normalize } from '~/utils/string'
+import Search from "~/components/controls/parts/Search.vue";
 
 const props = defineProps<{
   label: string

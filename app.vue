@@ -1,4 +1,5 @@
 <template>
+  <Search v-model="models.q" />
   <div class="flex flex-wrap gap-3 p-10 items-center">
     <component
       :is="item.component"
@@ -50,6 +51,7 @@
 </template>
 <script setup lang="ts">
 import 'virtual:svg-icons-register'
+import Search from "~/components/controls/parts/Search.vue";
 
 const config = [
   {
@@ -91,6 +93,23 @@ const config = [
     key: 'has_iip',
     type: 'boolean',
     label: 'Len so zoomom',
+  },
+  {
+    key: 'range',
+    type: 'range',
+    label: 'Rok',
+    options: {
+      min: 'date_latest',
+      max: 'date_earliest',
+    },
+  },
+  {
+    key: 'q',
+    type: 'hidden',
+    label: 'q',
+    options: {
+      default: '',
+    },
   },
 ] as const
 

@@ -9,6 +9,7 @@ export default defineNuxtConfig({
   components: {
     dirs: ['@/components/general'],
   },
+  css: ['~/assets/css/slider.css'],
   vite: {
     vue: {
       script: {

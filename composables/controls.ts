@@ -1,17 +1,22 @@
 import type Item from '~/models/Item'
 
 import Select from '~/components/controls/Select.vue'
+import Range from '~/components/controls/Range.vue'
 import Boolean from '~/components/controls/Boolean.vue'
+import isEqual from "lodash-ts/isEqual";
 
 export interface ITermsConfig {
   key: string
-  type: 'select' | 'boolean'
+  type: 'select' | 'boolean' | 'range' | 'hidden'
   label: string
+  options?: Record<string, string>
 }
 
 const componentsMap = {
   select: Select,
   boolean: Boolean,
+  range: Range,
+  hidden: null,
 }
 
 export const useCreateControls = async (config: readonly ITermsConfig[]) => {
@@ -29,10 +34,20 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
   const controls = computed(() => {
     return config.map((control) => {
       const items = aggregations.data.value?.[control.key] ?? []
-      const options = items.map((item) => ({
-        label: `${item.value} (${item.count})`,
-        value: item.value,
-      }))
+      let options: any
+
+      if(control.type === 'range') {
+        options = {
+            min: aggregations.data.value?.[control.options?.min ?? 'min'],
+            max: aggregations.data.value?.[control.options?.max ?? 'max'],
+        }
+      }
+      if (control.type === 'select') {
+        options = items.map((item) => ({
+          label: `${item.value} (${item.count})`,
+          value: item.value,
+        }))
+      }
 
       return {
         ...control,
@@ -83,6 +98,15 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
       if (control!.type === 'boolean') {
         query[key] = query[key] === 'true'
       }
+
+      if (control!.type === 'range') {
+        const range = typeof query[key] === 'string' ? JSON.parse(query[key]) : query[key]
+
+        query[key] = {
+          min: range.min ?? null,
+          max: range.max ?? null,
+        }
+      }
     }
 
     return query
@@ -97,6 +121,19 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
       if ((Array.isArray(query[key]) && !query[key].length) || !query[key]) {
         delete query[key]
       }
+
+      const control = config.find((control) => control.key === key)
+
+      if(control?.type === 'range') {
+        const defaultValues = {
+          min: aggregations.data.value?.[control.options?.min ?? 'min'],
+          max: aggregations.data.value?.[control.options?.max ?? 'max'],
+        }
+
+        if(isEqual(models[key], defaultValues)) {
+            delete query[key]
+        }
+      }
     }
 
     return query
@@ -104,11 +141,29 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
 
   const models = reactive<Record<ConfigKey, any>>({
     ...config.reduce((acc, control) => {
-      if (acc[control.key]) {
+      if (acc[control.key] ) {
         return acc
       }
 
-      acc[control.key] = control.type === 'boolean' ? false : []
+
+      switch (control.type) {
+        case 'boolean':
+          acc[control.key] = false
+          break
+        case 'select':
+          acc[control.key] = []
+          break
+        case 'range':
+          acc[control.key] = {
+            min: null,
+            max: null,
+          }
+          break
+        case 'hidden':
+            acc[control.key] = control.options?.default ?? ''
+          break
+      }
+
       return acc
     }, getQuery() as any),
   })
@@ -122,9 +177,19 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
         if (control.type === 'select' && models[control.key].length) {
           acc[`filter[${control.key}][]`] = models[control.key]
         }
+
+        if(control.type === 'range' ) {
+            if(models[control.key].min) acc[`filter[${control.options?.min ?? 'min'}][gte]`] = models[control.key].min
+            if(models[control.key].max) acc[`filter[${control.options?.max ?? 'max'}][lte]`] = models[control.key].max
+        }
+
+        if(control.type === 'hidden' ) {
+            acc[`filter[${control.key}]`] = models[control.key]
+        }
+
         return acc
       }, [] as any),
-      page: 1,
+      // page: 1,
       size: PER_PAGE * page.value,
     }
   })
@@ -133,12 +198,18 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
     return {
       ...filtersQuery.value,
       ...config.reduce((acc, control) => {
-        acc[`terms[${control.key}]`] = control.key
+        if(['boolean', 'select'].includes(control.type)) {
+            acc[`terms[${control.key}]`] = control.key
+        }
+
+        if(control.type === 'range' && control.options) {
+            acc[`min[${control.options.min}]`] = control.options.min
+            acc[`max[${control.options.max}]`] = control.options.max
+        }
+
         return acc
       }, [] as any),
-      // TODO: min/max
-      'min[date_earliest]': 'date_earliest',
-      'max[date_latest]': 'date_latest',
+
       'size': 1000,
     }
   })
@@ -181,7 +252,6 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
     controls,
     models,
     selected,
-    filtersQuery,
     toggle,
     reset,
     items: computed(() => items.data.value?.data ?? []),
