@@ -85,6 +85,15 @@ const config = [
     label: 'výstava',
   },
   {
+    key: 'range',
+    type: 'range',
+    label: 'Rok',
+    options: {
+      min: 'date_latest',
+      max: 'date_earliest',
+    },
+  },
+  {
     key: 'has_image',
     type: 'boolean',
     label: 'Len s obrázkom',
@@ -93,15 +102,6 @@ const config = [
     key: 'has_iip',
     type: 'boolean',
     label: 'Len so zoomom',
-  },
-  {
-    key: 'range',
-    type: 'range',
-    label: 'Rok',
-    options: {
-      min: 'date_latest',
-      max: 'date_earliest',
-    },
   },
   {
     key: 'q',

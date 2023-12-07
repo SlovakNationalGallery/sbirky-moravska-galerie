@@ -183,8 +183,8 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
             if(models[control.key].max) acc[`filter[${control.options?.max ?? 'max'}][lte]`] = models[control.key].max
         }
 
-        if(control.type === 'hidden' ) {
-            acc[`filter[${control.key}]`] = models[control.key]
+        if(control.type === 'hidden' && models[control.key]) {
+          acc[`filter[${control.key}]`] = models[control.key]
         }
 
         return acc
