@@ -8,3 +8,9 @@ declare module 'levenshtein-array' {
   }[]
   export default levenshtein
 }
+
+declare module 'click-outside-vue3' {
+  import { Plugin } from 'vue'
+  const plugin: Plugin
+  export default plugin
+}

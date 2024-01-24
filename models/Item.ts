@@ -34,7 +34,8 @@ interface IItemContent {
   additionals: null // TODO: get right type
   images: string[]
   hsl: Hsl[]
-  authors_formatted: string[]
+  authors_formatted?: string[]
+  exhibition?: string
 }
 
 export interface Hsl {
@@ -45,7 +46,22 @@ export interface Hsl {
 }
 export default class Item extends BaseModel {
   public static mapping = {}
+  public static endpoint = '/api/v1/items'
 
   public declare id: string
   public declare content: IItemContent
+
+  public get link() {
+    return `/items/${this.id}`
+  }
+
+  public get image() {
+    return `https://www.webumenia.sk/dielo/nahlad/${this.id}/800`
+  }
+
+  public get previewImages() {
+    return this.content.images.map(
+      (image) => `https://img.webumenia.sk/preview/?path=${image}&size=800`
+    )
+  }
 }

@@ -1,0 +1,19 @@
+{
+  "functions": {
+    "source": ".output/server",
+    "runtime": "nodejs18"
+  },
+  "hosting": [
+    {
+      "site": "test-sbirky-moravska-galerie",
+      "public": ".output/public",
+      "cleanUrls": false,
+      "rewrites": [
+        {
+          "source": "**",
+          "function": "server"
+        }
+      ]
+    }
+  ]
+}

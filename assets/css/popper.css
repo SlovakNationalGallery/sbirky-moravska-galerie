@@ -1,0 +1,15 @@
+.v-popper__popper {
+    &.v-popper--theme-dropdown {
+        .v-popper__arrow-container {
+            display: none;
+        }
+        .v-popper__inner {
+            border-radius: 0;
+            box-shadow: none;
+            background: transparent;
+            color: inherit;
+        }
+    }
+}
+
+

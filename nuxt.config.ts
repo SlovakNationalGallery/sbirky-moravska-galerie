@@ -5,11 +5,26 @@ import { resolve } from 'path'
 
 export default defineNuxtConfig({
   devtools: { enabled: false },
-  modules: ['@nuxtjs/tailwindcss', '@morev/vue-transitions/nuxt'],
-  components: {
-    dirs: ['@/components/general'],
+  debug: false,
+  experimental: {
+    renderJsonPayloads: false,
   },
-  css: ['~/assets/css/slider.css'],
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@morev/vue-transitions/nuxt',
+    'vue3-carousel-nuxt',
+    'floating-vue/nuxt',
+  ],
+  carousel: {
+    prefix: 'Module',
+  },
+  components: {
+    dirs: ['@/components/controls'],
+  },
+  css: ['~/assets/css/slider.css', '~/assets/css/popper.css'],
+  app: {
+    pageTransition: { name: 'page', mode: 'out-in' },
+  },
   vite: {
     vue: {
       script: {
@@ -28,9 +43,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     API_URL: process.env.API_URL || '/api',
     APP_URL: process.env.APP_URL || '',
-
     public: {
-      API_URL: process.env.PUBLIC_API_URL || '/api',
+      API_URL: process.env.API_URL || '/api',
       APP_URL: process.env.APP_URL || '',
     },
   },

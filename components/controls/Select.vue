@@ -1,8 +1,16 @@
 <template>
-  <Popper placement="bottom-start" @open:popper="isOpen = true" @close:popper="isOpen = false">
+  <VMenu
+    :triggers="['click']"
+    :shown="isOpen"
+    :distance="6"
+    placement="bottom-start"
+    @show="isOpen = true"
+    @hide="isOpen = false"
+  >
     <div
       class="flex transition-all gap-3 py-3 px-4 bg-white serif border-2 cursor-pointer"
       :class="{ 'border-dark': isOpen, 'border-white': !isOpen }"
+      @click="isOpen = !isOpen"
     >
       <div class="grow">
         {{ label }} <span v-if="model.length">({{ model.length }})</span>
@@ -14,7 +22,7 @@
         <Icon name="arrow" class="w-3" />
       </div>
     </div>
-    <template #content>
+    <template #popper>
       <div
         class="bg-white border-2 border-dark flex flex-col gap-3 p-6 serif overflow-y-scroll max-h-[430px] max-w-[340px]"
       >
@@ -36,15 +44,15 @@
         </div>
       </div>
     </template>
-  </Popper>
+  </VMenu>
 </template>
 
 <script setup lang="ts">
-import Popper from 'vue3-popper'
 import levenshtein from 'levenshtein-array'
 
 import { normalize } from '~/utils/string'
-import Search from "~/components/controls/parts/Search.vue";
+import Search from '~/components/controls/parts/Search.vue'
+import Icon from '~/components/general/Icon.vue'
 
 const props = defineProps<{
   label: string
