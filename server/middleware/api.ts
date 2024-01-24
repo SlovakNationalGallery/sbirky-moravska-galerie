@@ -15,6 +15,7 @@ const getProxy = () => {
       pathRewrite: { ['^' + prefix]: '' },
       headers: {
         'X-Frontend': 'moravska-galerie',
+        'Accept-Language': 'cs',
       },
     })
   }
