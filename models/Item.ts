@@ -56,7 +56,9 @@ export default class Item extends BaseModel {
   }
 
   public get image() {
-    return `https://www.webumenia.sk/dielo/nahlad/${this.id}/800`
+    const config = useRuntimeConfig()
+
+    return `${config.public.CDN_URL}/dielo/nahlad/${this.id}/800`
   }
 
   public get previewImages() {

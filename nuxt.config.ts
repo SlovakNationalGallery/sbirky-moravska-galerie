@@ -46,6 +46,7 @@ export default defineNuxtConfig({
     public: {
       API_URL: process.env.API_URL || '/api',
       APP_URL: process.env.APP_URL || '',
+      CDN_URL: process.env.CDN_URL || '',
     },
   },
 })
