@@ -1,8 +1,11 @@
 <template>
-  <NuxtLink :to="item.link" :class="`transition-opacity opacity-${isVisible ? 100 : 0}`">
+  <NuxtLink
+    :to="item.link"
+    :class="`transition-opacity duration-1000 opacity-${isVisible ? 100 : 0}`"
+  >
     <Image ref="imageRef" :url="item.image" />
     <div class="flex mt-4 mb-10">
-      <div class="flex-grow">
+      <div class="flex-grow flex flex-col items-start">
         <div class="font-serif text-lg">{{ item.content.authors_formatted?.join(', ') }}</div>
         <div class="font-bold text-xl">{{ item.content.title }}</div>
         <div class="font-serif">{{ item.content.dating }}</div>

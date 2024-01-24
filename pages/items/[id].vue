@@ -80,19 +80,28 @@
               </NuxtLink>
             </div>
           </div>
-          <div class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1">
+          <div
+            v-if="item.content.inscription?.length"
+            class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
+          >
             <div class="font-bold w-1/3">značení</div>
-            <div>{{ item.content.tag.join(', ') }}❓</div>
+            <div>{{ item.content.inscription.join(', ') }}</div>
           </div>
-          <div class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1">
+          <div
+            v-if="item.content.acquisiton_date"
+            class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
+          >
             <div class="font-bold w-1/3">datum akvizice</div>
-            <div>{{ item.content.dating }}❓</div>
+            <div>{{ item.content.acquisiton_date }}</div>
           </div>
           <div class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1">
             <div class="font-bold w-1/3">inventární číslo</div>
             <div>{{ item.content.identifier }}</div>
           </div>
-          <div class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1">
+          <div
+            v-if="item.content.tag?.length"
+            class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
+          >
             <div class="font-bold w-1/3">tagy</div>
             <div class="flex flex-wrap gap-3">
               <div
@@ -114,11 +123,15 @@
           <div class="whitespace-pre-line" v-html="item.content.description"></div>
         </div>
       </div>
-      <div class="mt-10 text-2xl">
-        <h3>Související díla</h3>
-        <div class="flex mt-6">
-          <ItemCard class="max-w-[300px]" :item="item" />
-        </div>
+    </div>
+    <div class="mt-10 text-2xl">
+      <h3>Související díla</h3>
+      <div class="flex mt-6">
+        <CarouselWrapper :items-to-show="3">
+          <div v-for="similar in similars" :key="similar.id" class="pr-10">
+            <ItemCard :item="similar" />
+          </div>
+        </CarouselWrapper>
       </div>
     </div>
   </div>
@@ -134,11 +147,24 @@ const route = useRoute()
 const id = route.params.id as string
 const nuxtConfig = useRuntimeConfig()
 
-const { data } = await useFetch<any>(`${Item.endpoint}/${id}`, {
-  baseURL: nuxtConfig.public.APP_URL,
-})
+const [itemData, similarData] = await Promise.all([
+  useFetch<any>(`${Item.endpoint}/${id}`, {
+    baseURL: nuxtConfig.public.APP_URL,
+  }),
+  useFetch<{
+    data: any[]
+  }>(`api/v2/items/${id}/similar`, {
+    baseURL: nuxtConfig.public.APP_URL,
+    params: {
+      size: 9,
+    },
+  }),
+])
 
-const item = computed(() => new Item(data.value))
+const item = computed(() => new Item(itemData.data.value))
+const similars = computed(
+  () => similarData.data.value?.data.map((item) => new Item({ id: item.id, content: item })) ?? []
+)
 
 // console.log(item.value)
 </script>

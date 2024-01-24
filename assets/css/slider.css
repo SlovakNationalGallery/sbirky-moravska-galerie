@@ -30,9 +30,9 @@
     --slider-tooltip-distance: 3px;
 }
 
-.slider-target {
-    /*.slider-tooltip {*/
-    /*    display: none;*/
-    /*}*/
+.carousel {
+    .carousel__slide {
+        align-items: flex-start;
+    }
 }
 

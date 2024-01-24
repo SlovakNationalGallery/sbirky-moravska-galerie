@@ -1,9 +1,11 @@
 import BaseModel from '@/models/_BaseModel'
 
+// TODO: fix with BE incosistencies
 interface IItemContent {
   id: string
   identifier: string
   author: string[]
+  authors: string[]
   tag: string[]
   date_earliest: number
   date_latest: number
@@ -36,6 +38,9 @@ interface IItemContent {
   hsl: Hsl[]
   authors_formatted?: string[]
   exhibition?: string
+
+  inscription: string[]
+  acquisiton_date: string
 }
 
 export interface Hsl {

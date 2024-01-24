@@ -1,7 +1,7 @@
 <template>
   <img
     ref="target"
-    class="image block w-full"
+    class="image block w-full transition-opacity"
     :alt="alt"
     :title="title"
     :src="isLoaded || disableLazy ? url : ''"
@@ -32,7 +32,8 @@ const { stop, pause, resume } = useIntersectionObserver(target, ([{ isIntersecti
   const img = document.createElement('img')
 
   img.src = props.url
-  img.onload = () => {
+  img.onload = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 333))
     isLoaded.value = true
   }
 })

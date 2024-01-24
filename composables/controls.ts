@@ -22,6 +22,7 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
   const nuxtConfig = useRuntimeConfig()
   const route = useRoute()
   const router = useRouter()
+  const defaultValues: Record<ConfigKey, any> = {}
 
   const page = ref(+(route.query.page ?? 1))
   // TODO: proper pager
@@ -130,6 +131,8 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
           max: aggregations.data.value?.[control.options?.max ?? 'max'],
         }
 
+        query[key] = JSON.stringify(query[key])
+
         if (isEqual(models[key], defaultValues)) {
           delete query[key]
         }
@@ -178,10 +181,16 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
         }
 
         if (control.type === 'range') {
-          if (models[control.key].min) {
+          if (
+            models[control.key].min &&
+            defaultValues[control.key]?.min !== models[control.key].min
+          ) {
             acc[`filter[${control.options?.min ?? 'min'}][gte]`] = models[control.key].min
           }
-          if (models[control.key].max) {
+          if (
+            models[control.key].max &&
+            defaultValues[control.key]?.max !== models[control.key].max
+          ) {
             acc[`filter[${control.options?.max ?? 'max'}][lte]`] = models[control.key].max
           }
         }
@@ -233,15 +242,22 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
         ...response,
         data: response.data.map((data) => new Item(data)),
       }),
-      lazy: false, // TODO: evaluate ssr performance
-      deep: true,
     }),
     useFetch<Record<string, { count: number; value: string }[]>>('api/v1/items/aggregations', {
       baseURL: nuxtConfig.public.APP_URL,
       query: aggregationQuery,
       watch: [aggregationQuery],
-      lazy: false,
-      deep: true,
+      transform: (response) => {
+        // TODO: proper range
+        if (!defaultValues['range']) {
+          defaultValues['range'] = {
+            max: response.date_earliest,
+            min: response.date_latest,
+          }
+        }
+
+        return response
+      },
     }),
   ])
 

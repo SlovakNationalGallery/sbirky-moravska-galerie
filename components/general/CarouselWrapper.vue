@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ModuleCarousel>
+    <ModuleCarousel :items-to-show="itemsToShow" snap-align="start">
       <ModuleSlide v-for="(item, i) in items" :key="i">
         <component :is="item" />
       </ModuleSlide>
@@ -13,12 +13,17 @@
 <script setup lang="ts">
 import 'vue3-carousel/dist/carousel.css'
 
-const slots = useSlots()
-const items = computed(() => (slots.default!() || []) as VNode[])
+withDefaults(
+  defineProps<{
+    itemsToShow?: number
+  }>(),
+  {
+    itemsToShow: 1,
+  }
+)
 
-// onMounted(() => {
-//   console.log(items.value)
-// })
+const slots = useSlots()
+const items = computed(() => (slots.default!()[0].children || []) as VNode[])
 </script>
 
 <style scoped lang="scss">
