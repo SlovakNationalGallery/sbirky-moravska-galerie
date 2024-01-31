@@ -5,9 +5,10 @@
         }
         .v-popper__inner {
             border-radius: 0;
-            box-shadow: none;
+            border: 0;
             background: transparent;
             color: inherit;
+            box-shadow: 0px 10px 18px 0px rgba(0, 0, 0, 0.10);
         }
     }
 }

@@ -56,6 +56,8 @@ export default class Item extends BaseModel {
   public declare id: string
   public declare content: IItemContent
 
+  loaded = false
+
   public get link() {
     return `/items/${this.id}`
   }

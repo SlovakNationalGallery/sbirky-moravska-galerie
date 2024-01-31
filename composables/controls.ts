@@ -1,4 +1,5 @@
 import isEqual from 'lodash-ts/isEqual'
+import { omit } from '@morev/utils'
 
 import Item from '~/models/Item'
 import { Select, Range, Boolean } from '#components'
@@ -13,11 +14,24 @@ export interface ITermsConfig {
   type: 'select' | 'boolean' | 'range' | 'hidden'
   label: string
   options?: Record<string, string>
+  defaultSort?: 'asc' | 'desc'
 }
 
-export const useCreateControls = async (config: readonly ITermsConfig[]) => {
+interface IFilterConfig {
+  sortBy: string
+  sortDirection?: 'asc' | 'desc'
+  perPage: number
+}
+
+export const useCreateControls = async (
+  config: readonly ITermsConfig[],
+  filter: IFilterConfig = {
+    sortBy: 'updated_at',
+    sortDirection: 'asc',
+    perPage: 12,
+  }
+) => {
   type ConfigKey = (typeof config)[number]['key']
-  const PER_PAGE = 12
 
   const nuxtConfig = useRuntimeConfig()
   const route = useRoute()
@@ -25,8 +39,8 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
   const defaultValues: Record<ConfigKey, any> = {}
 
   const page = ref(+(route.query.page ?? 1))
-  // TODO: proper pager
-  // const perPage = ref(PER_PAGE)
+  const sortBy = ref(route.query.sortBy || filter.sortBy)
+  const sortDirection = ref(route.query.sortDirection || filter.sortDirection)
 
   const controls = computed(() => {
     return config.map((control) => {
@@ -41,8 +55,9 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
       }
       if (control.type === 'select') {
         options = items.map((item) => ({
-          label: `${item.value} (${item.count})`,
+          label: item.value,
           value: item.value,
+          count: item.count,
         }))
       }
 
@@ -88,22 +103,32 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
     for (const key in query) {
       const control = config.find((control) => control.key === key)!
 
-      if (control.type === 'select') {
-        query[key] = Array.isArray(query[key]) ? query[key] : [query[key]]
-      }
+      if (control && control.type) {
+        if (control.type === 'select') {
+          query[key] = Array.isArray(query[key]) ? query[key] : [query[key]]
+        }
 
-      if (control.type === 'boolean') {
-        query[key] = query[key] === 'true'
-      }
+        if (control.type === 'boolean') {
+          query[key] = query[key] === 'true'
+        }
 
-      if (control.type === 'range') {
-        const range = typeof query[key] === 'string' ? JSON.parse(query[key]) : query[key]
+        if (control.type === 'range') {
+          const range = typeof query[key] === 'string' ? JSON.parse(query[key]) : query[key]
 
-        query[key] = {
-          min: range.min ?? null,
-          max: range.max ?? null,
+          query[key] = {
+            min: range.min ?? null,
+            max: range.max ?? null,
+          }
         }
       }
+    }
+
+    if (query.sortBy) {
+      sortBy.value = query.sortBy
+    }
+
+    if (query.sortDirection) {
+      sortDirection.value = query.sortDirection
     }
 
     return query
@@ -121,22 +146,36 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
 
       const control = config.find((control) => control.key === key)!
 
-      if (control.type === 'hidden' && !query[key]) {
-        delete query[key]
-      }
-
-      if (control.type === 'range') {
-        const defaultValues = {
-          min: aggregations.data.value?.[control.options?.min ?? 'min'],
-          max: aggregations.data.value?.[control.options?.max ?? 'max'],
-        }
-
-        query[key] = JSON.stringify(query[key])
-
-        if (isEqual(models[key], defaultValues)) {
+      if (control && control.type) {
+        if (control.type === 'hidden' && !query[key]) {
           delete query[key]
         }
+
+        if (control.type === 'range') {
+          const defaultValues = {
+            min: aggregations.data.value?.[control.options?.min ?? 'min'],
+            max: aggregations.data.value?.[control.options?.max ?? 'max'],
+          }
+
+          query[key] = JSON.stringify(query[key])
+
+          if (isEqual(models[key], defaultValues)) {
+            delete query[key]
+          }
+        }
       }
+    }
+
+    if (filter.sortBy !== sortBy.value) {
+      query.sortBy = sortBy.value
+    } else {
+      delete query.sortBy
+    }
+
+    if (filter.sortDirection !== sortDirection.value) {
+      query.sortDirection = sortDirection.value
+    } else {
+      delete query.sortDirection
     }
 
     return query
@@ -150,7 +189,7 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
 
       switch (control.type) {
         case 'boolean':
-          acc[control.key] = false
+          acc[control.key] = control.options?.default ?? false
           break
         case 'select':
           acc[control.key] = []
@@ -171,6 +210,12 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
   })
 
   const filtersQuery = computed(() => {
+    const query = {
+      page: page.value,
+      size: filter.perPage,
+      [`sort[${sortBy.value}]`]: sortDirection.value,
+    }
+
     return {
       ...config.reduce((acc, control) => {
         if (control.type === 'boolean' && models[control.key]) {
@@ -201,8 +246,7 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
 
         return acc
       }, [] as any),
-      page: page.value,
-      size: PER_PAGE,
+      ...query,
     }
   })
 
@@ -262,7 +306,7 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
   ])
 
   watch(
-    models,
+    [models, sortBy, sortDirection],
     () => {
       router.push({
         query: createQuery(),
@@ -273,19 +317,9 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
     }
   )
 
-  // const appendPage = () => {
-  //   const test = useFetch<Response>('api/items', {
-  //     baseURL: nuxtConfig.public.APP_URL,
-  //     query: {
-  //       ...filtersQuery.value,
-  //       page: page.value + 1,
-  //     },
-  //     transform: (response) => ({
-  //       ...response,
-  //       data: response.data.map((data) => new Item(data)),
-  //     }),
-  //   })
-  // }
+  watch([sortBy, sortDirection], () => {
+    page.value = 1
+  })
 
   return {
     controls,
@@ -297,6 +331,8 @@ export const useCreateControls = async (config: readonly ITermsConfig[]) => {
     total: computed(() => items.data.value?.total ?? 0),
     lastPage: computed(() => items.data.value?.last_page ?? 0),
     page,
-    sortBy: ref('last_update'),
+    sortBy,
+    sortDirection,
+    isLoading: computed(() => items.pending.value || aggregations.pending.value),
   }
 }

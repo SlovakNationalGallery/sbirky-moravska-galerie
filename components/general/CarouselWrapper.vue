@@ -26,7 +26,3 @@ const slots = useSlots()
 const items = computed(() => (slots.default!()[0].children || []) as VNode[])
 </script>
 
-<style scoped lang="scss">
-
-</style>
-

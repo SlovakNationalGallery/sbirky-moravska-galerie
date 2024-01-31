@@ -29,7 +29,7 @@ const isOpen = ref(false)
 const nuxtConfig = useRuntimeConfig()
 const { data } = await useFetch<{
   data: any[]
-}>('api/v2/items/suggestions', {
+}>('api/v1/items/suggestions', {
   baseURL: nuxtConfig.public.APP_URL,
   params: {
     search: q,
@@ -42,7 +42,3 @@ const items = computed(
   () => data.value?.data.map((item) => new Item({ id: item.id, content: item })) ?? []
 )
 </script>
-
-<style scoped lang="scss">
-
-</style>

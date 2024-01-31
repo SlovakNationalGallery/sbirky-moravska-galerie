@@ -9,27 +9,34 @@
 
     <div class="block md:grid md:grid-cols-2 gap-6 mt-6">
       <div>
-        <CarouselWrapper>
+        <CarouselWrapper v-if="item.content.images?.length">
           <Image
             v-for="src in item.content.images"
             :key="src"
             :url="`https://img.webumenia.sk/preview/?path=${src}&size=800`"
           />
         </CarouselWrapper>
+        <Image v-else :url="item.image" />
       </div>
 
       <div>
         <div class="flex flex-col gap-1">
-          <div class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1">
-            <div class="font-bold w-1/3">datace</div>
+          <div
+            v-if="item.content.dating"
+            class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
+          >
+            <div class="font-bold w-1/3 shrink-0">datace</div>
             <div>{{ item.content.dating }}</div>
           </div>
-          <div class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1">
-            <div class="font-bold w-1/3">rozměry</div>
+          <div
+            v-if="item.content.measurement?.length"
+            class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
+          >
+            <div class="font-bold w-1/3 shrink-0">rozměry</div>
             <div>{{ item.content.measurement.join(', ') }}</div>
           </div>
           <div class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1">
-            <div class="font-bold w-1/3">výtvarný druh</div>
+            <div class="font-bold w-1/3 shrink-0">výtvarný druh</div>
             <div>
               <NuxtLink
                 v-for="link in item.content.work_type"
@@ -41,8 +48,11 @@
               </NuxtLink>
             </div>
           </div>
-          <div class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1">
-            <div class="font-bold w-1/3">námět</div>
+          <div
+            v-if="item.content.topic?.length"
+            class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
+          >
+            <div class="font-bold w-1/3 shrink-0">námět</div>
             <div>
               <NuxtLink
                 v-for="link in item.content.topic"
@@ -55,7 +65,7 @@
             </div>
           </div>
           <div class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1">
-            <div class="font-bold w-1/3">materiál</div>
+            <div class="font-bold w-1/3 shrink-0">materiál</div>
             <div>
               <NuxtLink
                 v-for="link in item.content.medium"
@@ -68,7 +78,7 @@
             </div>
           </div>
           <div class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1">
-            <div class="font-bold w-1/3">technika</div>
+            <div class="font-bold w-1/3 shrink-0">technika</div>
             <div>
               <NuxtLink
                 v-for="link in item.content.technique"
@@ -81,11 +91,11 @@
             </div>
           </div>
           <div
-            v-if="item.content.inscription?.length"
+            v-if="item.content.inscription"
             class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
           >
-            <div class="font-bold w-1/3">značení</div>
-            <div>{{ item.content.inscription.join(', ') }}</div>
+            <div class="font-bold w-1/3 shrink-0">značení</div>
+            <div>{{ item.content.inscription }}</div>
           </div>
           <div
             v-if="item.content.acquisiton_date"
@@ -95,14 +105,14 @@
             <div>{{ item.content.acquisiton_date }}</div>
           </div>
           <div class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1">
-            <div class="font-bold w-1/3">inventární číslo</div>
+            <div class="font-bold w-1/3 shrink-0">inventární číslo</div>
             <div>{{ item.content.identifier }}</div>
           </div>
           <div
             v-if="item.content.tag?.length"
             class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
           >
-            <div class="font-bold w-1/3">tagy</div>
+            <div class="font-bold w-1/3 shrink-0">tagy</div>
             <div class="flex flex-wrap gap-3">
               <div
                 v-for="tag in item.content.tag"
@@ -117,17 +127,21 @@
             v-if="item.content.exhibition"
             class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
           >
-            <div class="font-bold w-1/3">kolekce / výstava</div>
-            <div>{{ item.content.exhibition }}</div>
+            <div class="font-bold w-1/3 shrink-0">kolekce / výstava</div>
+            <div>
+              <NuxtLink :to="`/?exhibition=${item.content.exhibition}`" class="underline">
+                {{ item.content.exhibition }}
+              </NuxtLink>
+            </div>
           </div>
-          <div class="whitespace-pre-line" v-html="item.content.description"></div>
+          <div class="whitespace-pre-line px-2 py-1" v-html="item.content.description"></div>
         </div>
       </div>
     </div>
     <div class="mt-10 text-2xl">
       <h3>Související díla</h3>
       <div class="flex mt-6">
-        <CarouselWrapper :items-to-show="3">
+        <CarouselWrapper class="w-full" :items-to-show="3">
           <div v-for="similar in similars" :key="similar.id" class="pr-10">
             <ItemCard :item="similar" />
           </div>
@@ -162,13 +176,8 @@ const [itemData, similarData] = await Promise.all([
 ])
 
 const item = computed(() => new Item(itemData.data.value))
+
 const similars = computed(
   () => similarData.data.value?.data.map((item) => new Item({ id: item.id, content: item })) ?? []
 )
-
-// console.log(item.value)
 </script>
-
-<style scoped lang="scss">
-
-</style>

@@ -1,7 +1,6 @@
 <template>
   <VMenu
     :triggers="['click']"
-    :shown="isOpen"
     :distance="6"
     placement="bottom-start"
     @show="isOpen = true"
@@ -10,10 +9,10 @@
     <div
       class="flex transition-all gap-3 py-3 px-4 bg-white serif border-2 cursor-pointer"
       :class="{ 'border-dark': isOpen, 'border-white': !isOpen }"
-      @click="isOpen = !isOpen"
     >
-      <div class="grow">
-        {{ label }} <span v-if="model.length">({{ model.length }})</span>
+      <div class="grow font-serif">
+        {{ label }}
+        <span v-if="model.length" class="font-sans font-bold">({{ model.length }})</span>
       </div>
       <div
         :class="{ 'rotate-180 text-primary': isOpen }"
@@ -36,11 +35,13 @@
         >
           <div
             class="text-primary w-6 h-6 border-[1px] flex items-center transition-all"
-            :class="{ 'bg-primary border-primary': model.includes(option.value) }"
+            :class="{ 'bg-primary-light border-primary': model.includes(option.value) }"
           >
-            <Icon class="text-white w-8 h-8" name="check" />
+            <Icon v-if="model.includes(option.value)" class="text-primary w-8 h-8" name="check" />
           </div>
-          <div>{{ option.label }}</div>
+          <div>
+            {{ option.label }} <span class="font-sans font-bold">({{ option.count }})</span>
+          </div>
         </div>
       </div>
     </template>
@@ -56,7 +57,7 @@ import Icon from '~/components/general/Icon.vue'
 
 const props = defineProps<{
   label: string
-  options: { label: string; value: string }[]
+  options: { label: string; value: string; count: string }[]
 }>()
 
 const model = defineModel<string[]>({
@@ -83,6 +84,7 @@ const sortedOptions = computed(() => {
   return sorted.map((l, i) => ({
     label: filtered[i].label,
     value: filtered[i].value,
+    count: filtered[i].count,
   }))
 })
 

@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-3 items-center">
     <Filter
       v-model="models"
-      class="w-full"
+      class="w-full mt-6"
       :controls="controls"
       :selected="selected"
       :toggle="toggle"
@@ -13,40 +13,32 @@
       <div class="flex-grow">
         <span class="font-bold">{{ total }}</span> děl
       </div>
-      <div class="border-b-2 border-black">
-        <Dropdown v-model="sortBy" :options="sortOptions" />
-      </div>
+
+      <Sort v-model:sort-by="sortBy" v-model:sort-direction="sortDirection" />
     </div>
 
     <div class="w-full">
-      <masonry-wall :items="items" :ssr-columns="3" :column-width="300" :gap="24">
+      <masonry-wall
+        :items="pagedItems"
+        :ssr-columns="3"
+        :column-width="300"
+        :gap="24"
+        :key-mapper="(item: Item) => item.id"
+      >
         <template #default="{ item }">
           <Item :key="`item-${item.id}`" :item="item" />
         </template>
       </masonry-wall>
     </div>
 
-    <button
-      v-if="lastPage > page"
-      type="button"
-      class="inline-flex px-6 py-4 uppercase w-auto items-center text-md bg-dark text-white"
-      @click="page++"
-    >
-      <span>Načítať ďalšie</span>
-      <Icon name="arrow-down" class="w-5 h-5 ml-1.5" />
-    </button>
+    <Pager v-model="page" :is-loading="isLoading" :last-page="lastPage" />
   </div>
 </template>
 <script setup lang="ts">
 import Filter from '~/components/general/Filter.vue'
-import Dropdown from '~/components/general/Dropdown.vue'
 import Item from '~/components/general/Item.vue'
-import Icon from '~/components/general/Icon.vue'
-
-const sortOptions = [
-  { label: 'Podľa poslednej zmeny', value: 'last_update' },
-  { label: 'test2', value: 'test2' },
-] as const
+import Sort from '~/pages/Sort.vue'
+import Pager from '~/components/general/Pager.vue'
 
 const config = [
   {
@@ -82,7 +74,7 @@ const config = [
   {
     key: 'range',
     type: 'range',
-    label: 'Rok',
+    label: 'rok',
     options: {
       min: 'date_latest',
       max: 'date_earliest',
@@ -92,6 +84,9 @@ const config = [
     key: 'has_image',
     type: 'boolean',
     label: 'Len s obrázkom',
+    options: {
+      default: true,
+    },
   },
   {
     key: 'has_iip',
@@ -106,16 +101,32 @@ const config = [
       default: '',
     },
   },
-  // {
-  //   key: 'gallery',
-  //   type: 'hidden',
-  //   label: 'gallery',
-  //   options: {
-  //     default: 'Moravská galerie, MG',
-  //   },
-  // },
 ] as const
 
-const { controls, models, selected, toggle, reset, items, total, page, lastPage, sortBy } =
-  await useCreateControls(config)
+const {
+  controls,
+  models,
+  selected,
+  toggle,
+  reset,
+  items,
+  total,
+  page,
+  lastPage,
+  sortBy,
+  sortDirection,
+  isLoading,
+} = await useCreateControls(config)
+
+const pagedItems = ref(items.value)
+watch(items, () => {
+  pagedItems.value = [pagedItems.value, items.value].flat()
+})
+
+onMounted(async () => {
+  await nextTick()
+  watch([sortBy, sortDirection, models], () => {
+    pagedItems.value = []
+  })
+})
 </script>

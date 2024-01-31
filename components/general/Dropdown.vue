@@ -12,7 +12,7 @@
       :class="{ 'border-dark': isOpen, 'border-white': !isOpen }"
     >
       <div class="grow">
-        {{ getLabel(model) }}
+        <slot name="label" :label="label">{{ label }}</slot>
       </div>
       <div
         :class="{ 'rotate-180 text-primary': isOpen }"
@@ -39,8 +39,6 @@
 </template>
 
 <script setup lang="ts">
-import Popper from 'vue3-popper'
-
 import Icon from '~/components/general/Icon.vue'
 
 const props = defineProps<{
@@ -60,9 +58,7 @@ onMounted(() => {
 
 const isOpen = ref(false)
 
-function getLabel(value: string) {
-  return props.options.find((option) => option.value === value)?.label
-}
+const label = computed(() => props.options.find((option) => option.value === model.value)?.label)
 
 function onSelect(value: string) {
   model.value = value

@@ -2,9 +2,9 @@
   <div class="flex gap-3 cursor-pointer" @click="onToggle">
     <div
       class="text-primary w-6 h-6 border border-black flex items-center transition-all"
-      :class="{ 'bg-primary border-primary': model }"
+      :class="{ 'bg-primary-light border-primary': model }"
     >
-      <Icon class="text-black w-8 h-8" name="check" />
+      <Icon v-if="model" class="text-primary w-8 h-8" name="check" />
     </div>
     <div>{{ label }}</div>
   </div>
@@ -25,7 +25,3 @@ const onToggle = () => {
   model.value = !model.value
 }
 </script>
-
-<style scoped lang="scss">
-
-</style>

@@ -33,7 +33,7 @@ const { stop, pause, resume } = useIntersectionObserver(target, ([{ isIntersecti
 
   img.src = props.url
   img.onload = async () => {
-    await new Promise((resolve) => setTimeout(resolve, 333))
+    // await new Promise((resolve) => setTimeout(resolve, 333))
     isLoaded.value = true
   }
 })

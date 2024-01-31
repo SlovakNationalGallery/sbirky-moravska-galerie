@@ -11,7 +11,7 @@
       class="flex transition-all gap-3 py-3 px-4 bg-white serif border-2 cursor-pointer"
       :class="{ 'border-dark': isOpen, 'border-white': !isOpen }"
     >
-      <div class="grow">
+      <div class="grow font-serif">
         {{ label }}
       </div>
       <div
