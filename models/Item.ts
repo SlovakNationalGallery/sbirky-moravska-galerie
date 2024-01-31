@@ -40,7 +40,7 @@ interface IItemContent {
   exhibition?: string
 
   inscription: string[]
-  acquisiton_date: string
+  acquisition_date: string
 }
 
 export interface Hsl {
@@ -66,6 +66,12 @@ export default class Item extends BaseModel {
     const config = useRuntimeConfig()
 
     return `${config.public.CDN_URL}/dielo/nahlad/${this.id}/800`
+  }
+
+  public get authorsFormatted() {
+    return (this.content.author || this.content.authors)?.map((author) =>
+      author.replace(/^([^,]*),\s*(.*)$/, '$2 $1')
+    )
   }
 
   public get previewImages() {

@@ -2,9 +2,16 @@
   <div v-if="item">
     <div class="gap-3 flex flex-col leading-tight">
       <h1 class="text-5xl mt-4">{{ item.content.title }}</h1>
-      <NuxtLink :to="`/?author=${item.content.author}`" class="underline">
-        <h2 class="font-serif text-lg">{{ item.content.author.join(', ') }}</h2>
-      </NuxtLink>
+      <div class="flex flex-wrap gap-3">
+        <NuxtLink
+          v-for="(author, i) in item.authorsFormatted"
+          :key="`author${i}`"
+          :to="`/?author=${item.content.author[i]}`"
+          class="underline"
+        >
+          <h2 class="font-serif text-lg">{{ author }}</h2>
+        </NuxtLink>
+      </div>
     </div>
 
     <div class="block md:grid md:grid-cols-2 gap-6 mt-6">
@@ -33,7 +40,11 @@
             class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
           >
             <div class="font-bold w-1/3 shrink-0">rozměry</div>
-            <div>{{ item.content.measurement.join(', ') }}</div>
+            <div>
+              <div v-for="(measurement, i) in item.content.measurement" :key="`measurement${i}`">
+                {{ measurement }}
+              </div>
+            </div>
           </div>
           <div class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1">
             <div class="font-bold w-1/3 shrink-0">výtvarný druh</div>
@@ -98,11 +109,11 @@
             <div>{{ item.content.inscription }}</div>
           </div>
           <div
-            v-if="item.content.acquisiton_date"
+            v-if="item.content.acquisition_date"
             class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
           >
             <div class="font-bold w-1/3">datum akvizice</div>
-            <div>{{ item.content.acquisiton_date }}</div>
+            <div>{{ item.content.acquisition_date }}</div>
           </div>
           <div class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1">
             <div class="font-bold w-1/3 shrink-0">inventární číslo</div>
@@ -142,7 +153,7 @@
       <h3>Související díla</h3>
       <div class="flex mt-6">
         <CarouselWrapper class="w-full" :items-to-show="3">
-          <div v-for="similar in similars" :key="similar.id" class="pr-10">
+          <div v-for="similar in similars" :key="similar.id" class="pr-6">
             <ItemCard :item="similar" />
           </div>
         </CarouselWrapper>

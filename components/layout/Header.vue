@@ -8,9 +8,9 @@
 
       <SearchBar class="mt-8" />
 
-      <TransitionSlide>
+      <TransitionExpand>
         <Image v-if="isFrontpage" url="/placeholder.png" class="aspect-[9/4] mt-8 object-cover" />
-      </TransitionSlide>
+      </TransitionExpand>
     </div>
   </header>
 </template>

@@ -8,7 +8,7 @@
           <NuxtLink v-for="item in items" :key="item.id" :to="item.link" class="flex mt-4">
             <Image :url="item.image" class="!w-[56px] h-[56px] object-cover mr-4" />
             <div>
-              <div class="font-serif">{{ item.content.authors.join(', ') }}</div>
+              <div class="font-serif">{{ item.content.author.join(', ') }}</div>
               <div>{{ item.content.title }}</div>
             </div>
           </NuxtLink>
@@ -32,13 +32,11 @@ const { data } = await useFetch<{
 }>('api/v1/items/suggestions', {
   baseURL: nuxtConfig.public.APP_URL,
   params: {
-    search: q,
+    q,
     size: 9,
   },
   watch: [q],
 })
 
-const items = computed(
-  () => data.value?.data.map((item) => new Item({ id: item.id, content: item })) ?? []
-)
+const items = computed(() => data.value?.data.map((item) => new Item(item)) ?? [])
 </script>

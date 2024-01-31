@@ -4,10 +4,10 @@
     <div class="flex mt-4 mb-10">
       <div class="flex-grow flex flex-col items-start">
         <div class="font-serif text-lg">{{ item.content.authors_formatted?.join(', ') }}</div>
-        <div class="font-bold text-xl">{{ item.content.title }}</div>
+        <div class="font-bold text-xl text-left">{{ item.content.title }}</div>
         <div class="font-serif">{{ item.content.dating }}</div>
       </div>
-      <Icon name="magnifying" class="w-6 h-6" />
+      <Icon name="magnifying" class="w-6 h-6 shrink-0" />
     </div>
   </NuxtLink>
 </template>
