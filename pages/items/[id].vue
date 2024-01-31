@@ -172,13 +172,14 @@ const route = useRoute()
 const id = route.params.id as string
 const nuxtConfig = useRuntimeConfig()
 
+process.server && console.log(nuxtConfig.public.APP_URL, `${Item.endpoint}/${id}`)
 const [itemData, similarData] = await Promise.all([
   useFetch<any>(`${Item.endpoint}/${id}`, {
     baseURL: nuxtConfig.public.APP_URL,
   }),
   useFetch<{
     data: any[]
-  }>(`api/v2/items/${id}/similar`, {
+  }>(`api/v1/items/${id}/similar`, {
     baseURL: nuxtConfig.public.APP_URL,
     params: {
       size: 9,
@@ -188,7 +189,7 @@ const [itemData, similarData] = await Promise.all([
 
 const item = computed(() => new Item(itemData.data.value))
 
-const similars = computed(
-  () => similarData.data.value?.data.map((item) => new Item({ id: item.id, content: item })) ?? []
-)
+console.log('item', item.value)
+
+const similars = computed(() => similarData.data.value?.data.map((item) => new Item(item)) ?? [])
 </script>
