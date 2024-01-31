@@ -172,7 +172,6 @@ const route = useRoute()
 const id = route.params.id as string
 const nuxtConfig = useRuntimeConfig()
 
-process.server && console.log(nuxtConfig.public.APP_URL, `${Item.endpoint}/${id}`)
 const [itemData, similarData] = await Promise.all([
   useFetch<any>(`${Item.endpoint}/${id}`, {
     baseURL: nuxtConfig.public.APP_URL,
@@ -188,8 +187,6 @@ const [itemData, similarData] = await Promise.all([
 ])
 
 const item = computed(() => new Item(itemData.data.value))
-
-console.log('item', item.value)
 
 const similars = computed(() => similarData.data.value?.data.map((item) => new Item(item)) ?? [])
 </script>
