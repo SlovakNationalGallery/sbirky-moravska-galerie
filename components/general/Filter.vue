@@ -63,8 +63,8 @@ const props = defineProps<{
   reset: () => void
 }>()
 
-const controls = props.controls.filter((item) => item.type !== 'boolean')
-const booleans = props.controls.filter((item) => item.type === 'boolean')
+const controls = computed(() => props.controls.filter((item) => item.type !== 'boolean'))
+const booleans = computed(() => props.controls.filter((item) => item.type === 'boolean'))
 
 const models = defineModel<Record<string, string[]>>({
   default: {},
