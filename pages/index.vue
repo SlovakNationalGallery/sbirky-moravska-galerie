@@ -119,8 +119,14 @@ const {
 } = await useCreateControls(config)
 
 const pagedItems = ref(items.value)
+
 watch(items, () => {
-  pagedItems.value = [pagedItems.value, items.value].flat()
+  // remove duplicates from the list
+  // TODO: investigate why is useFetch triggering twice
+  pagedItems.value = [
+    pagedItems.value,
+    items.value.filter((item) => !pagedItems.value.some((pagedItem) => pagedItem.id === item.id)),
+  ].flat()
 })
 
 onMounted(async () => {
