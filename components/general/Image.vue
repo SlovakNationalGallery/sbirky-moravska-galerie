@@ -1,7 +1,7 @@
 <template>
   <img
     ref="target"
-    class="image block w-full transition-opacity"
+    class="image block w-full transition-opacity ease-in-out pointer-events-none"
     :alt="alt"
     :title="title"
     :src="isLoaded || disableLazy ? url : ''"
@@ -49,10 +49,3 @@ defineExpose({
   isLoaded,
 })
 </script>
-
-<style scoped>
-.image {
-  transition: opacity 0.5s ease-in-out;
-  pointer-events: none;
-}
-</style>

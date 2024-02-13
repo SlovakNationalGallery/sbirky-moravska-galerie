@@ -26,7 +26,7 @@
         <Image v-else :url="item.image" />
       </div>
 
-      <div>
+      <div class="mt-10 lg:mt-0">
         <div class="flex flex-col gap-1">
           <div
             v-if="item.content.dating"
@@ -178,7 +178,7 @@ const [itemData, similarData] = await Promise.all([
   }),
   useFetch<{
     data: any[]
-  }>(`api/v1/items/${id}/similar`, {
+  }>(`${Item.endpoint}/${id}/similar`, {
     baseURL: nuxtConfig.public.APP_URL,
     params: {
       size: 9,

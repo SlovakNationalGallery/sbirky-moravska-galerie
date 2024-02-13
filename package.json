@@ -38,7 +38,7 @@
     "@vueuse/core": "^10.7.2",
     "@yeger/vue-masonry-wall": "^5.0.5",
     "click-outside-vue3": "^4.0.1",
-    "floating-vue": "^5.2.0",
+    "floating-vue": "^5.2.2",
     "http-proxy-middleware": "^2.0.6",
     "levenshtein-array": "^2.2.10",
     "lodash-ts": "^1.2.7",

@@ -1,6 +1,6 @@
 <template>
-  <VMenu
-    :triggers="['click']"
+  <VDropdown
+    :disabled="isDisabled"
     :distance="6"
     placement="bottom-start"
     @show="isOpen = true"
@@ -8,7 +8,11 @@
   >
     <div
       class="flex transition-all gap-3 py-3 px-4 bg-white serif border-2 cursor-pointer"
-      :class="{ 'border-dark': isOpen, 'border-white': !isOpen }"
+      :class="{
+        'border-dark': isOpen,
+        'border-white': !isOpen,
+        'cursor-not-allowed opacity-70': isDisabled,
+      }"
     >
       <div class="grow font-serif">
         {{ label }}
@@ -21,6 +25,7 @@
         <Icon name="arrow" class="w-3" />
       </div>
     </div>
+
     <template #popper>
       <div
         class="bg-white border-2 border-dark flex flex-col gap-3 p-6 serif overflow-y-scroll max-h-[430px] max-w-[340px]"
@@ -45,7 +50,7 @@
         </div>
       </div>
     </template>
-  </VMenu>
+  </VDropdown>
 </template>
 
 <script setup lang="ts">
@@ -54,25 +59,78 @@ import levenshtein from 'levenshtein-array'
 import { normalize } from '~/utils/string'
 import Search from '~/components/controls/parts/Search.vue'
 import Icon from '~/components/general/Icon.vue'
+import { useControls } from '~/composables/controls'
 
 const props = defineProps<{
+  keyValue: string
   label: string
-  options: { label: string; value: string; count: string }[]
 }>()
 
-const model = defineModel<string[]>({
-  default: [],
+const key = props.keyValue
+const aggKey = `terms[${key}]`
+const filterKey = `filter[${key}][]`
+
+const route = useRoute()
+
+const onToggle = (value: string) => {
+  if (model.value.includes(value)) {
+    model.value = model.value.filter((v) => v !== value)
+  } else {
+    model.value = [...model.value, value]
+  }
+}
+
+defineExpose({
+  selected: computed(() => model.value.map((value) => ({ value, toggle: () => onToggle(value) }))),
+  onReset: () => (model.value = []),
 })
 
-const searchString = ref('')
+const { filters, aggregations, routeParams, options } = await useControls()
+aggregations[aggKey] = key
+
+const routeDefault = route.query[key] as string
+const model = ref(routeDefault ? String(route.query[key]).split('|') : ([] as string[]))
 const isOpen = ref(false)
+const searchString = ref('')
+
+watch(
+  () => model.value,
+  (value) => {
+    if (value.length) {
+      filters[filterKey] = value
+    } else {
+      delete filters[filterKey]
+    }
+
+    if (value.length) {
+      routeParams[key] = value.join('|')
+    } else {
+      delete routeParams[key]
+    }
+  },
+  {
+    immediate: true,
+  }
+)
+
+const isDisabled = computed(() => !sortedOptions.value.length)
 
 const sortedOptions = computed(() => {
-  if (!searchString.value) {
-    return props.options
+  const o = options.value?.[key]?.map((l) => ({
+    label: l.value,
+    value: l.value,
+    count: l.count,
+  }))
+
+  if (!o) {
+    return []
   }
 
-  const filtered = props.options.filter((l) =>
+  if (!searchString.value) {
+    return o
+  }
+
+  const filtered = o.filter((l) =>
     normalize(l.label).includes(normalize(normalize(searchString.value)))
   )
 
@@ -87,12 +145,4 @@ const sortedOptions = computed(() => {
     count: filtered[i].count,
   }))
 })
-
-const onToggle = (value: string) => {
-  if (model.value.includes(value)) {
-    model.value = model.value.filter((v) => v !== value)
-  } else {
-    model.value = [...model.value, value]
-  }
-}
 </script>

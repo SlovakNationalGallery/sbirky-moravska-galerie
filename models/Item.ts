@@ -51,7 +51,7 @@ export interface Hsl {
 }
 export default class Item extends BaseModel {
   public static mapping = {}
-  public static endpoint = '/api/v1/items'
+  public static endpoint = 'api/v1/items'
 
   public declare id: string
   public declare content: IItemContent

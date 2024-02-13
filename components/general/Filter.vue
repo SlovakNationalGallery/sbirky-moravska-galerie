@@ -1,27 +1,19 @@
 <template>
   <div class="flex flex-col items-start gap-4">
     <div class="flex flex-wrap gap-4">
-      <template v-for="item in controls" :key="`control-${item.key}`">
-        <component
-          :is="item.component"
-          v-if="item.component"
-          v-model="models[item.key]"
-          :label="item.label"
-          :options="item.options"
-        />
-      </template>
+      <component
+        :is="item.component"
+        v-for="item in components"
+        ref="componentRef"
+        :key="item.key"
+        :key-value="item.key"
+        :label="item.label"
+      />
     </div>
 
     <div class="flex flex-wrap gap-4">
-      <template v-for="item in booleans" :key="`control-${item.key}`">
-        <component
-          :is="item.component"
-          v-if="item.component"
-          v-model="models[item.key]"
-          :label="item.label"
-          :options="item.options"
-        />
-      </template>
+      <Boolean key-value="has_image" label="Len s obrázkom" :default="true" />
+      <Boolean key-value="has_iip" label="Len so zoomom" />
     </div>
 
     <div class="flex flex-wrap gap-3">
@@ -29,7 +21,7 @@
         v-for="item in selected"
         :key="`${item.key}-${item.value}`"
         class="bg-primary text-white flex items-center py-1 px-3 gap-2 cursor-pointer rounded-3xl"
-        @click="toggle(item.key, item.value)"
+        @click="item.toggle()"
       >
         <div class="text-xs">{{ item.value }}</div>
         <Icon name="close" class="w-3" />
@@ -38,7 +30,7 @@
       <div
         v-if="selected.length"
         class="flex py-1 px-3 gap-2 border-2 border-dark items-center cursor-pointer rounded-3xl"
-        @click="reset"
+        @click="onResetAll"
       >
         <Icon class="w-4 h-4" name="rotate" />
         <div class="text-xs">Zrušiť výber</div>
@@ -48,25 +40,66 @@
 </template>
 
 <script setup lang="ts">
+import { Select, Range } from '#components'
 import Icon from '~/components/general/Icon.vue'
+import { useControls } from '~/composables/controls'
 
-const props = defineProps<{
-  controls: {
-    key: string
-    type: string
-    label: string
-    options?: Record<string, string>
-    component?: string
-  }[]
-  selected: { key: string; value: string }[]
-  toggle: (key: string, value: string) => void
-  reset: () => void
-}>()
+const componentRef = ref<InstanceType<typeof Select>[]>([])
 
-const controls = computed(() => props.controls.filter((item) => item.type !== 'boolean'))
-const booleans = computed(() => props.controls.filter((item) => item.type === 'boolean'))
+const components = [
+  {
+    component: Select,
+    key: 'author',
+    label: 'autor',
+  },
+  {
+    component: Select,
+    key: 'work_type',
+    label: 'výtvarný druh',
+  },
+  {
+    component: Select,
+    key: 'topic',
+    label: 'námět',
+  },
+  {
+    component: Select,
+    key: 'technique',
+    label: 'technika',
+  },
+  {
+    component: Select,
+    key: 'medium',
+    label: 'materiál',
+  },
+  {
+    component: Select,
+    key: 'exhibition',
+    label: 'výstava',
+  },
+  {
+    component: Range,
+    key: {
+      min: 'date_earliest',
+      max: 'date_latest',
+    },
+    label: 'roky',
+  },
+]
 
-const models = defineModel<Record<string, string[]>>({
-  default: {},
+const selected = computed(() => componentRef.value?.map((c) => c.selected).flat() ?? [])
+const { refresh, items } = await useControls()
+
+const onResetAll = () => {
+  componentRef.value.forEach((component) => {
+    component.onReset?.()
+  })
+}
+
+await nextTick()
+refresh()
+
+onUnmounted(() => {
+  items.value = []
 })
 </script>
