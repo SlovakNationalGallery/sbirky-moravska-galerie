@@ -8,8 +8,10 @@ export default {
         sans: ['"Kolektiv Grotesk II", sans-serif'],
       },
       colors: {
-        primary: '#EF4036',
-        dark: '#2B2E31',
+        'primary': '#EF4036',
+        'primary-light': '#FCF2F3',
+        'dark': '#2B2E31',
+        'light': '#D9D9D9',
       },
     },
   },

@@ -13,6 +13,10 @@ const getProxy = () => {
       timeout: 3000,
       target: config.API_URL,
       pathRewrite: { ['^' + prefix]: '' },
+      headers: {
+        'X-Frontend': 'moravska-galerie',
+        'Accept-Language': 'cs',
+      },
     })
   }
 
