@@ -109,6 +109,12 @@ const controlsService = async (
     sortBy,
     sortDirection,
     refresh: () => Promise.all([itemsDataFetch.refresh(), aggDataFetch.refresh()]),
+    reset: () => {
+      items.value = []
+      page.value = 1
+      sortBy.value = options.sortBy
+      sortDirection.value = options.sortDirection
+    },
     options: computed(() => aggDataFetch.data.value),
     isLoading: computed(() => itemsDataFetch.pending.value || aggDataFetch.pending.value),
     total: computed(() => itemsDataFetch.data.value?.total ?? 0),

@@ -88,7 +88,7 @@ const components = [
 ]
 
 const selected = computed(() => componentRef.value?.map((c) => c.selected).flat() ?? [])
-const { refresh, items } = await useControls()
+const { refresh, reset } = await useControls()
 
 const onResetAll = () => {
   componentRef.value.forEach((component) => {
@@ -100,6 +100,6 @@ await nextTick()
 refresh()
 
 onUnmounted(() => {
-  items.value = []
+  reset()
 })
 </script>
