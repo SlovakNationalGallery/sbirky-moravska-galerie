@@ -30,9 +30,19 @@
     --slider-tooltip-distance: 3px;
 }
 
-.slider-target {
-    /*.slider-tooltip {*/
-    /*    display: none;*/
-    /*}*/
+.carousel {
+    .carousel__slide {
+        align-items: flex-start;
+    }
+
+    .carousel__pagination-button{
+        padding: 10px;
+         &::after {
+             content: '';
+             width: 10px;
+             height: 10px;
+             border-radius: 50%;
+         }
+    }
 }
 

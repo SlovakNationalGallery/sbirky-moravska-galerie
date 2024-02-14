@@ -1,5 +1,5 @@
 <template>
-  <div class="flex bg-white border-[1px] border-dark px-3 py-2">
+  <div class="flex bg-white border border-dark px-3 py-2">
     <Icon v-if="prependIcon" name="search" class="w-5 mr-2" />
     <input
       v-bind="attrs"
