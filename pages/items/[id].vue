@@ -15,7 +15,7 @@
     </div>
 
     <div class="block md:grid md:grid-cols-2 gap-6 mt-6">
-      <div>
+      <div @click="zoomImage = item.zoomImage">
         <CarouselWrapper v-if="item.content.images?.length">
           <Image
             v-for="src in item.content.images"
@@ -25,7 +25,22 @@
         </CarouselWrapper>
         <Image v-else :url="item.image" />
       </div>
-
+      <ClientOnly>
+        <TransitionSlide mode="out-in">
+          <div
+            v-if="zoomImage"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
+            @click="zoomImage = null"
+          >
+            <Icon
+              name="close"
+              class="absolute top-3 right-3 bg-white w-6 rounded"
+              @click.stop="zoomImage = null"
+            />
+            <ZoomViever :tile-source="zoomImage" />
+          </div>
+        </TransitionSlide>
+      </ClientOnly>
       <div class="mt-10 lg:mt-0">
         <div class="flex flex-col gap-1">
           <div
@@ -152,8 +167,8 @@
     <div class="mt-10 text-2xl">
       <h3>Související díla</h3>
       <div class="flex mt-6">
-        <CarouselWrapper class="w-full" :items-to-show="3">
-          <div v-for="similar in similars" :key="similar.id" class="pr-6">
+        <CarouselWrapper class="w-full" :items-to-show="itemsToShow">
+          <div v-for="similar in similars" :key="similar.id" class="md:px-3">
             <ItemCard :item="similar" />
           </div>
         </CarouselWrapper>
@@ -163,14 +178,21 @@
 </template>
 
 <script setup lang="ts">
+import { useWindowSize } from '@vueuse/core'
+import { TransitionSlide } from '@morev/vue-transitions'
+
 import Item from '~/models/Item'
 import ItemCard from '~/components/general/Item.vue'
+import ZoomViever from '~/components/general/ZoomViever.vue'
 import CarouselWrapper from '~/components/general/CarouselWrapper.vue'
 import Image from '~/components/general/Image.vue'
+import Icon from '~/components/general/Icon.vue'
 
 const route = useRoute()
 const id = route.params.id as string
 const nuxtConfig = useRuntimeConfig()
+const { width } = useWindowSize()
+const zoomImage = ref<null | string>(null)
 
 const [itemData, similarData] = await Promise.all([
   useFetch<any>(`${Item.endpoint}/${id}`, {
@@ -189,4 +211,6 @@ const [itemData, similarData] = await Promise.all([
 const item = computed(() => new Item(itemData.data.value))
 
 const similars = computed(() => similarData.data.value?.data.map((item) => new Item(item)) ?? [])
+
+const itemsToShow = computed(() => (width.value < 768 ? 1 : width.value < 1024 ? 2 : 3))
 </script>
