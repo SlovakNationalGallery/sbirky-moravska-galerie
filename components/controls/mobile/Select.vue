@@ -1,57 +1,23 @@
 <template>
-  <VDropdown
-    class="shrink-0"
-    :disabled="isDisabled"
-    :distance="6"
-    placement="bottom-start"
-    @show="isOpen = true"
-    @hide="isOpen = false"
-  >
+  <div class="flex flex-col gap-3 serif">
+    <Search v-model="searchString" />
     <div
-      class="flex transition-all gap-3 py-2 md:py-3 px-3 md:px-4 bg-white serif border-2 cursor-pointer"
-      :class="{
-        'border-dark': isOpen,
-        'border-white': !isOpen,
-        'cursor-not-allowed opacity-70': isDisabled,
-      }"
+      v-for="option in sortedOptions"
+      :key="option.value"
+      class="flex items-center gap-2 cursor-pointer"
+      @click="onToggle(option.value)"
     >
-      <div class="grow font-serif">
-        {{ label }}
-        <span v-if="model.length" class="font-sans font-bold">({{ model.length }})</span>
-      </div>
       <div
-        :class="{ 'rotate-180 text-primary': isOpen }"
-        class="transition-all duration-300 ease-out flex"
+        class="text-primary w-6 h-6 border flex items-center transition-all"
+        :class="{ 'bg-primary-light border-primary': model.includes(option.value) }"
       >
-        <Icon name="arrow" class="w-3" />
+        <Icon v-if="model.includes(option.value)" class="text-primary w-8 h-8" name="check" />
+      </div>
+      <div>
+        {{ option.label }} <span class="font-sans font-bold">({{ option.count }})</span>
       </div>
     </div>
-
-    <template #popper>
-      <div
-        class="bg-white border-2 border-dark flex flex-col gap-3 p-6 serif overflow-y-scroll max-h-[430px] max-w-[340px]"
-      >
-        <Search v-model="searchString" />
-
-        <div
-          v-for="option in sortedOptions"
-          :key="option.value"
-          class="flex items-center gap-2 cursor-pointer"
-          @click="onToggle(option.value)"
-        >
-          <div
-            class="text-primary w-6 h-6 border flex items-center transition-all"
-            :class="{ 'bg-primary-light border-primary': model.includes(option.value) }"
-          >
-            <Icon v-if="model.includes(option.value)" class="text-primary w-8 h-8" name="check" />
-          </div>
-          <div>
-            {{ option.label }} <span class="font-sans font-bold">({{ option.count }})</span>
-          </div>
-        </div>
-      </div>
-    </template>
-  </VDropdown>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -80,22 +46,19 @@ const onToggle = (value: string) => {
   }
 }
 
-defineExpose({
-  selected: computed(() => model.value.map((value) => ({ value, toggle: () => onToggle(value) }))),
-  onReset: () => (model.value = []),
-})
-
 const { filters, aggregations, routeParams, options } = await useControls()
 aggregations[aggKey] = key
 
 const routeDefault = route.query[key] as string
 const model = ref(routeDefault ? String(route.query[key]).split('|') : ([] as string[]))
-const isOpen = ref(false)
 const searchString = ref('')
+const selected = defineModel<number>()
 
 watch(
   () => model.value,
   (value) => {
+    selected.value = value.length
+
     if (value.length) {
       filters[filterKey] = value
     } else {
@@ -112,8 +75,6 @@ watch(
     immediate: true,
   }
 )
-
-const isDisabled = computed(() => !sortedOptions.value.length)
 
 const sortedOptions = computed(() => {
   const o = options.value?.[key]?.map((l) => ({

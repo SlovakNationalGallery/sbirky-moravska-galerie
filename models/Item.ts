@@ -74,6 +74,10 @@ export default class Item extends BaseModel {
     )
   }
 
+  public get zoomImage() {
+    return 'https://img.webumenia.sk/zoom/?path=%2FSNGFOTO%2FX800%2FSNG--UP-DK_701--1_6--2020_06_04--L2_WEB.jp2.dzi'
+  }
+
   public get previewImages() {
     return this.content.images.map(
       (image) => `https://img.webumenia.sk/preview/?path=${image}&size=800`

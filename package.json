@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.10.1",
+    "@types/openseadragon": "^3.0.10",
     "@typescript-eslint/eslint-plugin": "^6.1.0",
     "@typescript-eslint/parser": "^6.1.0",
     "@vue/cli-plugin-eslint": "^5.0.8",
@@ -42,6 +43,7 @@
     "levenshtein-array": "^2.2.10",
     "lodash-ts": "^1.2.7",
     "nitropack": "npm:nitropack-nightly@latest",
+    "openseadragon": "^4.1.0",
     "qs": "^6.11.2",
     "vue3-carousel-nuxt": "^1.1.0",
     "vue3-popper": "^1.5.0"
