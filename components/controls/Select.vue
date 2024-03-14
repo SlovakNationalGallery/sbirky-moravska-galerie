@@ -61,11 +61,11 @@ import Icon from '~/components/general/Icon.vue'
 import { useControls } from '~/composables/controls'
 
 const props = defineProps<{
-  keyValue: string
+  name: string
   label: string
 }>()
 
-const key = props.keyValue
+const key = props.name
 const aggKey = `terms[${key}]`
 const filterKey = `filter[${key}][]`
 

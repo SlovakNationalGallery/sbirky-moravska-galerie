@@ -6,7 +6,7 @@
         }
         .v-popper__inner {
 
-            @apply bg-transparent text-inherit shadow-[0 10px 18px 0 rgba(0, 0, 0, 0.10)] border-0 rounded-none;
+            @apply bg-transparent text-inherit shadow-[0_10px_18px_0_rgba(0,0,0,0.10)] border-0 rounded-none;
         }
     }
 }

@@ -6,14 +6,14 @@
         v-for="item in components"
         ref="componentRef"
         :key="item.key"
-        :key-value="item.key"
+        :name="item.key"
         :label="item.label"
       />
     </div>
 
     <div class="flex flex-wrap gap-4">
-      <Boolean key-value="has_image" label="Len s obrázkom" :default="true" />
-      <Boolean key-value="has_iip" label="Len so zoomom" />
+      <Boolean name="has_image" label="Len s obrázkom" :default="true" />
+      <Boolean name="has_iip" label="Len so zoomom" />
     </div>
 
     <div class="flex flex-wrap gap-3">
