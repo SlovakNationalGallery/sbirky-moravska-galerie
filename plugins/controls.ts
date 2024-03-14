@@ -72,6 +72,12 @@ const controlsService = async (
     }),
   ])
 
+  const hasFilters = computed(() => {
+    return Object.keys(filters).some(
+      (key) => Array.isArray(filters[key]) && filters[key].length > 0
+    )
+  })
+
   watchDebounced(
     routeParams,
     () => {
@@ -107,6 +113,7 @@ const controlsService = async (
     aggregations,
     routeParams,
     sortBy,
+    hasFilters,
     sortDirection,
     refresh: () => Promise.all([itemsDataFetch.refresh(), aggDataFetch.refresh()]),
     reset: () => {
