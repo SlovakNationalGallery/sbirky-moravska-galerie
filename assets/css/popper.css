@@ -1,14 +1,12 @@
 .v-popper__popper {
     &.v-popper--theme-dropdown {
         .v-popper__arrow-container {
-            display: none;
+
+            @apply hidden;
         }
         .v-popper__inner {
-            border-radius: 0;
-            border: 0;
-            background: transparent;
-            color: inherit;
-            box-shadow: 0 10px 18px 0 rgba(0, 0, 0, 0.10);
+
+            @apply bg-transparent text-inherit shadow-[0 10px 18px 0 rgba(0, 0, 0, 0.10)] border-0 rounded-none;
         }
     }
 }

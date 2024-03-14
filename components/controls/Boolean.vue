@@ -16,7 +16,7 @@ import { useControls } from '~/composables/controls'
 
 const props = withDefaults(
   defineProps<{
-    keyValue: string
+    name: string
     label: string
     default?: boolean
   }>(),
@@ -25,7 +25,7 @@ const props = withDefaults(
   }
 )
 
-const key = props.keyValue
+const key = props.name
 const aggKey = `terms[${key}]`
 const filterKey = `filter[${key}]`
 
