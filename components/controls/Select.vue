@@ -1,5 +1,6 @@
 <template>
   <VDropdown
+    class="shrink-0"
     :disabled="isDisabled"
     :distance="6"
     placement="bottom-start"
@@ -7,7 +8,7 @@
     @hide="isOpen = false"
   >
     <div
-      class="flex transition-all gap-3 py-3 px-4 bg-white serif border-2 cursor-pointer"
+      class="flex transition-all gap-3 py-2 md:py-3 px-3 md:px-4 bg-white serif border-2 cursor-pointer"
       :class="{
         'border-dark': isOpen,
         'border-white': !isOpen,

@@ -1,7 +1,5 @@
 <template>
   <div class="flex flex-col gap-3 items-center">
-    <Filter class="w-full" />
-
     <div class="w-full my-4 flex">
       <div class="flex-grow">
         <span class="font-bold">{{ total }}</span> děl
@@ -27,7 +25,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import Filter from '~/components/general/Filter.vue'
 import Item from '~/components/general/Item.vue'
 import Sort from '~/components/general/Sort.vue'
 import Pager from '~/components/general/Pager.vue'
