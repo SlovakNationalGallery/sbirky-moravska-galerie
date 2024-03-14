@@ -1,6 +1,6 @@
 <template>
-  <div class="flex gap-3 cursor-pointer" @click="onToggle">
-    <input v-model="model" type="checkbox" />
+  <div class="flex gap-3 cursor-pointer items-center" @click="onToggle">
+    <input v-model="model" type="checkbox" class="text-primary p-3" />
 
     <div>{{ label }}</div>
   </div>
