@@ -1,17 +1,12 @@
 <template>
   <div class="flex gap-3 cursor-pointer" @click="onToggle">
-    <div
-      class="text-primary w-6 h-6 border border-black flex items-center transition-all"
-      :class="{ 'bg-primary-light border-primary': model }"
-    >
-      <Icon v-if="model" class="text-primary w-8 h-8" name="check" />
-    </div>
+    <input v-model="model" type="checkbox" />
+
     <div>{{ label }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/general/Icon.vue'
 import { useControls } from '~/composables/controls'
 
 const props = withDefaults(
