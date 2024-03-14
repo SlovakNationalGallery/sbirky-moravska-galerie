@@ -39,7 +39,7 @@
           @click="onToggle(option.value)"
         >
           <div
-            class="text-primary w-6 h-6 border-[1px] flex items-center transition-all"
+            class="text-primary w-6 h-6 border flex items-center transition-all"
             :class="{ 'bg-primary-light border-primary': model.includes(option.value) }"
           >
             <Icon v-if="model.includes(option.value)" class="text-primary w-8 h-8" name="check" />
@@ -56,7 +56,6 @@
 <script setup lang="ts">
 import levenshtein from 'levenshtein-array'
 
-import { normalize } from '~/utils/string'
 import Search from '~/components/controls/parts/Search.vue'
 import Icon from '~/components/general/Icon.vue'
 import { useControls } from '~/composables/controls'
@@ -128,6 +127,13 @@ const sortedOptions = computed(() => {
 
   if (!searchString.value) {
     return o
+  }
+
+  function normalize(string: string): string {
+    return string
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
   }
 
   const filtered = o.filter((l) =>

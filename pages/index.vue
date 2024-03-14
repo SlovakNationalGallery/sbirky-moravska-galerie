@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import Filter from '~/components/general/Filter.vue'
 import Item from '~/components/general/Item.vue'
-import Sort from '~/pages/Sort.vue'
+import Sort from '~/components/general/Sort.vue'
 import Pager from '~/components/general/Pager.vue'
 import { useControls } from '~/composables/controls'
 
