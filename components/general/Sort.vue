@@ -8,19 +8,21 @@
 <script lang="ts" setup>
 import Dropdown from '~/components/general/Dropdown.vue'
 
-const sortBy = defineModel<string>('sortBy')
-const sortDirection = defineModel<string>('sortDirection')
+const sortBy = defineModel<string | null>('sortBy')
+const sortDirection = defineModel<string | null>('sortDirection')
 
 const sortOptions = [
-  { label: 'poslední změny', value: 'updated_at', direction: 'desc' },
+  { label: 'relevance', value: null, direction: null },
   { label: 'data přidání', value: 'created_at', direction: 'asc' },
   { label: 'názvu', value: 'title', direction: 'asc' },
-  { label: 'datování', value: 'date_earliest', direction: 'asc' },
+  { label: 'datování - nejstarší', value: 'date_earliest', direction: 'asc' },
+  { label: 'datování - najnovejši', value: 'date_earliest', direction: 'desc' },
   { label: 'počtu zobrazení', value: 'view_count', direction: 'desc' },
   { label: 'náhodně', value: 'random', direction: 'asc' },
+  { label: 'poslední změny', value: 'updated_at', direction: 'desc' },
 ] as const
 
-const model = ref(sortOptions[0].value)
+const model = ref(sortOptions.find((option) => option.value === sortBy.value) || null)
 
 const onUpdate = (value: string) => {
   const option = sortOptions.find((option) => option.value === value)
