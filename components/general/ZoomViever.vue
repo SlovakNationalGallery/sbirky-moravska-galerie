@@ -24,7 +24,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   if (viewer.value) {
     viewer.value.destroy()
-    viewer.value
   }
 })
 
