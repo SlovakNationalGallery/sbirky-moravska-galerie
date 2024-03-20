@@ -4,8 +4,8 @@ export const ControlsSymbol: InjectionKey<ReturnType<typeof controlsService>> = 
 
 import Item from '~/models/Item'
 interface IFilterConfig {
-  sortBy: string
-  sortDirection?: 'asc' | 'desc'
+  sortBy: string | null
+  sortDirection?: 'asc' | 'desc' | null
   perPage: number
 }
 
@@ -18,8 +18,8 @@ interface Response {
 
 const controlsService = async (
   options: IFilterConfig = {
-    sortBy: 'updated_at',
-    sortDirection: 'asc',
+    sortBy: null,
+    sortDirection: null,
     perPage: 12,
   }
 ) => {
@@ -33,18 +33,21 @@ const controlsService = async (
   })
 
   const page = ref(route.query.page ? Number(route.query.page) : 1)
-  const sortBy = ref(route.query.sortBy || options.sortBy)
-  const sortDirection = ref(route.query.sortDirection || options.sortDirection)
+  const sortBy = ref(String(route.query.sortBy) || options.sortBy)
+  const sortDirection = ref(String(route.query.sortDirection) || options.sortDirection)
 
   const items = ref<any[]>([])
 
   const aggregationQuery = computed(() => ({ ...filtersQuery.value, ...aggregations }))
 
   const filtersQuery = computed(() => {
-    const query = {
+    const query: Record<string, number | string> = {
       page: page.value,
       size: options.perPage,
-      [`sort[${sortBy.value}]`]: sortDirection.value,
+    }
+
+    if (sortBy.value && sortDirection.value) {
+      query[`sort[${sortBy.value}]`] = sortDirection.value
     }
 
     return {

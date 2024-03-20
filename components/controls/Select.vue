@@ -62,11 +62,11 @@ import Icon from '~/components/general/Icon.vue'
 import { useControls } from '~/composables/controls'
 
 const props = defineProps<{
-  keyValue: string
+  name: string
   label: string
 }>()
 
-const key = props.keyValue
+const key = props.name
 const aggKey = `terms[${key}]`
 const filterKey = `filter[${key}][]`
 
@@ -130,7 +130,7 @@ const sortedOptions = computed(() => {
     return o
   }
 
-  function normalize(string: string): string {
+  function removeAccents(string: string): string {
     return string
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
@@ -138,7 +138,7 @@ const sortedOptions = computed(() => {
   }
 
   const filtered = o.filter((l) =>
-    normalize(l.label).includes(normalize(normalize(searchString.value)))
+    removeAccents(l.label).includes(removeAccents(removeAccents(searchString.value)))
   )
 
   const sorted = levenshtein(

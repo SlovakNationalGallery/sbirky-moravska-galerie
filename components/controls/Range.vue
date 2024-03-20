@@ -45,13 +45,13 @@ import { useControls } from '~/composables/controls'
 
 const props = defineProps<{
   label: string
-  keyValue: { min: string; max: string }
+  name: { min: string; max: string }
 }>()
 
-const keyMin = props.keyValue.min
+const keyMin = props.name.min
 const aggKeyMin = `min[${keyMin}]`
 const filterKeyMin = `filter[${keyMin}][gte]`
-const keyMax = props.keyValue.max
+const keyMax = props.name.max
 const aggKeyMax = `max[${keyMax}]`
 const filterKeyMax = `filter[${keyMax}][lte]`
 

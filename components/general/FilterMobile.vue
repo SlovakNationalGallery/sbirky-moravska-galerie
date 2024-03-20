@@ -44,8 +44,8 @@
               <Icon name="arrow" class="w-3 -rotate-90" />
             </div>
             <div class="flex flex-col p-6 py-6 gap-6">
-              <Boolean key-value="has_image" label="Len s obrázkom" :default="true" />
-              <Boolean key-value="has_iip" label="Len so zoomom" />
+              <Boolean name="has_image" label="Len s obrázkom" :default="true" />
+              <Boolean name="has_iip" label="Len so zoomom" />
             </div>
           </div>
           <div v-else class="px-6">
@@ -54,7 +54,7 @@
               v-if="selectedFilter"
               :key="selectedFilter.key"
               v-model="selected[selectedFilter.key]"
-              :key-value="selectedFilter.key"
+              :name="selectedFilter.key"
               :label="selectedFilter.label"
             />
           </div>

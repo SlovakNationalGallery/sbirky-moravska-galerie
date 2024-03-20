@@ -1,6 +1,6 @@
 <template>
   <button
-    v-if="lastPage > model"
+    v-if="lastPage > page"
     ref="target"
     type="button"
     class="inline-flex px-6 py-4 uppercase w-auto items-center text-md bg-dark text-white"
@@ -25,7 +25,7 @@ defineProps<{
   lastPage: number
 }>()
 
-const model = defineModel<number>({
+const page = defineModel<number>({
   default: 1,
 })
 
@@ -33,13 +33,13 @@ const target = ref(null)
 const isPagerEnabled = ref(false)
 
 const onClick = () => {
-  model.value += 1
+  page.value += 1
   isPagerEnabled.value = true
 }
 
 const { stop } = useIntersectionObserver(target, ([{ isIntersecting }]) => {
   if (isIntersecting && isPagerEnabled.value) {
-    model.value += 1
+    page.value += 1
   }
 })
 

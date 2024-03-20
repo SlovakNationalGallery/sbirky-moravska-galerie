@@ -7,11 +7,11 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "deploy-firebase": "NITRO_PRESET=firebase npm run build && firebase deploy --only functions:server,hosting"
+    "postinstall": "nuxt prepare"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.10.1",
+    "@tailwindcss/forms": "^0.5.7",
     "@types/openseadragon": "^3.0.10",
     "@typescript-eslint/eslint-plugin": "^6.1.0",
     "@typescript-eslint/parser": "^6.1.0",

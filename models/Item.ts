@@ -74,8 +74,20 @@ export default class Item extends BaseModel {
     )
   }
 
-  public get zoomImage() {
-    return 'https://img.webumenia.sk/zoom/?path=%2FSNGFOTO%2FX800%2FSNG--UP-DK_701--1_6--2020_06_04--L2_WEB.jp2.dzi'
+  public get tileSources() {
+    return [
+      'https://img.webumenia.sk/zoom/?path=%2FSNGZV%2FX8400%2FSNG--K_8328--1_1--_2015_03_03_--L2_WEB.jp2.dzi',
+      'https://img.webumenia.sk/zoom/?path=%2FSNGZV%2FX8400%2FSNG--K_8329--1_1--_2015_03_03_--L2_WEB.jp2.dzi',
+      'https://img.webumenia.sk/zoom/?path=%2FSNGZV%2FX8400%2FSNG--K_8330--1_1--_2015_03_03_--L2_WEB.jp2.dzi',
+    ]
+  }
+
+  public get thumbnails() {
+    return [
+      'https://img.webumenia.sk/zoom/?path=%2FSNGZV%2FX8400%2FSNG--K_8328--1_1--_2015_03_03_--L2_WEB.jp2_files/0/0_0.jpg',
+      'https://img.webumenia.sk/zoom/?path=%2FSNGZV%2FX8400%2FSNG--K_8329--1_1--_2015_03_03_--L2_WEB.jp2_files/0/0_0.jpg',
+      'https://img.webumenia.sk/zoom/?path=%2FSNGZV%2FX8400%2FSNG--K_8330--1_1--_2015_03_03_--L2_WEB.jp2_files/0/0_0.jpg',
+    ]
   }
 
   public get previewImages() {
