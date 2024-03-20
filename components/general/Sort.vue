@@ -8,15 +8,8 @@
 <script lang="ts" setup>
 import Dropdown from '~/components/general/Dropdown.vue'
 
-const { sortBy, sortDirection } = defineProps<{
-  sortBy: string
-  sortDirection: 'asc' | 'desc'
-}>()
-
-const emit = defineEmits<{
-  [update: sortBy]: string
-  [update: sortDirection]: 'asc' | 'desc'
-}>()
+const sortBy = defineModel<string>('sortBy')
+const sortDirection = defineModel<string>('sortDirection')
 
 const sortOptions = [
   { label: 'poslední změny', value: 'updated_at', direction: 'desc' },
@@ -33,8 +26,8 @@ const onUpdate = (value: string) => {
   const option = sortOptions.find((option) => option.value === value)
 
   if (option) {
-    emit('update:sortBy', option.value)
-    emit('update:sortDirection', option.direction)
+    sortBy.value = option.value
+    sortDirection.value = option.direction
   }
 }
 </script>
