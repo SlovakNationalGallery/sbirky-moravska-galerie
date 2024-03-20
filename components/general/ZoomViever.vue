@@ -9,8 +9,8 @@ const props = defineProps<{
   tileSource: string
 }>()
 
+const zoomPerClick = 2
 const viewer = ref<OpenSeadragon.Viewer | null>(null)
-//TODO: navigation for multiple images
 
 onMounted(() => {
   viewer.value = OpenSeaDragon({
@@ -24,6 +24,21 @@ onMounted(() => {
 onBeforeUnmount(() => {
   if (viewer.value) {
     viewer.value.destroy()
+    viewer.value
   }
+})
+
+defineExpose({
+  zoomBy: (dir: 1 | -1) => {
+    if (viewer.value) {
+      if (dir === 1) {
+        viewer.value.viewport.zoomBy(zoomPerClick)
+      } else {
+        viewer.value.viewport.zoomBy(1 / zoomPerClick)
+      }
+
+      viewer.value.viewport.applyConstraints()
+    }
+  },
 })
 </script>
