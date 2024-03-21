@@ -17,7 +17,7 @@ host('test')
 
 task('build', function () {
     cd('{{release_path}}');
-    run('{{bin/npm}} install');
+    run('{{bin/npm}} ci');
     run('{{bin/npm}} run build');
 });
 
