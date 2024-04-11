@@ -1,7 +1,7 @@
 <template>
   <img
     ref="target"
-    class="image block w-full transition-opacity ease-in-out pointer-events-none"
+    class="image block transition-opacity ease-in-out pointer-events-none"
     :alt="alt"
     :title="title"
     :src="isLoaded || disableLazy ? url : ''"

@@ -12,7 +12,7 @@
       :class="{
         'border-dark': isOpen,
         'border-white': !isOpen,
-        'cursor-not-allowed opacity-70': isDisabled,
+        'cursor-not-allowed opacity-40': isDisabled,
       }"
     >
       <div class="grow font-serif">

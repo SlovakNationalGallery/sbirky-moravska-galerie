@@ -34,6 +34,16 @@
           <Icon class="w-4 h-4" name="rotate" />
           <div class="text-xs">Zrušiť výber</div>
         </div>
+
+        <div
+          v-for="item in selected"
+          :key="`${item.key}-${item.value}`"
+          class="bg-primary text-white flex items-center py-1 px-3 gap-2 cursor-pointer rounded-3xl"
+          @click="item.toggle()"
+        >
+          <div class="text-xs">{{ item.value }}</div>
+          <Icon name="close" class="w-3" />
+        </div>
       </div>
     </div>
     <FilterMobile

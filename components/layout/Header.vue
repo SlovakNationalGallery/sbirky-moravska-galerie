@@ -7,12 +7,33 @@
           <div><img class="max-w-[66%] md:max-w-full" :src="Title" alt="Sbírky on-line" /></div>
         </NuxtLink>
         <div class="grow"></div>
-        <div class="flex gap-3">
-          <NuxtLink to="/" class="text-white uppercase text-xl">Díla</NuxtLink>
-          <NuxtLink to="/collections" class="text-white uppercase text-xl border-b border-white"
+        <div class="flex gap-4 mb-1">
+          <NuxtLink
+            to="/"
+            class="uppercase text-xl border-b hover:border-transparent"
+            :class="
+              route.path === '/' || route.fullPath.startsWith('/items')
+                ? 'border-transparent text-light'
+                : 'border-white text-white'
+            "
+            >Díla</NuxtLink
+          >
+          <NuxtLink
+            to="/collections"
+            class="uppercase text-xl border-b hover:border-transparent"
+            :class="
+              route.path === '/collections'
+                ? 'border-transparent text-light'
+                : 'border-white text-white'
+            "
             >Kolekce</NuxtLink
           >
-          <NuxtLink to="/about" class="text-white uppercase text-xl border-b border-white"
+          <NuxtLink
+            to="/about"
+            class="uppercase text-xl border-b hover:border-transparent"
+            :class="
+              route.path === '/about' ? 'border-transparent text-light' : 'border-white text-white'
+            "
             >Info</NuxtLink
           >
         </div>
@@ -21,7 +42,11 @@
       <SearchBar class="mt-4 md:mt-8" />
 
       <TransitionExpand>
-        <Image v-if="isFrontpage" url="/placeholder.png" class="aspect-[9/4] mt-8 object-cover" />
+        <Image
+          v-if="isFrontpage"
+          url="/placeholder.png"
+          class="max-h-[400px] w-full mt-8 object-cover"
+        />
       </TransitionExpand>
     </div>
   </header>

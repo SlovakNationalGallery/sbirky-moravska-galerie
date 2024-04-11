@@ -21,6 +21,7 @@
             v-for="src in item.content.images"
             :key="src"
             :url="`https://img.webumenia.sk/preview/?path=${src}&size=800`"
+            class="max-h-[90vh] w-auto"
           />
         </CarouselWrapper>
         <Image v-else :url="item.image" />
