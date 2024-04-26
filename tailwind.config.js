@@ -12,6 +12,7 @@ export default {
         'primary-light': '#FCF2F3',
         'dark': '#2B2E31',
         'light': '#D9D9D9',
+        'yellow': '#FFF200',
       },
     },
   },

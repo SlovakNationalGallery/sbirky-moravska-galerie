@@ -42,7 +42,7 @@
       <SearchBar class="mt-4 md:mt-8" />
 
       <TransitionExpand>
-        <FeaturedCollection v-if="isFrontpage" class="max-h-[400px] w-full mt-8 object-cover" />
+        <FeaturedCollection v-if="isFrontpage" class="mt-8" />
       </TransitionExpand>
     </div>
   </header>
