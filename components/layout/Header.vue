@@ -42,11 +42,7 @@
       <SearchBar class="mt-4 md:mt-8" />
 
       <TransitionExpand>
-        <Image
-          v-if="isFrontpage"
-          url="/placeholder.png"
-          class="max-h-[400px] w-full mt-8 object-cover"
-        />
+        <FeaturedCollection v-if="isFrontpage" class="max-h-[400px] w-full mt-8 object-cover" />
       </TransitionExpand>
     </div>
   </header>
@@ -56,7 +52,7 @@
 import Logo from '~/assets/svg/logo.svg'
 import Title from '~/assets/svg/title.svg'
 import SearchBar from '~/components/general/SearchBar.vue'
-import Image from '~/components/general/Image.vue'
+import FeaturedCollection from '~/components/general/FeaturedCollection.vue'
 
 const route = useRoute()
 
