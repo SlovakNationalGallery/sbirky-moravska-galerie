@@ -56,8 +56,8 @@ export default class Item extends BaseModel {
     hsl: z.array(Item.Hsl),
     authors_formatted: z.array(z.string()).optional(),
     exhibition: z.string().nullable().optional(),
-    inscription: z.array(z.string()).optional(),
-    acquisition_date: z.string().optional(),
+    inscription: z.array(z.string()).nullable().optional(),
+    acquisition_date: z.string().nullable().optional(),
   })
 
   constructor(data: Item) {
