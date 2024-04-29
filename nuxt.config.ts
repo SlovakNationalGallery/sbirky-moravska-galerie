@@ -21,7 +21,6 @@ export default defineNuxtConfig({
   components: {
     dirs: ['@/components/controls'],
   },
-  css: ['~/assets/css/slider.css', '~/assets/css/popper.css'],
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
   },
