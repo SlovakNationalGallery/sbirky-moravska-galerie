@@ -44,6 +44,7 @@
     "nitropack": "npm:nitropack-nightly@latest",
     "qs": "^6.11.2",
     "vue3-carousel-nuxt": "^1.1.0",
-    "vue3-popper": "^1.5.0"
+    "vue3-popper": "^1.5.0",
+    "zod": "^3.23.4"
   }
 }
