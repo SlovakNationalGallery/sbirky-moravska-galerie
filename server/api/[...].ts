@@ -23,12 +23,8 @@ const getProxy = () => {
   return proxy
 }
 
-export default defineEventHandler(async ({ req, res }) => {
-  const url = req.url ?? ''
-  if (!url.startsWith('/api/')) {
-    return
-  }
-
+export default defineEventHandler(async (event) => {
+  const { req, res } = event.node
   const proxy = getProxy() as any
 
   await new Promise<void>((resolve, reject) => {
@@ -40,6 +36,6 @@ export default defineEventHandler(async ({ req, res }) => {
       return resolve()
     }
 
-    return proxy(req as any, res as any, next)
+    return proxy(req, res, next)
   })
 })
