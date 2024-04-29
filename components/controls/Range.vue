@@ -27,8 +27,10 @@
           />
           <input
             v-model="model.max"
-            class="text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-            type="number"
+            class="text-right"
+            type="text"
+            inputmode="numeric"
+            pattern="-?\d*"
           />
         </div>
       </div>
@@ -62,13 +64,6 @@ const onReset = () => {
   isDirty.value = false
 }
 
-defineExpose({
-  selected: computed(() =>
-    isDirty.value ? [{ value: `${model.value.min} – ${model.value.max}`, toggle: onReset }] : []
-  ),
-  onReset,
-})
-
 const { filters, aggregations, routeParams, options } = await useControls()
 aggregations[aggKeyMin] = keyMin
 aggregations[aggKeyMax] = keyMax
@@ -80,6 +75,15 @@ const isDirty = ref(!!routeDefaultMin || !!routeDefaultMax)
 const model = ref({
   min: routeDefaultMin ? routeDefaultMin : options.value?.[keyMin],
   max: routeDefaultMax ? routeDefaultMax : options.value?.[keyMax],
+})
+
+defineExpose({
+  selected: computed(() =>
+    isDirty.value && model.value
+      ? [{ value: `${model.value.min} – ${model.value.max}`, toggle: onReset }]
+      : []
+  ),
+  onReset,
 })
 
 const sliderModel = computed({

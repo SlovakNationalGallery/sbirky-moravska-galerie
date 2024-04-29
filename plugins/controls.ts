@@ -33,8 +33,10 @@ const controlsService = async (
   })
 
   const page = ref(route.query.page ? Number(route.query.page) : 1)
-  const sortBy = ref(route.query.sortBy || options.sortBy)
-  const sortDirection = ref(route.query.sortDirection || options.sortDirection)
+  const sortBy = ref(route.query.sortBy ? String(route.query.sortBy) : options.sortBy)
+  const sortDirection = ref(
+    route.query.sortDirection ? String(route.query.sortDirection) : options.sortDirection
+  )
 
   const items = ref<any[]>([])
 
@@ -113,7 +115,7 @@ const controlsService = async (
       items.value = []
       page.value = 1
       sortBy.value = options.sortBy
-      sortDirection.value = options.sortDirection
+      sortDirection.value = options.sortDirection ?? 'desc'
     },
     options: computed(() => aggDataFetch.data.value),
     isLoading: computed(() => itemsDataFetch.pending.value || aggDataFetch.pending.value),
