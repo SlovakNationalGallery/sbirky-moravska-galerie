@@ -20,11 +20,7 @@
       >
         <Slider v-model="sliderModel" v-bind="{ ...sliderOptions }" @change="isDirty = true" />
         <div v-if="model" class="flex">
-          <input
-            v-model="model.min"
-            class="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-            type="number"
-          />
+          <input v-model="model.min" type="text" inputmode="numeric" pattern="-?\d*" />
           <input
             v-model="model.max"
             class="text-right"

@@ -46,11 +46,7 @@ export default class Item extends BaseModel {
     technique: z.array(z.string()),
     gallery: z.string(),
 
-    place: z.array(z.any()), // Replace z.any() with the correct type when known
-    object_type: z.array(z.any()), // Replace z.any() with the correct type when known
-    credit: z.null(), // Replace with the correct type when known
-    contributor: z.null(), // Replace with the correct type when known
-    additionals: z.null(), // Replace with the correct type when known
+    place: z.array(z.string()),
 
     images: z.array(z.string()),
     hsl: z.array(Item.Hsl),
@@ -61,12 +57,12 @@ export default class Item extends BaseModel {
   })
 
   constructor(data: Item) {
-    try {
-      if (process.env.NODE_ENV === 'development') {
-        Item.Content.parse(data.content)
-      }
-    } catch (error) {
-      console.error('Item content validation failed', error)
+    const parse = Item.Content.safeParse(data.content)
+
+    if (!parse.success) {
+      console.error(parse.error)
+    } else {
+      data.content = parse.data
     }
 
     super(data)

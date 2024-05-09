@@ -133,7 +133,7 @@ const sortedOptions = computed(() => {
   }
 
   const filtered = o.filter((l) =>
-    removeAccents(l.label).includes(removeAccents(removeAccents(searchString.value)))
+    removeAccents(l.label).includes(removeAccents(searchString.value))
   )
 
   const sorted = levenshtein(
