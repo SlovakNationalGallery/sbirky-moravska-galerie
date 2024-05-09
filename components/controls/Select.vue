@@ -66,11 +66,14 @@ const props = defineProps<{
   label: string
 }>()
 
+const route = useRoute()
+
 const key = props.name
 const aggKey = `terms[${key}]`
 const filterKey = `filter[${key}][]`
+const routeDefault = route.query[key] ? String(route.query[key]) : null
 
-const route = useRoute()
+const model = ref(routeDefault ? String(route.query[key]).split('|') : ([] as string[]))
 
 const onToggle = (value: string) => {
   if (model.value.includes(value)) {
@@ -80,16 +83,9 @@ const onToggle = (value: string) => {
   }
 }
 
-defineExpose({
-  selected: computed(() => model.value.map((value) => ({ value, toggle: () => onToggle(value) }))),
-  onReset: () => (model.value = []),
-})
-
 const { filters, aggregations, routeParams, options } = await useControls()
 aggregations[aggKey] = key
 
-const routeDefault = route.query[key] as string
-const model = ref(routeDefault ? String(route.query[key]).split('|') : ([] as string[]))
 const isOpen = ref(false)
 const searchString = ref('')
 
@@ -138,7 +134,7 @@ const sortedOptions = computed(() => {
   }
 
   const filtered = o.filter((l) =>
-    removeAccents(l.label).includes(removeAccents(removeAccents(searchString.value)))
+    removeAccents(l.label).includes(removeAccents(searchString.value))
   )
 
   const sorted = levenshtein(
@@ -151,5 +147,10 @@ const sortedOptions = computed(() => {
     value: filtered[i].value,
     count: filtered[i].count,
   }))
+})
+
+defineExpose({
+  selected: computed(() => model.value.map((value) => ({ value, toggle: () => onToggle(value) }))),
+  onReset: () => (model.value = []),
 })
 </script>

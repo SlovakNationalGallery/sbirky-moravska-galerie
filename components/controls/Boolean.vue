@@ -1,8 +1,8 @@
 <template>
-  <div class="flex gap-3 cursor-pointer items-center" @click="onToggle">
-    <input v-model="model" type="checkbox" />
+  <div class="flex gap-3 cursor-pointer items-center">
+    <input :id="props.name" v-model="model" type="checkbox" class="text-primary p-3" />
 
-    <div>{{ label }}</div>
+    <label :for="props.name">{{ label }}</label>
   </div>
 </template>
 
@@ -49,6 +49,4 @@ watch(
     immediate: true,
   }
 )
-
-const onToggle = () => (model.value = !model.value)
 </script>

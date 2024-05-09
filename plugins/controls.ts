@@ -3,6 +3,7 @@ import { type InjectionKey } from 'vue'
 export const ControlsSymbol: InjectionKey<ReturnType<typeof controlsService>> = Symbol('controls')
 
 import Item from '~/models/Item'
+import { useBaseFetch } from '~/composables/fetch'
 interface IFilterConfig {
   sortBy: string
   sortDirection?: 'asc' | 'desc'
@@ -23,7 +24,6 @@ const controlsService = async (
     perPage: 12,
   }
 ) => {
-  const nuxtConfig = useRuntimeConfig()
   const route = useRoute()
   const router = useRouter()
   const filters = reactive<Record<string, any>>({})
@@ -33,8 +33,10 @@ const controlsService = async (
   })
 
   const page = ref(route.query.page ? Number(route.query.page) : 1)
-  const sortBy = ref(route.query.sortBy || options.sortBy)
-  const sortDirection = ref(route.query.sortDirection || options.sortDirection)
+  const sortBy = ref(route.query.sortBy ? String(route.query.sortBy) : options.sortBy)
+  const sortDirection = ref(
+    route.query.sortDirection ? String(route.query.sortDirection) : options.sortDirection
+  )
 
   const items = ref<any[]>([])
 
@@ -54,18 +56,16 @@ const controlsService = async (
   })
 
   const [itemsDataFetch, aggDataFetch] = await Promise.all([
-    useFetch<Response>('api/v1/items', {
-      baseURL: nuxtConfig.public.APP_URL,
+    useBaseFetch<Response>('api/v1/items', {
       query: filtersQuery,
       watch: [filtersQuery],
-      transform: (response) => ({
+      transform: (response: Response) => ({
         ...response,
         data: response.data.map((data) => new Item(data)),
       }),
       immediate: false,
     }),
-    useFetch<Record<string, { count: number; value: string }[]>>('api/v1/items/aggregations', {
-      baseURL: nuxtConfig.public.APP_URL,
+    useBaseFetch<Record<string, { count: number; value: string }[]>>('api/v1/items/aggregations', {
       query: aggregationQuery,
       watch: [aggregationQuery],
       immediate: false,
@@ -120,7 +120,7 @@ const controlsService = async (
       items.value = []
       page.value = 1
       sortBy.value = options.sortBy
-      sortDirection.value = options.sortDirection
+      sortDirection.value = options.sortDirection ?? 'desc'
     },
     options: computed(() => aggDataFetch.data.value),
     isLoading: computed(() => itemsDataFetch.pending.value || aggDataFetch.pending.value),

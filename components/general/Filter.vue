@@ -15,14 +15,20 @@
       />
     </div>
 
-    <div
-      v-show="width >= 768"
-      class="flex flex-col items-start gap-4 transition-opacity"
-      :class="{ 'opacity-0': !isReady }"
-    >
-      <div class="flex flex-wrap gap-4">
-        <Boolean name="has_image" label="Len s obrázkom" :default="true" />
-        <Boolean name="has_iip" label="Len so zoomom" />
+    <div class="flex flex-wrap gap-4">
+      <Boolean name="has_image" label="Len s obrázkom" :default="true" />
+      <Boolean name="has_iip" label="Len so zoomom" />
+    </div>
+
+    <div class="flex flex-wrap gap-3">
+      <div
+        v-for="item in selected"
+        :key="`${item?.key}-${item?.value}`"
+        class="bg-primary text-white flex items-center py-1 px-3 gap-2 cursor-pointer rounded-3xl"
+        @click="item.toggle()"
+      >
+        <div class="text-xs">{{ item?.value }}</div>
+        <Icon name="close" class="w-3" />
       </div>
 
       <div class="flex flex-wrap gap-3">
@@ -119,8 +125,14 @@ const components = [
   },
 ]
 
-const selected = computed(() => componentRef.value?.map((c) => c.selected).flat() ?? [])
-const { refresh, reset } = await useControls()
+const selected = computed(
+  () =>
+    componentRef.value
+      ?.map((c) => c.selected)
+      .flat()
+      .filter(Boolean) ?? []
+)
+const { reset } = await useControls()
 
 const onToggleMobileMenu = (event: MouseEvent) => {
   if (width.value >= 768) {
@@ -137,12 +149,6 @@ const onResetAll = () => {
     component.onReset?.()
   })
 }
-
-onMounted(async () => {
-  await nextTick()
-  isReady.value = true
-  refresh()
-})
 
 onUnmounted(() => {
   reset()

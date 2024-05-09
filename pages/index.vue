@@ -1,5 +1,9 @@
 <template>
   <div class="flex flex-col gap-3 items-center">
+    <ClientOnly>
+      <Filter class="w-full" />
+    </ClientOnly>
+
     <div class="w-full my-4 flex">
       <div class="flex-grow">
         <span class="font-bold">{{ total }}</span> děl
@@ -13,7 +17,7 @@
         :ssr-columns="3"
         :column-width="300"
         :gap="24"
-        :key-mapper="(item: Item) => item.id"
+        :key-mapper="(item: any) => item.id"
       >
         <template #default="{ item }">
           <Item :key="`item-${item.id}`" :item="item" />

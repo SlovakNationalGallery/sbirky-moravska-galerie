@@ -181,6 +181,7 @@ import ItemCard from '~/components/general/Item.vue'
 import CarouselWrapper from '~/components/general/CarouselWrapper.vue'
 import Image from '~/components/general/Image.vue'
 import ZoomModal from '~/pages/items/ZoomModal.vue'
+import { useBaseFetch } from '~/composables/fetch'
 
 const route = useRoute()
 const id = route.params.id as string
@@ -189,13 +190,10 @@ const { width } = useWindowSize()
 const isZoomOpened = ref<boolean>(false)
 
 const [itemData, similarData] = await Promise.all([
-  useFetch<any>(`${Item.endpoint}/${id}`, {
-    baseURL: nuxtConfig.public.APP_URL,
-  }),
-  useFetch<{
+  useBaseFetch<any>(`${Item.endpoint}/${id}`),
+  useBaseFetch<{
     data: any[]
   }>(`${Item.endpoint}/${id}/similar`, {
-    baseURL: nuxtConfig.public.APP_URL,
     params: {
       size: 9,
     },
