@@ -3,6 +3,7 @@ import { type InjectionKey } from 'vue'
 export const ControlsSymbol: InjectionKey<ReturnType<typeof controlsService>> = Symbol('controls')
 
 import Item from '~/models/Item'
+import { useBaseFetch } from '~/composables/fetch'
 interface IFilterConfig {
   sortBy: string
   sortDirection?: 'asc' | 'desc'
@@ -23,7 +24,6 @@ const controlsService = async (
     perPage: 12,
   }
 ) => {
-  const nuxtConfig = useRuntimeConfig()
   const route = useRoute()
   const router = useRouter()
   const filters = reactive<Record<string, any>>({})
@@ -56,18 +56,16 @@ const controlsService = async (
   })
 
   const [itemsDataFetch, aggDataFetch] = await Promise.all([
-    useFetch<Response>('api/v1/items', {
-      baseURL: nuxtConfig.public.APP_URL,
+    useBaseFetch<Response>('api/v1/items', {
       query: filtersQuery,
       watch: [filtersQuery],
-      transform: (response) => ({
+      transform: (response: Response) => ({
         ...response,
         data: response.data.map((data) => new Item(data)),
       }),
       immediate: false,
     }),
-    useFetch<Record<string, { count: number; value: string }[]>>('api/v1/items/aggregations', {
-      baseURL: nuxtConfig.public.APP_URL,
+    useBaseFetch<Record<string, { count: number; value: string }[]>>('api/v1/items/aggregations', {
       query: aggregationQuery,
       watch: [aggregationQuery],
       immediate: false,

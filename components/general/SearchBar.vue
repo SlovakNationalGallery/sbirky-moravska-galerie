@@ -22,15 +22,14 @@
 import Search from '~/components/controls/parts/Search.vue'
 import Item from '~/models/Item'
 import Image from '~/components/general/Image.vue'
+import { useBaseFetch } from '~/composables/fetch'
 
 const q = ref('')
 const isOpen = ref(false)
 
-const nuxtConfig = useRuntimeConfig()
-const { data } = await useFetch<{
+const { data } = await useBaseFetch<{
   data: any[]
 }>('api/v1/items/suggestions', {
-  baseURL: nuxtConfig.public.APP_URL,
   params: {
     q,
     size: 9,
