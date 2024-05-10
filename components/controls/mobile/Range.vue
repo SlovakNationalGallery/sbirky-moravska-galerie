@@ -1,64 +1,40 @@
 <template>
-  <VDropdown :distance="6" placement="bottom-start" @show="isOpen = true" @hide="isOpen = false">
-    <div
-      class="flex transition-all gap-3 py-2 md:py-3 px-3 md:px-4 bg-white serif border-2 cursor-pointer"
-      :class="{ 'border-dark': isOpen, 'border-white': !isOpen }"
-    >
-      <div class="grow font-serif">
-        {{ label }}
-      </div>
-      <div
-        :class="{ 'rotate-180 text-primary': isOpen }"
-        class="transition-all duration-300 ease-out flex"
-      >
-        <Icon name="arrow" class="w-3" />
-      </div>
+  <div class="flex flex-col gap-3 mx-3 serif max-h-[430px]">
+    <Slider v-model="sliderModel" v-bind="{ ...sliderOptions }" @change="isDirty = true" />
+    <div v-if="model" class="flex">
+      <input
+        v-model="model.min"
+        class="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+        type="number"
+      />
+      <input
+        v-model="model.max"
+        class="text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+        type="number"
+      />
     </div>
-    <template #popper>
-      <div
-        class="bg-white border-2 border-dark flex flex-col gap-3 p-6 serif overflow-y-scroll max-h-[430px] min-w-[340px]"
-      >
-        <Slider v-model="sliderModel" v-bind="{ ...sliderOptions }" @change="isDirty = true" />
-        <div v-if="model" class="flex">
-          <input v-model="model.min" type="text" inputmode="numeric" pattern="-?\d*" />
-          <input
-            v-model="model.max"
-            class="text-right"
-            type="text"
-            inputmode="numeric"
-            pattern="-?\d*"
-          />
-        </div>
-      </div>
-    </template>
-  </VDropdown>
+  </div>
 </template>
 
 <script setup lang="ts">
 import Slider from '@vueform/slider'
 
 import '@vueform/slider/themes/default.css'
-import Icon from '~/components/general/Icon.vue'
 import { useControls } from '~/composables/controls'
 
 const props = defineProps<{
   label: string
-  name: { min: string; max: string }
+  keyValue: { min: string; max: string }
 }>()
 
-const keyMin = props.name.min
+const keyMin = props.keyValue.min
 const aggKeyMin = `min[${keyMin}]`
 const filterKeyMin = `filter[${keyMin}][gte]`
-const keyMax = props.name.max
+const keyMax = props.keyValue.max
 const aggKeyMax = `max[${keyMax}]`
 const filterKeyMax = `filter[${keyMax}][lte]`
 
 const route = useRoute()
-
-const onReset = () => {
-  model.value = { min: options.value?.[keyMin], max: options.value?.[keyMax] }
-  isDirty.value = false
-}
 
 const { filters, aggregations, routeParams, options } = await useControls()
 aggregations[aggKeyMin] = keyMin
@@ -71,15 +47,6 @@ const isDirty = ref(!!routeDefaultMin || !!routeDefaultMax)
 const model = ref({
   min: routeDefaultMin ? routeDefaultMin : options.value?.[keyMin],
   max: routeDefaultMax ? routeDefaultMax : options.value?.[keyMax],
-})
-
-defineExpose({
-  selected: computed(() =>
-    isDirty.value && model.value
-      ? [{ value: `${model.value.min} – ${model.value.max}`, toggle: onReset }]
-      : []
-  ),
-  onReset,
 })
 
 const sliderModel = computed({
@@ -98,8 +65,6 @@ const sliderOptions = computed(() => ({
   max: options.value?.[keyMax],
   tooltips: false,
 }))
-
-const isOpen = ref(false)
 
 watch(options, () => {
   if (!isDirty.value) {

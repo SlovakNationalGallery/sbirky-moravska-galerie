@@ -29,11 +29,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import Filter from '~/components/general/Filter.vue'
 import Item from '~/components/general/Item.vue'
 import Sort from '~/components/general/Sort.vue'
 import Pager from '~/components/general/Pager.vue'
 import { useControls } from '~/composables/controls'
+import Filter from '~/components/general/Filter.vue'
 
 const { items, total, page, lastPage, isLoading, sortBy, sortDirection } = await useControls()
 </script>

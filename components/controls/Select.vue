@@ -1,5 +1,6 @@
 <template>
   <VDropdown
+    class="shrink-0"
     :disabled="isDisabled"
     :distance="6"
     placement="bottom-start"
@@ -7,11 +8,11 @@
     @hide="isOpen = false"
   >
     <div
-      class="flex transition-all gap-3 py-3 px-4 bg-white serif border-2 cursor-pointer"
+      class="flex transition-all gap-3 py-2 md:py-3 px-3 md:px-4 bg-white serif border-2 cursor-pointer"
       :class="{
         'border-dark': isOpen,
         'border-white': !isOpen,
-        'cursor-not-allowed opacity-70': isDisabled,
+        'cursor-not-allowed opacity-40': isDisabled,
       }"
     >
       <div class="grow font-serif">
@@ -65,6 +66,10 @@ const props = defineProps<{
   label: string
 }>()
 
+const emit = defineEmits<{
+  modelUpdate: []
+}>()
+
 const route = useRoute()
 
 const key = props.name
@@ -91,6 +96,8 @@ const searchString = ref('')
 watch(
   () => model.value,
   (value) => {
+    emit('modelUpdate')
+
     if (value.length) {
       filters[filterKey] = value
     } else {
@@ -151,5 +158,7 @@ const sortedOptions = computed(() => {
 defineExpose({
   selected: computed(() => model.value.map((value) => ({ value, toggle: () => onToggle(value) }))),
   onReset: () => (model.value = []),
+  toggle: (value: any) => onToggle(value),
+  name: key,
 })
 </script>

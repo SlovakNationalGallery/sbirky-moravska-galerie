@@ -1,10 +1,22 @@
 <template>
-  <NuxtLink :to="item.link" :class="`transition-opacity  opacity-${isVisible ? 100 : 0}`">
-    <Image ref="imageRef" :url="item.image" :disable-lazy="item.loaded" :style="imageStyle" />
-    <div class="flex mt-4 mb-10">
+  <NuxtLink
+    :to="item.link"
+    class="group"
+    :class="`transition-opacity  opacity-${isVisible ? 100 : 0}`"
+  >
+    <Image
+      ref="imageRef"
+      :url="item.image"
+      :disable-lazy="item.loaded"
+      :style="imageStyle"
+      class="max-h-[90vh] w-auto"
+    />
+    <div class="flex mt-4">
       <div class="flex-grow flex flex-col items-start">
         <div class="font-serif text-lg">{{ item.content.authors_formatted?.join(', ') }}</div>
-        <div class="font-bold text-xl text-left">{{ item.content.title }}</div>
+        <div class="group-hover:underline font-bold text-xl text-left">
+          {{ item.content.title }}
+        </div>
         <div class="font-serif">{{ item.content.dating }}</div>
       </div>
       <Icon name="magnifying" class="w-6 h-6 shrink-0" />

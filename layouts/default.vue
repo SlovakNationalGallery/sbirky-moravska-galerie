@@ -11,4 +11,13 @@
 </template>
 <script setup lang="ts">
 import Header from '~/components/layout/Header.vue'
+import Filter from '~/components/general/Filter.vue'
+
+const route = useRoute()
+const isFrontpage = computed(() => route.name === 'index')
+const isReady = ref(false)
+
+onMounted(() => {
+  isReady.value = true
+})
 </script>

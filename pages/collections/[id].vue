@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center">
     <TransitionExpand>
-      <Image v-if="isReady" url="/placeholder.png" class="aspect-[9/4] mt-8 object-cover" />
+      <Image v-if="isReady" url="/placeholder.png" class="max-h-[400px] w-full mt-8 object-cover" />
     </TransitionExpand>
 
     <div class="max-w-[740px]">

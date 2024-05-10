@@ -15,17 +15,27 @@
     </div>
 
     <div class="block md:grid md:grid-cols-2 gap-6 mt-6">
-      <div>
+      <div @click="isZoomOpened = true">
         <CarouselWrapper v-if="item.content.images?.length">
           <Image
             v-for="src in item.content.images"
             :key="src"
             :url="`https://img.webumenia.sk/preview/?path=${src}&size=800`"
+            class="max-h-[90vh] w-auto"
           />
         </CarouselWrapper>
         <Image v-else :url="item.image" />
       </div>
-
+      <ClientOnly>
+        <TransitionSlide mode="out-in">
+          <ZoomModal
+            :is-open="isZoomOpened"
+            :tile-sources="item.tileSources"
+            :thumbnails="item.thumbnails"
+            @close="isZoomOpened = false"
+          />
+        </TransitionSlide>
+      </ClientOnly>
       <div class="mt-10 lg:mt-0">
         <div class="flex flex-col gap-1">
           <div
@@ -152,8 +162,8 @@
     <div class="mt-10 text-2xl">
       <h3>Související díla</h3>
       <div class="flex mt-6">
-        <CarouselWrapper class="w-full" :items-to-show="3">
-          <div v-for="similar in similars" :key="similar.id" class="pr-6">
+        <CarouselWrapper class="w-full" :items-to-show="itemsToShow">
+          <div v-for="similar in similars" :key="similar.id" class="md:px-3">
             <ItemCard :item="similar" />
           </div>
         </CarouselWrapper>
@@ -163,14 +173,21 @@
 </template>
 
 <script setup lang="ts">
+import { useWindowSize } from '@vueuse/core'
+import { TransitionSlide } from '@morev/vue-transitions'
+
 import Item from '~/models/Item'
 import ItemCard from '~/components/general/Item.vue'
 import CarouselWrapper from '~/components/general/CarouselWrapper.vue'
 import Image from '~/components/general/Image.vue'
+import ZoomModal from '~/pages/items/ZoomModal.vue'
 import { useBaseFetch } from '~/composables/fetch'
 
 const route = useRoute()
 const id = route.params.id as string
+const nuxtConfig = useRuntimeConfig()
+const { width } = useWindowSize()
+const isZoomOpened = ref<boolean>(false)
 
 const [itemData, similarData] = await Promise.all([
   useBaseFetch<any>(`${Item.endpoint}/${id}`),
@@ -186,4 +203,6 @@ const [itemData, similarData] = await Promise.all([
 const item = computed(() => new Item(itemData.data.value))
 
 const similars = computed(() => similarData.data.value?.data.map((item) => new Item(item)) ?? [])
+
+const itemsToShow = computed(() => (width.value < 768 ? 1 : width.value < 1024 ? 2 : 3))
 </script>
