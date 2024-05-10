@@ -16,7 +16,7 @@
         <transition-fade>
           <div
             v-if="index > 0"
-            class="flex items-center justify-center absolute top-[50%] rounded-full w-8 h-8 !bg-gray-400"
+            class="flex items-center justify-center absolute top-[-56px] left-auto right-[50px] md:right-auto md:left-0 md:top-[50%] rounded-full w-8 h-8 !bg-gray-400"
             @click="carousel.prev()"
           >
             <Icon name="arrow-left" class="w-3 h-3" />
@@ -24,7 +24,7 @@
         </transition-fade>
         <div
           v-if="index < items.length - itemsToShow"
-          class="flex items-center justify-center absolute top-[50%] right-0 rounded-full w-8 h-8 !bg-gray-400 !rotate-180"
+          class="flex items-center justify-center absolute top-[-56px] md:top-[50%] right-0 rounded-full w-8 h-8 !bg-gray-400 !rotate-180"
           @click="carousel.next()"
         >
           <Icon name="arrow-left" class="w-3 h-3" />

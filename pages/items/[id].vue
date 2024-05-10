@@ -1,7 +1,7 @@
 <template>
   <div v-if="item">
     <div class="gap-3 flex flex-col leading-tight">
-      <h1 class="text-5xl mt-4">{{ item.content.title }}</h1>
+      <h1 class="text-3xl md:text-5xl mt-4">{{ item.content.title }}</h1>
       <div class="flex flex-wrap gap-3">
         <NuxtLink
           v-for="(author, i) in item.authorsFormatted"
