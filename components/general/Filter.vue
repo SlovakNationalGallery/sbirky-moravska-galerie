@@ -1,9 +1,8 @@
 <template>
   <div class="flex flex-col items-start gap-4">
     <div
-      v-show="width >= 768"
-      class="flex md:flex-wrap gap-4 overflow-x-scroll w-[calc(100%+1rem)] pr-4"
-      @click="onToggleMobileMenu"
+      class="flex md:flex-wrap overflow-hidden gap-4 overflow-x-scroll w-[calc(100%+1rem)] pr-4"
+      :class="{ 'h-0': width < 768 }"
     >
       <component
         :is="item.component"
@@ -15,10 +14,18 @@
       />
     </div>
 
-    <div class="flex flex-wrap gap-4">
+    <div v-show="width >= 768" class="flex flex-wrap gap-4">
       <Boolean name="has_image" label="Len s obrázkom" :default="true" />
       <Boolean name="has_iip" label="Len so zoomom" />
     </div>
+
+    <FilterMobile
+      ref="filterMobileRef"
+      :is-opened="isMobileMenuOpened"
+      :components="components"
+      @toggleMenu="onToggleMobileMenu"
+      @resetAll="onResetAll"
+    />
 
     <div class="flex flex-wrap gap-3">
       <div
@@ -40,24 +47,8 @@
           <Icon class="w-4 h-4" name="rotate" />
           <div class="text-xs">Zrušiť výber</div>
         </div>
-
-        <div
-          v-for="item in selected"
-          :key="`${item.key}-${item.value}`"
-          class="bg-primary text-white flex items-center py-1 px-3 gap-2 cursor-pointer rounded-3xl"
-          @click="item.toggle()"
-        >
-          <div class="text-xs">{{ item.value }}</div>
-          <Icon name="close" class="w-3" />
-        </div>
       </div>
     </div>
-    <FilterMobile
-      :is-opened="isMobileMenuOpened"
-      :components="components"
-      @toggleMenu="onToggleMobileMenu"
-      @resetAll="onResetAll"
-    />
   </div>
 </template>
 
@@ -71,7 +62,6 @@ import Icon from '~/components/general/Icon.vue'
 import { useControls } from '~/composables/controls'
 import FilterMobile from '~/components/general/FilterMobile.vue'
 
-const isReady = ref(false)
 const isMobileMenuOpened = ref(false)
 
 const { width } = useWindowSize()
@@ -125,13 +115,34 @@ const components = [
   },
 ]
 
-const selected = computed(
-  () =>
-    componentRef.value
-      ?.map((c) => c.selected)
-      .flat()
-      .filter(Boolean) ?? []
-)
+// This is workaround, and will be removed once
+// state management is moved from component to composable
+const route = useRoute()
+const selected = computed<any[]>(() => {
+  const options: any[] = []
+
+  Object.keys(route.query).forEach((key) => {
+    if (components.some((c) => c.key === key)) {
+      const items = String(route.query[key]).split('|')
+
+      items.forEach((item) => {
+        options.push({
+          value: item,
+          toggle: () => {
+            componentRef.value.forEach((component) => {
+              if (component.name === key) {
+                component.toggle?.(item)
+              }
+            })
+          },
+        })
+      })
+    }
+  })
+
+  return options
+})
+
 const { reset } = await useControls()
 
 const onToggleMobileMenu = (event: MouseEvent) => {
@@ -144,6 +155,7 @@ const onToggleMobileMenu = (event: MouseEvent) => {
   isMobileMenuOpened.value = !isMobileMenuOpened.value
 }
 
+const filterMobileRef = ref<InstanceType<typeof FilterMobile>>()
 const onResetAll = () => {
   componentRef.value.forEach((component) => {
     component.onReset?.()

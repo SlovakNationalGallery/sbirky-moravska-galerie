@@ -32,11 +32,12 @@ const props = defineProps<{
   label: string
 }>()
 
+const route = useRoute()
+
 const key = props.keyValue
 const aggKey = `terms[${key}]`
 const filterKey = `filter[${key}][]`
-
-const route = useRoute()
+const routeDefault = route.query[key] ? String(route.query[key]) : null
 
 const onToggle = (value: string) => {
   if (model.value.includes(value)) {
@@ -49,7 +50,6 @@ const onToggle = (value: string) => {
 const { filters, aggregations, routeParams, options } = await useControls()
 aggregations[aggKey] = key
 
-const routeDefault = route.query[key] as string
 const model = ref(routeDefault ? String(route.query[key]).split('|') : ([] as string[]))
 const searchString = ref('')
 const selected = defineModel<number>()

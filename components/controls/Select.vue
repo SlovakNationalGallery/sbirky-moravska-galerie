@@ -66,6 +66,10 @@ const props = defineProps<{
   label: string
 }>()
 
+const emit = defineEmits<{
+  modelUpdate: []
+}>()
+
 const route = useRoute()
 
 const key = props.name
@@ -92,6 +96,8 @@ const searchString = ref('')
 watch(
   () => model.value,
   (value) => {
+    emit('modelUpdate')
+
     if (value.length) {
       filters[filterKey] = value
     } else {
@@ -152,5 +158,7 @@ const sortedOptions = computed(() => {
 defineExpose({
   selected: computed(() => model.value.map((value) => ({ value, toggle: () => onToggle(value) }))),
   onReset: () => (model.value = []),
+  toggle: (value: any) => onToggle(value),
+  name: key,
 })
 </script>

@@ -5,7 +5,7 @@
     @click="onCloseMenu"
   >
     <Icon class="w-5 h-5" name="filter" />
-    <span class="uppercase">Celý filter</span>
+    <span class="uppercase">Zobraziť filter</span>
   </div>
 
   <TransitionSlide>
@@ -52,12 +52,13 @@
             <component
               :is="selectedFilter.mobileComponent"
               v-if="selectedFilter"
-              :key="selectedFilter.key"
               v-model="selected[selectedFilter.key]"
+              :key-value="selectedFilter.key"
               :name="selectedFilter.key"
               :label="selectedFilter.label"
             />
           </div>
+          <pre>{{ selected }}aa</pre>
         </TransitionSlide>
       </div>
       <div class="flex absolute inset-0 top-auto bg-white justify-center drop-shadow-2xl py-4 px-6">
@@ -85,6 +86,7 @@ const emit = defineEmits<{
   resetAll: []
 }>()
 
+const route = useRoute()
 const { width } = useWindowSize()
 const submenu = ref<null | string>(null)
 const { total, refresh, hasFilters } = await useControls()
@@ -92,6 +94,17 @@ const { total, refresh, hasFilters } = await useControls()
 const selectedFilter = computed(() => props.components.find((c) => c.label === submenu.value))
 
 const selected = ref<Record<string, number>>({})
+
+const loadFromRoute = () => {
+  selected.value = {}
+  Object.keys(route.query).forEach((key) => {
+    selected.value[key] = String(route.query[key]).split('|').length
+  })
+}
+
+onMounted(() => {
+  loadFromRoute()
+})
 
 const onResetAll = () => {
   selected.value = {}
@@ -108,6 +121,11 @@ watch(
   (value) => {
     value && refresh()
   }
+)
+
+watch(
+  () => props.isOpened,
+  () => loadFromRoute()
 )
 </script>
 
