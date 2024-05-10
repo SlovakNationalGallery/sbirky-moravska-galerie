@@ -4,7 +4,7 @@ namespace Deployer;
 
 require 'recipe/common.php';
 
-set('bin/npm', 'n exec 20 npm');
+set('bin/npm', 'n --offline exec 20 npm');
 set('repository', 'git@github.com:SlovakNationalGallery/sbirky-moravska-galerie.git');
 
 add('shared_files', ['.env']);
