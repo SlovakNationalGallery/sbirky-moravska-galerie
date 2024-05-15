@@ -22,7 +22,7 @@
             to="/collections"
             class="uppercase text-xl border-b hover:border-transparent"
             :class="
-              route.path === '/collections'
+              route.fullPath.startsWith('/collections')
                 ? 'border-transparent text-light'
                 : 'border-white text-white'
             "
