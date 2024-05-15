@@ -33,7 +33,7 @@ import { useCollections } from '~/composables/collections'
 import Collection from '~/components/general/Collection.vue'
 import Pager from '~/components/general/Pager.vue'
 
-const { collections, total, page, lastPage, isLoading, refresh, reset } = await useCollections()
+const { collections, total, page, lastPage, isLoading, refresh, reset } = useCollections()
 
 onMounted(async () => {
   refresh()
