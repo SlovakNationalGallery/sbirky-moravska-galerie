@@ -205,4 +205,9 @@ const item = computed(() => new Item(itemData.data.value))
 const similars = computed(() => similarData.data.value?.data.map((item) => new Item(item)) ?? [])
 
 const itemsToShow = computed(() => (width.value < 768 ? 1 : width.value < 1024 ? 2 : 3))
+
+useFetch(`/api/v1/items/${id}/views`, {
+  baseURL: nuxtConfig.public.APP_URL,
+  method: 'POST',
+})
 </script>
