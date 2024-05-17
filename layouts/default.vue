@@ -7,14 +7,14 @@
     <div class="text-center my-6">
       Vyrobil a spravuje <NuxtLink class="underline" to="https://lab.sng.sk/">lab.SNG</NuxtLink>
     </div>
+
+    <ZoomModal />
   </div>
 </template>
 <script setup lang="ts">
 import Header from '~/components/layout/Header.vue'
-import Filter from '~/components/general/Filter.vue'
+import ZoomModal from '~/pages/items/ZoomModal.vue'
 
-const route = useRoute()
-const isFrontpage = computed(() => route.name === 'index')
 const isReady = ref(false)
 
 onMounted(() => {
