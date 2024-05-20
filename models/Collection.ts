@@ -15,12 +15,12 @@ export default class Collection extends BaseModel {
   items: Item[] = []
 
   static parser = z.object({
-    id: z.string(),
+    id: z.number(),
     name: z.string(),
     text: z.string(),
     header_image_src: z.string(),
     header_image_srcset: z.string(),
-    item_filter: z.union([z.string(), z.array(z.string())]),
+    item_filter: z.record(z.union([z.string(), z.array(z.string())])),
   })
 
   constructor(data: z.infer<typeof Collection.parser>) {
