@@ -51,17 +51,21 @@
               </div>
             </div>
           </div>
-          <div class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1">
+          <div
+            v-if="item.workTypeTrees.length"
+            class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
+          >
             <div class="font-bold w-1/3 shrink-0">výtvarný druh</div>
             <div>
-              <NuxtLink
-                v-for="link in item.content.work_type"
-                :key="link"
-                :to="`/?work_type=${link}`"
-                class="underline"
-              >
-                {{ link }}
-              </NuxtLink>
+              <template v-for="(tree, i) in item.workTypeTrees" :key="i">
+                <template v-for="(node, j) in tree" :key="j">
+                  <NuxtLink :to="`/?work_type=${node.path}`" class="underline">
+                    {{ node.label }}
+                  </NuxtLink>
+                  <span class="px-1" v-if="j < tree.length - 1">›</span>
+                </template>
+                <br />
+              </template>
             </div>
           </div>
           <div

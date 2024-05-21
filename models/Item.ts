@@ -2,6 +2,8 @@ import { z } from 'zod'
 
 import BaseModel from '@/models/_BaseModel'
 
+type TreeNode = { label: string; path: string }
+
 export default class Item extends BaseModel {
   public static mapping = {}
   public static endpoint = 'api/v1/items'
@@ -96,5 +98,15 @@ export default class Item extends BaseModel {
     return this.content.images.map(
       (image) => `https://img.webumenia.sk/preview/?path=${image}&size=800`
     )
+  }
+
+  public get workTypeTrees(): TreeNode[][] {
+    return this.content.work_type.map((tree: string) => {
+      const parts: string[] = []
+      return tree.split('/').map((label: string): TreeNode => {
+        parts.push(label)
+        return { label, path: parts.join('/') }
+      })
+    })
   }
 }
