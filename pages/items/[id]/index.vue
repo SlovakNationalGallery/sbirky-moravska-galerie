@@ -25,10 +25,10 @@
             :key="src"
             :url="item.previewImages[i]"
             class="max-h-[90vh] w-auto"
-            @click.prevent="onOpen(item, i)"
+            @click.prevent="onOpenZoom(item, i)"
           />
         </CarouselWrapper>
-        <Image v-else :url="item.image" @click="onOpen(item)" />
+        <Image v-else :url="item.image" @click="onOpenZoom(item)" />
       </div>
 
       <div class="mt-10 lg:mt-0">
@@ -175,13 +175,12 @@ import ItemCard from '~/components/general/Item.vue'
 import CarouselWrapper from '~/components/general/CarouselWrapper.vue'
 import Image from '~/components/general/Image.vue'
 import { useBaseFetch } from '~/composables/fetch'
-import { useZoom } from '~/composables/zoom'
 
 const route = useRoute()
+const router = useRouter()
 const id = route.params.id as string
 const nuxtConfig = useRuntimeConfig()
 const { width } = useWindowSize()
-const { onOpen } = useZoom()
 
 const [itemData, similarData] = await Promise.all([
   useBaseFetch<any>(`${Item.endpoint}/${id}`),
@@ -204,4 +203,10 @@ useFetch(`/api/v1/items/${id}/views`, {
   baseURL: nuxtConfig.public.APP_URL,
   method: 'POST',
 })
+
+const onOpenZoom = (item: Item, index?: number) => {
+  if (item.content.has_iip) {
+    router.push(`${item.link}/zoom${index ? `#${index}` : ''}`)
+  }
+}
 </script>

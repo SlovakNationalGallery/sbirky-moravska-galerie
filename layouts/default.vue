@@ -7,13 +7,10 @@
     <div class="text-center my-6">
       Vyrobil a spravuje <NuxtLink class="underline" to="https://lab.sng.sk/">lab.SNG</NuxtLink>
     </div>
-
-    <ZoomModal />
   </div>
 </template>
 <script setup lang="ts">
 import Header from '~/components/layout/Header.vue'
-import ZoomModal from '~/pages/items/ZoomModal.vue'
 
 const isReady = ref(false)
 

@@ -23,7 +23,7 @@
         v-if="item.content.has_iip"
         name="magnifying"
         class="w-6 h-6 shrink-0"
-        @click.prevent="onOpen(item)"
+        @click.prevent="onOpenZoom"
       />
     </div>
   </NuxtLink>
@@ -34,13 +34,12 @@ import type Item from '~/models/Item'
 
 import Image from '~/components/general/Image.vue'
 import Icon from '~/components/general/Icon.vue'
-import { useZoom } from '~/composables/zoom'
 
 const props = defineProps<{
   item: Item
 }>()
 
-const { onOpen } = useZoom()
+const router = useRouter()
 const imageRef = ref<InstanceType<typeof Image> | null>(null)
 const imageStyle = computed(() => ({
   aspectRatio: props.item.content.image_ratio || 700 / 800,
@@ -56,4 +55,8 @@ watch(
     }
   }
 )
+
+const onOpenZoom = () => {
+  router.push(`${props.item.link}/zoom`)
+}
 </script>
