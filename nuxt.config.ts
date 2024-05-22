@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     '@morev/vue-transitions/nuxt',
     'vue3-carousel-nuxt',
     'floating-vue/nuxt',
+    '@zadigetvoltaire/nuxt-gtm',
   ],
   carousel: {
     prefix: 'Module',
@@ -23,6 +24,10 @@ export default defineNuxtConfig({
   },
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
+  },
+  gtm: {
+    id: process.env.GTM_ID || '',
+    enabled: process.env.NODE_ENV === 'production',
   },
   vite: {
     vue: {

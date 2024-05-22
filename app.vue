@@ -6,6 +6,19 @@
 </template>
 <script setup lang="ts">
 import 'virtual:svg-icons-register'
+
+useHead({
+  meta: [
+    {
+      charset: 'utf-8',
+    },
+    {
+      hid: 'og:image',
+      property: 'og:image',
+      content: '/og-image.png',
+    },
+  ],
+})
 </script>
 <style>
 .page-enter-active,
