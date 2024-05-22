@@ -7,7 +7,7 @@
       snap-align="start"
       :mouse-drag="false"
     >
-      <ModuleSlide v-for="(item, i) in items" :key="i">
+      <ModuleSlide v-for="(item, i) in items" :key="i" @click="click">
         <component :is="item" />
       </ModuleSlide>
       <template v-if="items.length > 1" #addons>
@@ -51,5 +51,6 @@ const index = ref(0)
 const carousel = ref<InstanceType<typeof ModuleCarousel> | null>(null)
 const slots = useSlots()
 const items = computed(() => (slots.default!()[0].children || []) as VNode[])
+const click = computed(() => items.value[index.value].props?.onClick)
 </script>
 
