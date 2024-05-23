@@ -12,6 +12,7 @@
 <script setup lang="ts">
 import Image from '~/components/general/Image.vue'
 import Collection from '~/models/Collection'
+import { useBaseFetch } from '~/composables/fetch'
 
 interface Response {
   data: Collection[]
@@ -19,8 +20,7 @@ interface Response {
 
 const nuxtConfig = useRuntimeConfig()
 
-const collections = await useFetch<Response>('api/collections', {
-  baseURL: nuxtConfig.public.APP_URL,
+const collections = await useBaseFetch<Response>('api/collections', {
   query: { featured: true },
   transform: (response) => ({
     ...response,
