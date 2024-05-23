@@ -50,13 +50,12 @@ import Collection from '~/models/Collection'
 import Pager from '~/components/general/Pager.vue'
 import FilterAttribute from '~/components/general/FilterAttribute.vue'
 import Sort from '~/components/general/Sort.vue'
+import { useBaseFetch } from '~/composables/fetch'
 const nuxtConfig = useRuntimeConfig()
 const route = useRoute()
 const id = route.params.id as string
 
-const collectionData = useFetch<any>(`api/collections/${id}`, {
-  baseURL: nuxtConfig.public.APP_URL,
-})
+const collectionData = useBaseFetch<any>(`api/collections/${id}`)
 
 const collection = computed(() => new Collection(collectionData.data.value?.data))
 
@@ -84,8 +83,7 @@ interface ItemsResponse {
   last_page: number
 }
 
-const itemsDataFetch = useFetch<ItemsResponse>(`api/collections/${id}/items`, {
-  baseURL: nuxtConfig.public.APP_URL,
+const itemsDataFetch = useBaseFetch<ItemsResponse>(`api/collections/${id}/items`, {
   query: itemsQuery,
   watch: [itemsQuery],
   transform: (response) => ({

@@ -1,6 +1,9 @@
 import { z } from 'zod'
 
 import BaseModel from '@/models/_BaseModel'
+import { formatAuthor } from '@/utils/formatters'
+
+type TreeNode = { label: string; path: string }
 
 export default class Item extends BaseModel {
   public static mapping = {}
@@ -57,13 +60,15 @@ export default class Item extends BaseModel {
   })
 
   constructor(data: Item) {
-    const parse = Item.Content.safeParse(data.content)
-
-    if (!parse.success) {
-      console.error(parse.error)
-    } else {
-      data.content = parse.data
-    }
+    // TODO: figure out why is this causing recursion and memory leak
+    // console.log(data)
+    // const parse = Item.Content.safeParse(data.content)
+    //
+    // if (!parse.success) {
+    //   console.error(parse.error)
+    // } else {
+    //   data.content = parse.data
+    // }
 
     super(data)
   }
@@ -79,30 +84,28 @@ export default class Item extends BaseModel {
   }
 
   public get authorsFormatted() {
-    return (this.content.author || this.content.authors)?.map((author) =>
-      author.replace(/^([^,]*),\s*(.*)$/, '$2 $1')
-    )
+    return (this.content.author || this.content.authors)?.map((author) => formatAuthor(author))
   }
 
   public get tileSources() {
-    return [
-      'https://img.webumenia.sk/zoom/?path=%2FSNGZV%2FX8400%2FSNG--K_8328--1_1--_2015_03_03_--L2_WEB.jp2.dzi',
-      'https://img.webumenia.sk/zoom/?path=%2FSNGZV%2FX8400%2FSNG--K_8329--1_1--_2015_03_03_--L2_WEB.jp2.dzi',
-      'https://img.webumenia.sk/zoom/?path=%2FSNGZV%2FX8400%2FSNG--K_8330--1_1--_2015_03_03_--L2_WEB.jp2.dzi',
-    ]
-  }
-
-  public get thumbnails() {
-    return [
-      'https://img.webumenia.sk/zoom/?path=%2FSNGZV%2FX8400%2FSNG--K_8328--1_1--_2015_03_03_--L2_WEB.jp2_files/0/0_0.jpg',
-      'https://img.webumenia.sk/zoom/?path=%2FSNGZV%2FX8400%2FSNG--K_8329--1_1--_2015_03_03_--L2_WEB.jp2_files/0/0_0.jpg',
-      'https://img.webumenia.sk/zoom/?path=%2FSNGZV%2FX8400%2FSNG--K_8330--1_1--_2015_03_03_--L2_WEB.jp2_files/0/0_0.jpg',
-    ]
+    return this.content.images.map(
+      (image) => `https://img.webumenia.sk/zoom/?path=${encodeURIComponent(image)}.dzi`
+    )
   }
 
   public get previewImages() {
     return this.content.images.map(
       (image) => `https://img.webumenia.sk/preview/?path=${image}&size=800`
     )
+  }
+
+  public get workTypeTrees(): TreeNode[][] {
+    return this.content.work_type.map((tree: string) => {
+      const parts: string[] = []
+      return tree.split('/').map((label: string): TreeNode => {
+        parts.push(label)
+        return { label, path: parts.join('/') }
+      })
+    })
   }
 }

@@ -14,28 +14,23 @@
       </div>
     </div>
 
-    <div class="block md:grid md:grid-cols-2 gap-6 mt-6">
-      <div @click="isZoomOpened = true">
+    <div
+      class="block md:grid md:grid-cols-2 gap-6 mt-6"
+      :class="{ 'cursor-pointer': item.content.has_iip }"
+    >
+      <div>
         <CarouselWrapper v-if="item.content.images?.length">
           <Image
-            v-for="src in item.content.images"
+            v-for="(src, i) in item.content.images"
             :key="src"
-            :url="`https://img.webumenia.sk/preview/?path=${src}&size=800`"
+            :url="item.previewImages[i]"
             class="max-h-[90vh] w-auto"
+            @click.prevent="onOpenZoom(item, i)"
           />
         </CarouselWrapper>
-        <Image v-else :url="item.image" />
+        <Image v-else :url="item.image" @click="onOpenZoom(item)" />
       </div>
-      <ClientOnly>
-        <TransitionSlide mode="out-in">
-          <ZoomModal
-            :is-open="isZoomOpened"
-            :tile-sources="item.tileSources"
-            :thumbnails="item.thumbnails"
-            @close="isZoomOpened = false"
-          />
-        </TransitionSlide>
-      </ClientOnly>
+
       <div class="mt-10 lg:mt-0">
         <div class="flex flex-col gap-1">
           <div
@@ -56,17 +51,21 @@
               </div>
             </div>
           </div>
-          <div class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1">
+          <div
+            v-if="item.workTypeTrees.length"
+            class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
+          >
             <div class="font-bold w-1/3 shrink-0">výtvarný druh</div>
             <div>
-              <NuxtLink
-                v-for="link in item.content.work_type"
-                :key="link"
-                :to="`/?work_type=${link}`"
-                class="underline"
-              >
-                {{ link }}
-              </NuxtLink>
+              <template v-for="(tree, i) in item.workTypeTrees" :key="i">
+                <template v-for="(node, j) in tree" :key="j">
+                  <NuxtLink :to="`/?work_type=${node.path}`" class="underline">
+                    {{ node.label }}
+                  </NuxtLink>
+                  <span class="px-1" v-if="j < tree.length - 1">›</span>
+                </template>
+                <br />
+              </template>
             </div>
           </div>
           <div
@@ -174,20 +173,18 @@
 
 <script setup lang="ts">
 import { useWindowSize } from '@vueuse/core'
-import { TransitionSlide } from '@morev/vue-transitions'
 
 import Item from '~/models/Item'
 import ItemCard from '~/components/general/Item.vue'
 import CarouselWrapper from '~/components/general/CarouselWrapper.vue'
 import Image from '~/components/general/Image.vue'
-import ZoomModal from '~/pages/items/ZoomModal.vue'
 import { useBaseFetch } from '~/composables/fetch'
 
 const route = useRoute()
+const router = useRouter()
 const id = route.params.id as string
 const nuxtConfig = useRuntimeConfig()
 const { width } = useWindowSize()
-const isZoomOpened = ref<boolean>(false)
 
 const [itemData, similarData] = await Promise.all([
   useBaseFetch<any>(`${Item.endpoint}/${id}`),
@@ -206,8 +203,13 @@ const similars = computed(() => similarData.data.value?.data.map((item) => new I
 
 const itemsToShow = computed(() => (width.value < 768 ? 1 : width.value < 1024 ? 2 : 3))
 
-useFetch(`/api/v1/items/${id}/views`, {
-  baseURL: nuxtConfig.public.APP_URL,
+useBaseFetch(`/api/v1/items/${id}/views`, {
   method: 'POST',
 })
+
+const onOpenZoom = (item: Item, index?: number) => {
+  if (item.content.has_iip) {
+    router.push(`${item.link}/zoom${index ? `#${index}` : ''}`)
+  }
+}
 </script>

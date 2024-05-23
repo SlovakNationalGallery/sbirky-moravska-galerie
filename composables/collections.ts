@@ -1,4 +1,5 @@
 import Collection from '~/models/Collection'
+import { useBaseFetch } from '~/composables/fetch'
 
 interface Meta {
   total: number
@@ -26,8 +27,7 @@ export const useCollections = (perPage: number = 12) => {
     })
   )
 
-  const collectionsDataFetch = useFetch<Response>('api/collections', {
-    baseURL: nuxtConfig.public.APP_URL,
+  const collectionsDataFetch = useBaseFetch<Response>('api/collections', {
     query: query,
     watch: [query],
     transform: (response) => ({
