@@ -99,6 +99,15 @@ definePageMeta({
   layout: 'plain',
 })
 
+useHead({
+  meta: [
+    {
+      name: 'robots',
+      content: 'noindex, nofollow',
+    },
+  ],
+})
+
 watch(activeIndex, () => {
   isVisible.value = false
 })
