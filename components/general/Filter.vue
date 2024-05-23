@@ -55,7 +55,7 @@
 <script setup lang="ts">
 import { useWindowSize } from '@vueuse/core'
 
-import { Select, Range } from '#components'
+import { Select, Range, Hidden } from '#components'
 import SelectMobile from '~/components/controls/mobile/Select.vue'
 import RangeMobile from '~/components/controls/mobile/Range.vue'
 import Icon from '~/components/general/Icon.vue'
@@ -65,7 +65,7 @@ import FilterMobile from '~/components/general/FilterMobile.vue'
 const isMobileMenuOpened = ref(false)
 
 const { width } = useWindowSize()
-const componentRef = ref<InstanceType<typeof Select>[]>([])
+const componentRef = ref<InstanceType<typeof Select | typeof Hidden>[]>([])
 
 const components = [
   {
@@ -112,6 +112,12 @@ const components = [
       max: 'date_latest',
     },
     label: 'roky',
+  },
+  {
+    component: Hidden,
+    mobileComponent: Hidden,
+    key: 'related_work',
+    label: 'ze souboru',
   },
 ]
 
