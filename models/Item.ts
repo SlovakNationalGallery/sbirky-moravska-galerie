@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import BaseModel from '@/models/_BaseModel'
+import { formatAuthor } from '@/utils/formatters'
 
 type TreeNode = { label: string; path: string }
 
@@ -83,9 +84,7 @@ export default class Item extends BaseModel {
   }
 
   public get authorsFormatted() {
-    return (this.content.author || this.content.authors)?.map((author) =>
-      author.replace(/^([^,]*),\s*(.*)$/, '$2 $1')
-    )
+    return (this.content.author || this.content.authors)?.map((author) => formatAuthor(author))
   }
 
   public get tileSources() {
