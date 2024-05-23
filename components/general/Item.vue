@@ -19,7 +19,12 @@
         </div>
         <div class="font-serif">{{ item.content.dating }}</div>
       </div>
-      <Icon name="magnifying" class="w-6 h-6 shrink-0" />
+      <Icon
+        v-if="item.content.has_iip"
+        name="magnifying"
+        class="w-6 h-6 shrink-0"
+        @click.prevent="onOpenZoom"
+      />
     </div>
   </NuxtLink>
 </template>
@@ -34,6 +39,7 @@ const props = defineProps<{
   item: Item
 }>()
 
+const router = useRouter()
 const imageRef = ref<InstanceType<typeof Image> | null>(null)
 const imageStyle = computed(() => ({
   aspectRatio: props.item.content.image_ratio || 700 / 800,
@@ -49,4 +55,8 @@ watch(
     }
   }
 )
+
+const onOpenZoom = () => {
+  router.push(`${props.item.link}/zoom`)
+}
 </script>
