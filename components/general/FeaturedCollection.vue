@@ -1,17 +1,29 @@
 <template>
-  <NuxtLink v-if="featured" :to="`/collections/${featured.id}`" class="relative">
-    <Image :url="featured.header_image_src" class="aspect-[9/4] mt-8 object-cover w-full" />
+  <NuxtLink
+    v-if="featured"
+    :to="featured.link"
+    class="relative flex min-h-[200px] items-center justify-center overflow-hidden bg-cover bg-center py-8 md:min-h-[300px] lg:min-h-[400px]"
+    :style="{ backgroundImage: `url(${featured.header_image_src})` }"
+  >
     <div
-      class="absolute top-1/2 left-1/2 text-white text-3xl lg:text-6xl text-center -translate-x-1/2 -translate-y-1/2 [text-shadow:0_0.05em_0.2em_rgba(0,0,0,0.8)]"
+      class="absolute -bottom-4 right-[5%] flex h-[72px] w-[72px] -rotate-[15deg] items-center justify-center rounded-full bg-yellow text-center text-primary lg:-bottom-10 lg:h-[180px] lg:w-[180px]"
     >
-      <p>{{ featured.name }}</p>
+      <div class="lg:mt-[16px]">
+        <span class="text-2xl uppercase max-lg:hidden">Přejít na<br />seznam děl</span>
+        <Icon name="arrow-down" class="mx-auto h-8 w-8 -rotate-90" />
+      </div>
+    </div>
+    <div
+      class="isolate w-2/3 text-center text-3xl text-white [text-shadow:0_0.05em_0.2em_rgba(0,0,0,0.8)] [text-wrap:balance] md:text-5xl lg:text-6xl"
+    >
+      {{ featured.name }}
     </div>
   </NuxtLink>
 </template>
 
 <script setup lang="ts">
-import Image from '~/components/general/Image.vue'
 import Collection from '~/models/Collection'
+import Icon from '~/components/general/Icon.vue'
 import { useBaseFetch } from '~/composables/fetch'
 
 interface Response {
