@@ -35,5 +35,10 @@ import Pager from '~/components/general/Pager.vue'
 import { useControls } from '~/composables/controls'
 import Filter from '~/components/general/Filter.vue'
 
-const { items, total, page, lastPage, isLoading, sortBy, sortDirection } = await useControls()
+const { items, total, page, lastPage, isLoading, sortBy, sortDirection, refresh } =
+  await useControls()
+
+onMounted(() => {
+  refresh()
+})
 </script>
