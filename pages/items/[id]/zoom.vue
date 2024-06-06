@@ -6,7 +6,7 @@
         :class="{ 'opacity-0': idle }"
         @click="onClose"
       >
-        <Icon name="back" class="w-4 mr-1" /> <span class="text-sm">BACK</span>
+        <Icon name="back" class="w-4 mr-1" /> <span class="text-sm uppercase">Zpět</span>
       </div>
 
       <div
