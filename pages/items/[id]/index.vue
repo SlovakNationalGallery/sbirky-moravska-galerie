@@ -62,7 +62,7 @@
                   <NuxtLink :to="`/?work_type=${node.path}`" class="underline">
                     {{ node.label }}
                   </NuxtLink>
-                  <span class="px-1" v-if="j < tree.length - 1">›</span>
+                  <span v-if="j < tree.length - 1" class="px-1">›</span>
                 </template>
                 <br />
               </template>
@@ -162,7 +162,7 @@
       <h3>Související díla</h3>
       <div class="flex mt-6">
         <CarouselWrapper class="w-full" :items-to-show="itemsToShow">
-          <div v-for="similar in similars" :key="similar.id" class="md:px-3">
+          <div v-for="similar in similars" :key="similar.id" class="md:px-3 w-full">
             <ItemCard :item="similar" />
           </div>
         </CarouselWrapper>
@@ -183,7 +183,7 @@ import { useBaseFetch } from '~/composables/fetch'
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id as string
-const nuxtConfig = useRuntimeConfig()
+
 const { width } = useWindowSize()
 
 const [itemData, similarData] = await Promise.all([

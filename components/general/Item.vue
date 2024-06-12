@@ -1,6 +1,6 @@
 <template>
   <NuxtLink :to="item.link" class="group">
-    <Skeleton :loaded="item.loaded" :ratio="item.content.image_ratio">
+    <Skeleton :loaded="isVisible" :ratio="item.content.image_ratio">
       <Image
         ref="imageRef"
         :url="item.image"
