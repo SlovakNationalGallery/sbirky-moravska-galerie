@@ -1,16 +1,14 @@
 <template>
-  <NuxtLink
-    :to="item.link"
-    class="group"
-    :class="`transition-opacity  opacity-${isVisible ? 100 : 0}`"
-  >
-    <Image
-      ref="imageRef"
-      :url="item.image"
-      :disable-lazy="item.loaded"
-      :style="imageStyle"
-      class="max-h-[90vh] w-auto"
-    />
+  <NuxtLink :to="item.link" class="group">
+    <Skeleton :loaded="item.loaded" :ratio="item.content.image_ratio">
+      <Image
+        ref="imageRef"
+        :url="item.image"
+        :disable-lazy="item.loaded"
+        :style="imageStyle"
+        class="max-h-[90vh] w-auto"
+      />
+    </Skeleton>
     <div class="flex mt-4">
       <div class="flex-grow flex flex-col items-start">
         <div class="font-serif text-lg">{{ item.content.authors_formatted?.join(', ') }}</div>
@@ -34,6 +32,7 @@ import type Item from '~/models/Item'
 
 import Image from '~/components/general/Image.vue'
 import Icon from '~/components/general/Icon.vue'
+import Skeleton from '~/components/general/Skeleton.vue'
 
 const props = defineProps<{
   item: Item
