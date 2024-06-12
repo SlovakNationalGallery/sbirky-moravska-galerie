@@ -20,7 +20,7 @@ interface Response {
 const controlsService = async (
   options: IFilterConfig = {
     sortBy: 'updated_at',
-    sortDirection: 'asc',
+    sortDirection: 'desc',
     perPage: 12,
   }
 ) => {
