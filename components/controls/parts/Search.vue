@@ -4,7 +4,7 @@
     <input
       v-bind="attrs"
       v-model="model"
-      placeholder="Napíšte kľúčové slovo"
+      placeholder="Napište klíčové slova"
       class="w-full border-transparent !outline-none"
     />
     <Icon v-if="!prependIcon" name="search" class="w-5" />

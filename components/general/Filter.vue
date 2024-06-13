@@ -15,8 +15,8 @@
     </div>
 
     <div v-show="width >= 768" class="flex flex-wrap gap-4">
-      <Boolean name="has_image" label="Len s obrázkom" :default="true" />
-      <Boolean name="has_iip" label="Len so zoomom" />
+      <Boolean name="has_image" label="Jen s obrázkem" :default="true" />
+      <Boolean name="has_iip" label="Jen se zoomem" />
     </div>
 
     <FilterMobile
@@ -45,7 +45,7 @@
           @click="onResetAll"
         >
           <Icon class="w-4 h-4" name="rotate" />
-          <div class="text-xs">Zrušiť výber</div>
+          <div class="text-xs">Zrušit výběr</div>
         </div>
       </div>
     </div>

@@ -8,10 +8,10 @@
   >
     <transition-slide mode="out-in">
       <div v-if="!isLoading" class="flex">
-        <span>Načítať ďalšie</span>
+        <span>Načíst další</span>
         <Icon name="arrow-down" class="w-5 h-5 ml-1.5" />
       </div>
-      <div v-else>Načítavam...</div>
+      <div v-else>Načítám...</div>
     </transition-slide>
   </button>
 </template>
