@@ -51,13 +51,15 @@ import Pager from '~/components/general/Pager.vue'
 import FilterAttribute from '~/components/general/FilterAttribute.vue'
 import Sort from '~/components/general/Sort.vue'
 import { useBaseFetch } from '~/composables/fetch'
-const nuxtConfig = useRuntimeConfig()
 const route = useRoute()
 const id = route.params.id as string
 
 const collectionData = useBaseFetch<any>(`api/collections/${id}`)
-
 const collection = computed(() => new Collection(collectionData.data.value?.data))
+
+useHead(() => ({
+  title: collection.value.name,
+}))
 
 // todo from url?
 const sortBy = ref(null)

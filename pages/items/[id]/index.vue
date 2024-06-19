@@ -194,7 +194,6 @@ import { useBaseFetch } from '~/composables/fetch'
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id as string
-const nuxtConfig = useRuntimeConfig()
 const { width } = useWindowSize()
 
 const [itemData, similarData] = await Promise.all([
@@ -213,6 +212,10 @@ const item = computed(() => new Item(itemData.data.value))
 const similars = computed(() => similarData.data.value?.data.map((item) => new Item(item)) ?? [])
 
 const itemsToShow = computed(() => (width.value < 768 ? 1 : width.value < 1024 ? 2 : 3))
+
+useHead(() => ({
+  title: item.value.pageTitle,
+}))
 
 useBaseFetch(`/api/v1/items/${id}/views`, {
   method: 'POST',

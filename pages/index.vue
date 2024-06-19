@@ -34,9 +34,72 @@ import Sort from '~/components/general/Sort.vue'
 import Pager from '~/components/general/Pager.vue'
 import { useControls } from '~/composables/controls'
 import Filter from '~/components/general/Filter.vue'
+import { formatString } from '~/utils/formatters'
+import { labels } from '~/utils/filter'
 
-const { items, total, page, lastPage, isLoading, sortBy, sortDirection, refresh } =
+const { items, total, page, lastPage, isLoading, sortBy, sortDirection, refresh, filters } =
   await useControls()
+
+const pageTitle = computed(() => {
+  const attributes = [
+    {
+      key: 'filter[exhibition][]',
+      label: `${labels.exhibtion}: {value}`,
+    },
+    {
+      key: 'filter[author][]',
+      label: `${labels.author}: {value}`,
+    },
+    {
+      key: 'filter[work_type][]',
+      label: `${labels.work_type}: {value}`,
+    },
+    {
+      key: 'filter[topic][]',
+      label: `${labels.topic}: {value}`,
+    },
+    {
+      key: 'filter[medium][]',
+      label: `${labels.medium}: {value}`,
+    },
+    {
+      key: 'filter[technique][]',
+      label: `${labels.technique}: {value}`,
+    },
+    {
+      key: 'filter[related_work]',
+      label: `${labels.related_work}: {value}`,
+    },
+    {
+      key: 'filter[has_image]',
+      label: labels.has_image,
+    },
+    {
+      key: 'filter[has_iip]',
+      label: labels.has_iip,
+    },
+  ]
+
+  return attributes
+    .map((attribute) => {
+      const values =
+        attribute.key === 'filter[author][]' && filters[attribute.key]
+          ? filters[attribute.key].map((value) => formatAuthor(value))
+          : filters[attribute.key]
+
+      const value = Array.isArray(values) ? values.join(', ') : values
+
+      if (value) {
+        return formatString(attribute.label, { value })
+      }
+    })
+    .filter(Boolean)
+    .join(' • ')
+})
+
+useHead(() => ({
+  title: pageTitle.value,
+}))
 
 onMounted(() => {
   refresh()
