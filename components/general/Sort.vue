@@ -30,7 +30,7 @@ const sortOptions = [
   { label: 'náhodně', value: 'random', direction: 'asc' },
 ] as const
 
-const model = ref(sortOptions[0].value)
+const model = ref<(typeof sortOptions)[number]['value']>(sortOptions[0].value)
 
 onMounted(() => {
   if (props.sortBy !== sortOptions[0].value) {
@@ -40,6 +40,9 @@ onMounted(() => {
   if (props.sortDirection !== sortOptions[0].direction) {
     routeParams.sortDirection = props.sortDirection
   }
+
+  model.value =
+    sortOptions.find((option) => option.value === props.sortBy)?.value ?? sortOptions[0].value
 })
 
 const onUpdate = (value: string) => {
