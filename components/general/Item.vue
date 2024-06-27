@@ -1,14 +1,16 @@
 <template>
-  <NuxtLink :to="item.link" class="group">
-    <Skeleton :loaded="isVisible" :ratio="item.content.image_ratio">
+  <NuxtLink :to="item.link" class="relative flex">
+    <Skeleton>
       <Image
         ref="imageRef"
         :url="item.image"
         :disable-lazy="item.loaded"
-        :style="imageStyle"
-        class="max-h-[90vh] w-auto"
+        :aspect-ratio="item.content.image_ratio || 700 / 800"
+        class="max-h-[90vh] w-full"
       />
     </Skeleton>
+  </NuxtLink>
+  <NuxtLink :to="item.link">
     <div class="flex mt-4">
       <div class="flex-grow flex flex-col items-start">
         <div class="font-serif text-lg">{{ item.content.authors_formatted?.join(', ') }}</div>
@@ -40,9 +42,6 @@ const props = defineProps<{
 
 const router = useRouter()
 const imageRef = ref<InstanceType<typeof Image> | null>(null)
-const imageStyle = computed(() => ({
-  aspectRatio: props.item.content.image_ratio || 700 / 800,
-}))
 
 const isVisible = ref(props.item.loaded ?? false)
 watch(

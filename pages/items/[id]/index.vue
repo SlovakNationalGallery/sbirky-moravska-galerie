@@ -18,17 +18,25 @@
       class="block md:grid md:grid-cols-2 gap-6 mt-6"
       :class="{ 'cursor-pointer': item.content.has_iip }"
     >
-      <div>
-        <CarouselWrapper v-if="item.content.images?.length">
-          <Image
-            v-for="(src, i) in item.content.images"
-            :key="src"
-            :url="item.previewImages[i]"
-            class="max-h-[90vh] w-auto"
-            @click.prevent="onOpenZoom(item, i)"
-          />
+      <div class="relative">
+        <CarouselWrapper v-if="item.content.images?.length > 1">
+          <Skeleton v-for="(src, i) in item.content.images" :key="src">
+            <Image
+              :url="item.previewImages[i]"
+              :aspect-ratio="item.content.image_ratio"
+              class="max-h-[90vh] w-full"
+              @click.prevent="onOpenZoom(item, i)"
+            />
+          </Skeleton>
         </CarouselWrapper>
-        <Image v-else :url="item.image" @click="onOpenZoom(item)" />
+        <Skeleton v-else>
+          <Image
+            class="max-h-[90vh] w-full"
+            :url="item.image"
+            :aspect-ratio="item.content.image_ratio"
+            @click="onOpenZoom(item)"
+          />
+        </Skeleton>
       </div>
 
       <div class="mt-10 lg:mt-0">
@@ -179,6 +187,7 @@ import ItemCard from '~/components/general/Item.vue'
 import CarouselWrapper from '~/components/general/CarouselWrapper.vue'
 import Image from '~/components/general/Image.vue'
 import { useBaseFetch } from '~/composables/fetch'
+import Skeleton from '~/components/general/Skeleton.vue'
 
 const route = useRoute()
 const router = useRouter()
