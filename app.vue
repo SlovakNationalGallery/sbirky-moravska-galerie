@@ -8,6 +8,8 @@
 import 'virtual:svg-icons-register'
 
 useHead({
+  titleTemplate: (title) =>
+    (title ? `${title} | ` : '') + 'Moravská galerie v Brně | sbírky online',
   meta: [
     {
       charset: 'utf-8',

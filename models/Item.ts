@@ -110,4 +110,8 @@ export default class Item extends BaseModel {
       })
     })
   }
+
+  public get pageTitle() {
+    return `${this.authorsFormatted.join(', ')} – ${this.content.title}`
+  }
 }
