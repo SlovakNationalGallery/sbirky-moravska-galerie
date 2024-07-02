@@ -60,6 +60,7 @@ const collection = computed(() => new Collection(collectionData.data.value?.data
 useSeoMeta(() => ({
   title: collection.value.name,
   ogTitle: collection.value.name,
+  ogImage: collection.value.header_image_src,
 }))
 
 // todo from url?
