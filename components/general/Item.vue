@@ -6,7 +6,7 @@
         :url="item.image"
         :disable-lazy="item.loaded"
         :aspect-ratio="item.content.image_ratio || 700 / 800"
-        class="max-h-[90vh] w-full"
+        class="w-full max-h-[90vh] object-contain"
       />
     </Skeleton>
   </NuxtLink>
