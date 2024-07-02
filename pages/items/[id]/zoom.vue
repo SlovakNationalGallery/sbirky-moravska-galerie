@@ -100,9 +100,10 @@ definePageMeta({
   layout: 'plain',
 })
 
-useHead(() => ({
+useSeoMeta({
   title: `Zoom | ${item.value.pageTitle}`,
-}))
+  robots: 'noindex, nofollow',
+})
 
 watch(activeIndex, () => {
   isVisible.value = false
