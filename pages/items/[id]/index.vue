@@ -24,14 +24,14 @@
             <Image
               :url="item.previewImages[i]"
               :aspect-ratio="item.content.image_ratio"
-              class="max-h-[90vh] w-full"
+              class="w-full max-h-[90vh] object-contain"
               @click.prevent="onOpenZoom(item, i)"
             />
           </Skeleton>
         </CarouselWrapper>
         <Skeleton v-else>
           <Image
-            class="max-h-[90vh] w-full"
+            class="w-full max-h-[90vh] object-contain"
             :url="item.image"
             :aspect-ratio="item.content.image_ratio"
             @click="onOpenZoom(item)"
