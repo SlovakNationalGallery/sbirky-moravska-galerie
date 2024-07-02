@@ -19,6 +19,10 @@ useHead({
       property: 'og:image',
       content: '/og-image.png',
     },
+    {
+      name: 'author',
+      content: 'lab.SNG',
+    },
   ],
   link: [
     {
