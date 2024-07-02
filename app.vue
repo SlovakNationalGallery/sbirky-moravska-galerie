@@ -15,9 +15,54 @@ useHead({
       charset: 'utf-8',
     },
     {
-      hid: 'og:image',
       property: 'og:image',
       content: '/og-image.png',
+    },
+    {
+      name: 'author',
+      content: 'lab.SNG',
+    },
+    {
+      name: 'description',
+      content:
+        'Kompletní on-line zveřejnění sbírek Moravské galerie v Brně. Webová stránka umožňuje uživateli vyhledávat sbírkové předměty dle autora, techniky, výtvarného žánru, materiálu, námětu a také místa vzniku',
+    },
+    {
+      property: 'og:site_name',
+      content: 'Moravská galerie v Brně | sbírky online',
+    },
+    {
+      property: 'og:description',
+      content:
+        'Kompletní on-line zveřejnění sbírek Moravské galerie v Brně. Webová stránka umožňuje uživateli vyhledávat sbírkové předměty dle autora, techniky, výtvarného žánru, materiálu, námětu a také místa vzniku',
+    },
+  ],
+  link: [
+    {
+      rel: 'apple-touch-icon',
+      sizes: '180x180',
+      href: '/apple-touch-icon.png',
+    },
+    {
+      rel: 'icon',
+      type: 'image/png',
+      sizes: '32x32',
+      href: '/favicon-32x32.png',
+    },
+    {
+      rel: 'icon',
+      type: 'image/png',
+      sizes: '16x16',
+      href: '/favicon-16x16.png',
+    },
+    {
+      rel: 'manifest',
+      href: '/site.webmanifest',
+    },
+    {
+      rel: 'mask-icon',
+      href: '/safari-pinned-tab.svg',
+      color: '#2B2E31',
     },
   ],
 })

@@ -114,4 +114,12 @@ export default class Item extends BaseModel {
   public get pageTitle() {
     return `${this.authorsFormatted.join(', ')} – ${this.content.title}`
   }
+
+  public get pageDescription() {
+    return [
+      this.content.work_type.join(', '),
+      this.content.medium.join(','),
+      this.content.technique.join(', '),
+    ].join(' / ')
+  }
 }
