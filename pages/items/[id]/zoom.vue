@@ -6,7 +6,8 @@
         :class="{ 'opacity-0': idle }"
         @click="onClose"
       >
-        <Icon name="back" class="w-4 mr-1" /> <span class="text-sm">BACK</span>
+        <Icon name="back" class="w-4 mr-1" />
+        <span class="text-sm uppercase">zpět</span>
       </div>
 
       <div
@@ -25,26 +26,26 @@
           :class="{ 'opacity-0': idle }"
         >
           <div
-            class="aspect-square bg-white/70 flex items-center justify-center p-2 border border-black/30 cursor-pointer transition-opacity duration-300"
+            class="aspect-square block bg-white/70 flex items-center justify-center p-2 cursor-pointer transition-opacity duration-300"
             @click="onZoom(1)"
           >
-            <span>+</span>
+            <Icon name="plus" class="w-4" />
           </div>
           <div
-            class="aspect-square bg-white/70 flex items-center justify-center p-2 border border-black/30 cursor-pointer transition-opacity duration-300"
+            class="aspect-square bg-white/70 flex items-center justify-center p-2 cursor-pointer transition-opacity duration-300"
             @click="onZoom(-1)"
           >
-            <span>-</span>
+            <Icon name="minus" class="w-4" />
           </div>
           <div
-            class="aspect-square bg-white/70 flex items-center justify-center p-2 border border-black/30 cursor-pointer transition-opacity duration-300"
+            class="aspect-square bg-white/70 flex items-center justify-center p-2 cursor-pointer transition-opacity duration-300"
             @click="onPrev"
           >
             <Icon name="back" class="w-4 rotate-90" />
           </div>
 
           <div
-            class="aspect-square bg-white/70 flex items-center justify-center p-2 border border-black/30 cursor-pointer transition-opacity duration-300"
+            class="aspect-square bg-white/70 flex items-center justify-center p-2 cursor-pointer transition-opacity duration-300"
             @click="onNext"
           >
             <Icon name="back" class="w-4 -rotate-90" />
