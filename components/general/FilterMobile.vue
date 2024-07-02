@@ -5,7 +5,7 @@
     @click="onCloseMenu"
   >
     <Icon class="w-5 h-5" name="filter" />
-    <span class="uppercase">Zobraziť filter</span>
+    <span class="uppercase">Zobrazit filtr</span>
   </div>
 
   <TransitionSlide>
@@ -25,7 +25,7 @@
             @click="onResetAll"
           >
             <Icon class="w-4 h-4" name="rotate" />
-            <div class="text-xs">Zrušiť výber</div>
+            <div class="text-xs">Zrušit výběr</div>
           </div>
           <Icon name="close" class="w-4" @click="onCloseMenu" />
         </div>
@@ -63,7 +63,7 @@
       </div>
       <div class="flex absolute inset-0 top-auto bg-white justify-center drop-shadow-2xl py-4 px-6">
         <button type="button" class="uppercase bg-dark text-white w-full py-3" @click="onCloseMenu">
-          zobraziť výsledky <span class="font-bold">({{ total }})</span>
+          zobrazit výsledky <span class="font-bold">({{ total }})</span>
         </button>
       </div>
     </div>
@@ -129,6 +129,4 @@ watch(
 )
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

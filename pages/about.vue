@@ -48,6 +48,10 @@ import Image from '~/components/general/Image.vue'
 
 const isReady = ref(false)
 
+useHead(() => ({
+  title: 'Info',
+}))
+
 onMounted(async () => {
   await new Promise((resolve) => setTimeout(resolve, 333))
   isReady.value = true

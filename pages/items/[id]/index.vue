@@ -162,6 +162,17 @@
               </NuxtLink>
             </div>
           </div>
+          <div
+            v-if="item.content.related_work && item.content.relationship_type"
+            class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
+          >
+            <div class="font-bold w-1/3 shrink-0">{{ item.content.relationship_type }}</div>
+            <div>
+              <NuxtLink :to="`/?related_work=${item.content.related_work}`" class="underline">
+                {{ item.content.related_work }}
+              </NuxtLink>
+            </div>
+          </div>
           <div class="whitespace-pre-line px-2 py-1" v-html="item.content.description"></div>
         </div>
       </div>
@@ -211,6 +222,10 @@ const item = computed(() => new Item(itemData.data.value))
 const similars = computed(() => similarData.data.value?.data.map((item) => new Item(item)) ?? [])
 
 const itemsToShow = computed(() => (width.value < 768 ? 1 : width.value < 1024 ? 2 : 3))
+
+useHead(() => ({
+  title: item.value.pageTitle,
+}))
 
 useBaseFetch(`/api/v1/items/${id}/views`, {
   method: 'POST',

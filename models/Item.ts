@@ -57,6 +57,8 @@ export default class Item extends BaseModel {
     exhibition: z.string().nullable().optional(),
     inscription: z.array(z.string()).nullable().optional(),
     acquisition_date: z.string().nullable().optional(),
+    related_work: z.string(),
+    relationship_type: z.string(),
   })
 
   constructor(data: Item) {
@@ -107,5 +109,9 @@ export default class Item extends BaseModel {
         return { label, path: parts.join('/') }
       })
     })
+  }
+
+  public get pageTitle() {
+    return `${this.authorsFormatted.join(', ')} – ${this.content.title}`
   }
 }

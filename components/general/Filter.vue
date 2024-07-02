@@ -15,8 +15,8 @@
     </div>
 
     <div v-show="width >= 768" class="flex flex-wrap gap-4">
-      <Boolean name="has_image" label="Len s obrázkom" :default="true" />
-      <Boolean name="has_iip" label="Len so zoomom" />
+      <Boolean name="has_image" label="Jen s obrázkem" :default="true" />
+      <Boolean name="has_iip" label="Jen se zoomem" />
     </div>
 
     <FilterMobile
@@ -45,7 +45,7 @@
           @click="onResetAll"
         >
           <Icon class="w-4 h-4" name="rotate" />
-          <div class="text-xs">Zrušiť výber</div>
+          <div class="text-xs">Zrušit výběr</div>
         </div>
       </div>
     </div>
@@ -55,7 +55,7 @@
 <script setup lang="ts">
 import { useWindowSize } from '@vueuse/core'
 
-import { Select, Range } from '#components'
+import { Select, Range, Hidden } from '#components'
 import SelectMobile from '~/components/controls/mobile/Select.vue'
 import RangeMobile from '~/components/controls/mobile/Range.vue'
 import Icon from '~/components/general/Icon.vue'
@@ -65,7 +65,7 @@ import FilterMobile from '~/components/general/FilterMobile.vue'
 const isMobileMenuOpened = ref(false)
 
 const { width } = useWindowSize()
-const componentRef = ref<InstanceType<typeof Select>[]>([])
+const componentRef = ref<InstanceType<typeof Select | typeof Hidden>[]>([])
 
 const components = [
   {
@@ -112,6 +112,12 @@ const components = [
       max: 'date_latest',
     },
     label: 'roky',
+  },
+  {
+    component: Hidden,
+    mobileComponent: Hidden,
+    key: 'related_work',
+    label: 'ze souboru',
   },
 ]
 
