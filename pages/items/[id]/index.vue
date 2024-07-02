@@ -213,9 +213,11 @@ const similars = computed(() => similarData.data.value?.data.map((item) => new I
 
 const itemsToShow = computed(() => (width.value < 768 ? 1 : width.value < 1024 ? 2 : 3))
 
-useHead(() => ({
+useSeoMeta({
   title: item.value.pageTitle,
-}))
+  ogTitle: item.value.pageTitle,
+  ogImage: item.value.image,
+})
 
 useBaseFetch(`/api/v1/items/${id}/views`, {
   method: 'POST',

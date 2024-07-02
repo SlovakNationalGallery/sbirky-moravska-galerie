@@ -15,13 +15,26 @@ useHead({
       charset: 'utf-8',
     },
     {
-      hid: 'og:image',
       property: 'og:image',
       content: '/og-image.png',
     },
     {
       name: 'author',
       content: 'lab.SNG',
+    },
+    {
+      name: 'description',
+      content:
+        'Kompletní on-line zveřejnění sbírek Moravské galerie v Brně. Webová stránka umožňuje uživateli vyhledávat sbírkové předměty dle autora, techniky, výtvarného žánru, materiálu, námětu a také místa vzniku',
+    },
+    {
+      property: 'og:site_name',
+      content: 'Moravská galerie v Brně | sbírky online',
+    },
+    {
+      property: 'og:description',
+      content:
+        'Kompletní on-line zveřejnění sbírek Moravské galerie v Brně. Webová stránka umožňuje uživateli vyhledávat sbírkové předměty dle autora, techniky, výtvarného žánru, materiálu, námětu a také místa vzniku',
     },
   ],
   link: [
