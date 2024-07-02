@@ -100,6 +100,10 @@ definePageMeta({
   layout: 'plain',
 })
 
+useHead(() => ({
+  title: `Zoom | ${item.value.pageTitle}`,
+}))
+
 watch(activeIndex, () => {
   isVisible.value = false
 })

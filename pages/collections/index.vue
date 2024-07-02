@@ -35,6 +35,10 @@ import Pager from '~/components/general/Pager.vue'
 
 const { collections, total, page, lastPage, isLoading, refresh, reset } = useCollections()
 
+useHead(() => ({
+  title: 'Kolekce',
+}))
+
 onMounted(async () => {
   refresh()
 })
