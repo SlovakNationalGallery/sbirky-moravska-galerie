@@ -7,16 +7,19 @@
 </template>
 <script lang="ts" setup>
 import Dropdown from '~/components/general/Dropdown.vue'
+import { useControls } from '~/composables/controls'
 
-const { sortBy, sortDirection } = defineProps<{
+const props = defineProps<{
   sortBy: string
   sortDirection: 'asc' | 'desc'
 }>()
 
 const emit = defineEmits<{
-  [update: sortBy]: string
-  [update: sortDirection]: 'asc' | 'desc'
+  sortBy: string
+  sortDirection: 'asc' | 'desc'
 }>()
+
+const { routeParams } = await useControls()
 
 const sortOptions = [
   { label: 'poslední změny', value: 'updated_at', direction: 'desc' },
@@ -27,7 +30,20 @@ const sortOptions = [
   { label: 'náhodně', value: 'random', direction: 'asc' },
 ] as const
 
-const model = ref(sortOptions[0].value)
+const model = ref<(typeof sortOptions)[number]['value']>(sortOptions[0].value)
+
+onMounted(() => {
+  if (props.sortBy !== sortOptions[0].value) {
+    routeParams.sortBy = props.sortBy
+  }
+
+  if (props.sortDirection !== sortOptions[0].direction) {
+    routeParams.sortDirection = props.sortDirection
+  }
+
+  model.value =
+    sortOptions.find((option) => option.value === props.sortBy)?.value ?? sortOptions[0].value
+})
 
 const onUpdate = (value: string) => {
   const option = sortOptions.find((option) => option.value === value)
@@ -35,6 +51,14 @@ const onUpdate = (value: string) => {
   if (option) {
     emit('update:sortBy', option.value)
     emit('update:sortDirection', option.direction)
+
+    option.value === sortOptions[0].value
+      ? delete routeParams.sortBy
+      : (routeParams.sortBy = option.value)
+
+    option.direction === sortOptions[0].direction
+      ? delete routeParams.sortDirection
+      : (routeParams.sortDirection = option.direction)
   }
 }
 </script>
