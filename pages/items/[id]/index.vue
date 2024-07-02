@@ -215,7 +215,9 @@ const itemsToShow = computed(() => (width.value < 768 ? 1 : width.value < 1024 ?
 
 useSeoMeta({
   title: item.value.pageTitle,
+  description: item.value.pageDescription,
   ogTitle: item.value.pageTitle,
+  ogDescription: item.value.pageDescription,
   ogImage: item.value.image,
 })
 
