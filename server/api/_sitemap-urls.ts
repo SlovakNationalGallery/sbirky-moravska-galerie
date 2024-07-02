@@ -55,7 +55,7 @@ export default defineEventHandler(async () => {
   ].map((i) => ({
     url: i.url,
     lastmod: i.updatedAt,
-    changefreq: 'weekly',
+    changefreq: 'monthly',
     priority: 0.8,
   }))
 })
