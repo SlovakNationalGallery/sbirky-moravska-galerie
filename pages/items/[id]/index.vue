@@ -18,17 +18,25 @@
       class="block md:grid md:grid-cols-2 gap-6 mt-6"
       :class="{ 'cursor-pointer': item.content.has_iip }"
     >
-      <div>
-        <CarouselWrapper v-if="item.content.images?.length">
-          <Image
-            v-for="(src, i) in item.content.images"
-            :key="src"
-            :url="item.previewImages[i]"
-            class="max-h-[90vh] w-auto"
-            @click.prevent="onOpenZoom(item, i)"
-          />
+      <div class="relative">
+        <CarouselWrapper v-if="item.content.images?.length > 1">
+          <Skeleton v-for="(src, i) in item.content.images" :key="src">
+            <Image
+              :url="item.previewImages[i]"
+              :aspect-ratio="item.content.image_ratio"
+              class="w-full max-h-[90vh] object-contain"
+              @click.prevent="onOpenZoom(item, i)"
+            />
+          </Skeleton>
         </CarouselWrapper>
-        <Image v-else :url="item.image" @click="onOpenZoom(item)" />
+        <Skeleton v-else>
+          <Image
+            class="w-full max-h-[90vh] object-contain"
+            :url="item.image"
+            :aspect-ratio="item.content.image_ratio"
+            @click="onOpenZoom(item)"
+          />
+        </Skeleton>
       </div>
 
       <div class="mt-10 lg:mt-0">
@@ -62,7 +70,7 @@
                   <NuxtLink :to="`/?work_type=${node.path}`" class="underline">
                     {{ node.label }}
                   </NuxtLink>
-                  <span class="px-1" v-if="j < tree.length - 1">›</span>
+                  <span v-if="j < tree.length - 1" class="px-1">›</span>
                 </template>
                 <br />
               </template>
@@ -173,7 +181,7 @@
       <h3>Související díla</h3>
       <div class="flex mt-6">
         <CarouselWrapper class="w-full" :items-to-show="itemsToShow">
-          <div v-for="similar in similars" :key="similar.id" class="md:px-3">
+          <div v-for="similar in similars" :key="similar.id" class="md:px-3 w-full">
             <ItemCard :item="similar" />
           </div>
         </CarouselWrapper>
@@ -190,10 +198,12 @@ import ItemCard from '~/components/general/Item.vue'
 import CarouselWrapper from '~/components/general/CarouselWrapper.vue'
 import Image from '~/components/general/Image.vue'
 import { useBaseFetch } from '~/composables/fetch'
+import Skeleton from '~/components/general/Skeleton.vue'
 
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id as string
+
 const { width } = useWindowSize()
 
 const [itemData, similarData] = await Promise.all([
