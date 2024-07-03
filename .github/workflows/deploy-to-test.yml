@@ -8,6 +8,8 @@ on:
 concurrency: deploy_test
 
 jobs:
+    test:
+        uses: ./.github/workflows/playwright.yml
     deploy:
         name: Deploy
         runs-on: ubuntu-22.04
