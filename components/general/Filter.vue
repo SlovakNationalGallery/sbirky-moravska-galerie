@@ -40,7 +40,7 @@
 
       <div class="flex flex-wrap gap-3">
         <div
-          v-if="selected.length"
+          v-if="hasFilters"
           class="flex py-1 px-3 gap-2 border-2 border-dark items-center cursor-pointer rounded-3xl"
           @click="onResetAll"
         >
@@ -149,7 +149,7 @@ const selected = computed<any[]>(() => {
   return options
 })
 
-const { reset } = await useControls()
+const { reset, hasFilters, routeParams } = await useControls()
 
 const onToggleMobileMenu = (event: MouseEvent) => {
   if (width.value >= 768) {
@@ -166,6 +166,7 @@ const onResetAll = () => {
   componentRef.value.forEach((component) => {
     component.onReset?.()
   })
+  delete routeParams['q']
 }
 
 onUnmounted(() => {
