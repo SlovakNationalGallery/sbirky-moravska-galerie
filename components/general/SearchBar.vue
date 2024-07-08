@@ -1,6 +1,14 @@
 <template>
   <div class="relative">
-    <Search v-model="q" prepend-icon @focus="isOpen = true" @blur="isOpen = false" />
+    <Search
+      ref="input"
+      v-model="q"
+      prepend-icon
+      :default="$route.query['q'] || ''"
+      @focus="isOpen = true"
+      @blur="isOpen = false"
+      @keydown.enter="submit"
+    />
     <transition-fade>
       <div v-if="isOpen && items.length" class="bg-white absolute top-100% w-full p-4 z-30">
         <div>Díla</div>
@@ -23,8 +31,10 @@ import Search from '~/components/controls/parts/Search.vue'
 import Item from '~/models/Item'
 import Image from '~/components/general/Image.vue'
 import { useBaseFetch } from '~/composables/fetch'
+import { useControls } from '~/composables/controls'
 
-const q = ref('')
+const route = useRoute()
+const q = ref(route.query['q'] as string | undefined)
 const isOpen = ref(false)
 
 const { data } = await useBaseFetch<{
@@ -36,6 +46,33 @@ const { data } = await useBaseFetch<{
   },
   watch: [q],
 })
+
+const input = ref<null | HTMLInputElement>(null)
+
+const { filters, routeParams } = await useControls()
+
+watch(routeParams, () => {
+  q.value = routeParams['q'] as string | undefined
+  if (q.value) {
+    filters['q'] = routeParams['q']
+  } else {
+    delete filters['q']
+  }
+})
+
+if (q.value) {
+  routeParams['q'] = q.value
+}
+
+const submit = () => {
+  if (q.value) {
+    routeParams['q'] = q.value
+  } else {
+    delete routeParams['q']
+  }
+
+  input.value?.blur()
+}
 
 const items = computed(() => data.value?.data.map((item) => new Item(item)) ?? [])
 </script>

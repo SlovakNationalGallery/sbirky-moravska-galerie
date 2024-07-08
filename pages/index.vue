@@ -7,6 +7,7 @@
     <div class="w-full my-4 flex">
       <div class="flex-grow">
         <span class="font-bold">{{ total }}</span> děl
+        <template v-if="filters['q']">nalezenych pro „{{ filters['q'] }}“ </template>
       </div>
 
       <Sort v-model:sort-by="sortBy" v-model:sort-direction="sortDirection" />
@@ -42,6 +43,10 @@ const { items, total, page, lastPage, isLoading, sortBy, sortDirection, refresh,
 
 const pageTitle = computed(() => {
   const attributes = [
+    {
+      key: 'q',
+      label: `${labels.q} „{value}“`,
+    },
     {
       key: 'filter[exhibition][]',
       label: `${labels.exhibtion}: {value}`,
