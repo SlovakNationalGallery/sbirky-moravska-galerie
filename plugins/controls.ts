@@ -72,11 +72,11 @@ const controlsService = async (
     }),
   ])
 
-  const hasFilters = computed(() => {
-    return Object.keys(filters).some(
-      (key) => Array.isArray(filters[key]) && filters[key].length > 0
-    )
-  })
+  const hasFilters = computed(
+    () =>
+      Object.keys(filters).some((key) => Array.isArray(filters[key]) && filters[key].length > 0) ||
+      filters['q']
+  )
 
   watchDebounced(
     routeParams,
