@@ -16,10 +16,17 @@ export default defineNuxtConfig({
     '@morev/vue-transitions/nuxt',
     'vue3-carousel-nuxt',
     'floating-vue/nuxt',
+    'nuxt-simple-sitemap',
     '@zadigetvoltaire/nuxt-gtm',
+    '@nuxtjs/sitemap',
   ],
   carousel: {
     prefix: 'Module',
+  },
+  sitemap: {
+    cacheMaxAgeSeconds: process.env.NODE_ENV === 'production' ? 60 * 60 * 24 * 31 : 0,
+    autoI18n: false,
+    sitemaps: false,
   },
   components: {
     dirs: ['@/components/controls'],
