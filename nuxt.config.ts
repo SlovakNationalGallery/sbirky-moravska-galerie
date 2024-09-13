@@ -16,12 +16,13 @@ export default defineNuxtConfig({
     'floating-vue/nuxt',
     'nuxt-simple-sitemap',
     '@zadigetvoltaire/nuxt-gtm',
+    '@nuxtjs/sitemap',
   ],
   carousel: {
     prefix: 'Module',
   },
   sitemap: {
-    cacheTtl: process.env.NODE_ENV === 'production' ? 1000 * 60 * 60 * 24 * 31 : 0,
+    cacheMaxAgeSeconds: process.env.NODE_ENV === 'production' ? 60 * 60 * 24 * 31 : 0,
     autoI18n: false,
     sitemaps: false,
   },

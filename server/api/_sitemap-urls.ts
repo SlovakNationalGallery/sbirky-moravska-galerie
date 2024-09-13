@@ -21,7 +21,12 @@ export default defineEventHandler(async () => {
   ]
 
   const fetchAllItems = async () => {
-    const res = await $fetch<any>(`${process.env.API_URL}/v2/items?size=1000`)
+    const res = await $fetch<any>(`${process.env.API_URL}/v2/items?size=1000`, {
+      headers: {
+        'X-Frontend': 'moravska-galerie',
+        'Accept-Language': 'cs',
+      },
+    })
 
     let page = 1
     const items: any[] = []
@@ -29,7 +34,13 @@ export default defineEventHandler(async () => {
 
     for (page; page <= lastPage; page++) {
       const { data: pageItems } = await $fetch<any>(
-        `${process.env.API_URL}/v2/items?size=1000&page=${page}`
+        `${process.env.API_URL}/v2/items?size=1000&page=${page}`,
+        {
+          headers: {
+            'X-Frontend': 'moravska-galerie',
+            'Accept-Language': 'cs',
+          },
+        }
       )
 
       items.push(
