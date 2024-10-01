@@ -7,7 +7,7 @@ let proxy: ReturnType<typeof createProxyMiddleware>
 const getProxy = () => {
   if (!proxy) {
     const prefix = config.app.baseURL.replace(/\/$/, '') + '/api'
-    proxy = createProxyMiddleware(prefix + '/', {
+    proxy = createProxyMiddleware({
       changeOrigin: true,
       ws: false,
       timeout: 3000,

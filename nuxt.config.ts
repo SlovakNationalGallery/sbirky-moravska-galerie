@@ -1,22 +1,20 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 import { resolve } from 'path'
 
 export default defineNuxtConfig({
-  devtools: { enabled: false },
-  debug: false,
+  compatibilityDate: '2024-10-01',
+  devtools: { enabled: true },
   experimental: {
     renderJsonPayloads: false,
   },
   modules: [
+    '@nuxtjs/sitemap',
     '@nuxtjs/tailwindcss',
     '@morev/vue-transitions/nuxt',
     'vue3-carousel-nuxt',
     'floating-vue/nuxt',
-    'nuxt-simple-sitemap',
     '@zadigetvoltaire/nuxt-gtm',
-    '@nuxtjs/sitemap',
   ],
   carousel: {
     prefix: 'Module',
@@ -48,7 +46,10 @@ export default defineNuxtConfig({
         symbolId: 'icon-[name]',
       }),
     ],
-    optimizeDeps: { exclude: ['fsevents'] },
+    optimizeDeps: { exclude: ['fsevents'], include: ['vue3-carousel'] },
+    server: {
+      preTransformRequests: false,
+    },
   },
 
   runtimeConfig: {

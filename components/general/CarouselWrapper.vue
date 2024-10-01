@@ -35,7 +35,6 @@
 </template>
 
 <script setup lang="ts">
-import 'vue3-carousel/dist/carousel.css'
 import Icon from '~/components/general/Icon.vue'
 
 withDefaults(

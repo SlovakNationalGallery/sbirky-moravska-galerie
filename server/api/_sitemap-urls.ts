@@ -55,6 +55,7 @@ export default defineEventHandler(async () => {
   }
 
   const items = await fetchAllItems()
+  // const items = []
 
   return [
     ...pages,
