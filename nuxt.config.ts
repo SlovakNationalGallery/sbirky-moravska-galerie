@@ -1,3 +1,4 @@
+import { createRedirects } from './redirects'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 import { resolve } from 'path'
@@ -51,7 +52,7 @@ export default defineNuxtConfig({
       preTransformRequests: false,
     },
   },
-
+  routeRules: createRedirects(),
   runtimeConfig: {
     API_URL: process.env.API_URL || '/api',
     APP_URL: process.env.APP_URL || '',

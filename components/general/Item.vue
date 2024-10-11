@@ -1,16 +1,16 @@
 <template>
-  <NuxtLink
-    :to="item.link"
-    class="group"
-    :class="`transition-opacity  opacity-${isVisible ? 100 : 0}`"
-  >
-    <Image
-      ref="imageRef"
-      :url="item.image"
-      :disable-lazy="item.loaded"
-      :style="imageStyle"
-      class="max-h-[90vh] w-auto"
-    />
+  <NuxtLink :to="item.link" class="relative flex">
+    <Skeleton>
+      <Image
+        ref="imageRef"
+        :url="item.image"
+        :disable-lazy="item.loaded"
+        :aspect-ratio="item.content.image_ratio || 700 / 800"
+        class="w-full max-h-[90vh] object-contain"
+      />
+    </Skeleton>
+  </NuxtLink>
+  <NuxtLink :to="item.link">
     <div class="flex mt-4">
       <div class="flex-grow flex flex-col items-start">
         <div class="font-serif text-lg">{{ item.content.authors_formatted?.join(', ') }}</div>
@@ -34,6 +34,7 @@ import type Item from '~/models/Item'
 
 import Image from '~/components/general/Image.vue'
 import Icon from '~/components/general/Icon.vue'
+import Skeleton from '~/components/general/Skeleton.vue'
 
 const props = defineProps<{
   item: Item
@@ -41,9 +42,6 @@ const props = defineProps<{
 
 const router = useRouter()
 const imageRef = ref<InstanceType<typeof Image> | null>(null)
-const imageStyle = computed(() => ({
-  aspectRatio: props.item.content.image_ratio || 700 / 800,
-}))
 
 const isVisible = ref(props.item.loaded ?? false)
 watch(

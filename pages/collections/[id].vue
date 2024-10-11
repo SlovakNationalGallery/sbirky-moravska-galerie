@@ -57,8 +57,10 @@ const id = route.params.id as string
 const collectionData = useBaseFetch<any>(`api/collections/${id}`)
 const collection = computed(() => new Collection(collectionData.data.value?.data))
 
-useHead(() => ({
+useSeoMeta(() => ({
   title: collection.value.name,
+  ogTitle: collection.value.name,
+  ogImage: collection.value.header_image_src,
 }))
 
 // todo from url?

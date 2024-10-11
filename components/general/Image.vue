@@ -6,6 +6,7 @@
     :title="title"
     :src="isLoaded || disableLazy ? url : ''"
     :class="{ 'opacity-0': !isLoaded && !disableLazy }"
+    :style="imageStyle"
   />
 </template>
 
@@ -16,13 +17,16 @@ const props = defineProps<{
   url: string
   alt?: string
   title?: string
-  width?: number
-  height?: number
   disableLazy?: boolean
+  aspectRatio?: number
 }>()
 
 const target = ref(null)
 const isLoaded = ref(false)
+
+const imageStyle = computed(() => ({
+  aspectRatio: props.aspectRatio,
+}))
 
 const { stop, pause, resume } = useIntersectionObserver(target, ([{ isIntersecting }]) => {
   if (isLoaded.value || !isIntersecting || props.disableLazy) {
