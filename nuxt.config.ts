@@ -1,17 +1,16 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 import { createRedirects } from './redirects'
-
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 import { resolve } from 'path'
 
 export default defineNuxtConfig({
-  devtools: { enabled: false },
-  debug: false,
+  compatibilityDate: '2024-10-01',
+  devtools: { enabled: true },
   experimental: {
     renderJsonPayloads: false,
   },
   modules: [
+    '@nuxtjs/sitemap',
     '@nuxtjs/tailwindcss',
     '@morev/vue-transitions/nuxt',
     'vue3-carousel-nuxt',
@@ -20,6 +19,11 @@ export default defineNuxtConfig({
   ],
   carousel: {
     prefix: 'Module',
+  },
+  sitemap: {
+    cacheMaxAgeSeconds: process.env.NODE_ENV === 'production' ? 60 * 60 * 24 * 31 : 0,
+    autoI18n: false,
+    sitemaps: false,
   },
   components: {
     dirs: ['@/components/controls'],
@@ -43,7 +47,10 @@ export default defineNuxtConfig({
         symbolId: 'icon-[name]',
       }),
     ],
-    optimizeDeps: { exclude: ['fsevents'] },
+    optimizeDeps: { exclude: ['fsevents'], include: ['vue3-carousel'] },
+    server: {
+      preTransformRequests: false,
+    },
   },
   routeRules: createRedirects(),
   runtimeConfig: {
