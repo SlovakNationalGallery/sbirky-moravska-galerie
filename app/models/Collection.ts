@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 import type Item from '~/models/Item'
 
-import BaseModel from '@/models/_BaseModel'
+import BaseModel from '~/models/_BaseModel'
 
 export default class Collection extends BaseModel {
   public declare id: string
