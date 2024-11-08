@@ -1,7 +1,7 @@
 <template>
   <div class="border-b-2 border-black">
     <Dropdown v-model="model" :options="sortOptions" @update:model-value="onUpdate">
-      <template #label="{ label }">podle {{ label }}</template>
+      <template #label="{ label }">{{ t('item.sortBy') }} {{ label }}</template>
     </Dropdown>
   </div>
 </template>
@@ -20,14 +20,15 @@ const emit = defineEmits<{
 }>()
 
 const { routeParams } = await useControls()
+const { t } = useI18n()
 
 const sortOptions = [
-  { label: 'poslední změny', value: 'updated_at', direction: 'desc' },
-  { label: 'data přidání', value: 'created_at', direction: 'asc' },
-  { label: 'názvu', value: 'title', direction: 'asc' },
-  { label: 'datování', value: 'date_earliest', direction: 'asc' },
-  { label: 'počtu zobrazení', value: 'view_count', direction: 'desc' },
-  { label: 'náhodně', value: 'random', direction: 'asc' },
+  { label: t('item.sortOptions.updatedAt'), value: 'updated_at', direction: 'desc' },
+  { label: t('item.sortOptions.createdAt'), value: 'created_at', direction: 'asc' },
+  { label: t('item.sortOptions.title'), value: 'title', direction: 'asc' },
+  { label: t('item.sortOptions.dateEarliest'), value: 'date_earliest', direction: 'asc' },
+  { label: t('item.sortOptions.viewCount'), value: 'view_count', direction: 'desc' },
+  { label: t('item.sortOptions.random'), value: 'random', direction: 'asc' },
 ] as const
 
 const model = ref<(typeof sortOptions)[number]['value']>(sortOptions[0].value)

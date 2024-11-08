@@ -53,6 +53,11 @@ export default defineNuxtConfig({
       preTransformRequests: false,
     },
   },
+  i18n: {
+    locales: ['cs'],
+    defaultLocale: 'cs',
+    vueI18n: './i18n.config.ts',
+  },
   routeRules: createRedirects(),
   runtimeConfig: {
     API_URL: process.env.API_URL || '/api',
