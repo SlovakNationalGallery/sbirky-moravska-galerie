@@ -2,6 +2,7 @@
   <div class="flex bg-white border border-dark px-3 py-2">
     <Icon v-if="prependIcon" name="search" class="w-5 mr-2" />
     <input
+      ref="input"
       v-bind="attrs"
       v-model="model"
       placeholder="Napište klíčové slova"
@@ -22,6 +23,12 @@ withDefaults(
     prependIcon: false,
   }
 )
+
+const input = ref<null | HTMLInputElement>(null)
+
+defineExpose({
+  blur: () => input.value?.blur(),
+})
 
 const model = defineModel<string>({
   default: '',
