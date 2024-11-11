@@ -20,7 +20,7 @@
 
     <div class="w-full my-4 flex">
       <div class="flex-grow">
-        <span class="font-bold">{{ total }}</span> děl
+        <span class="font-bold">{{ total }}</span> {{ t('item.resultsCount', total) }}
       </div>
       <Sort v-model:sort-by="sortBy" v-model:sort-direction="sortDirection" />
     </div>
@@ -52,6 +52,7 @@ import FilterAttribute from '~/components/general/FilterAttribute.vue'
 import Sort from '~/components/general/Sort.vue'
 import { useBaseFetch } from '~/composables/fetch'
 const route = useRoute()
+const { t } = useI18n()
 const id = route.params.id as string
 
 const collectionData = useBaseFetch<any>(`api/collections/${id}`)

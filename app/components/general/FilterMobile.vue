@@ -5,7 +5,7 @@
     @click="onCloseMenu"
   >
     <Icon class="w-5 h-5" name="filter" />
-    <span class="uppercase">Zobrazit filtr</span>
+    <span class="uppercase">{{ t('controls.filter.show') }}</span>
   </div>
 
   <TransitionSlide>
@@ -13,7 +13,7 @@
       <div class="flex flex-col h-full">
         <div class="flex p-6">
           <TransitionSlide group mode="out-in" class="grow">
-            <div v-if="!submenu" class="text-lg font-bold">Filter diel</div>
+            <div v-if="!submenu" class="text-lg font-bold">{{ t('controls.filter.title') }}</div>
             <div v-else class="flex items-center grow text-lg font-bold" @click="submenu = null">
               <Icon name="back" class="w-4 mr-2" />
               <span>{{ submenu }}</span>
@@ -25,7 +25,7 @@
             @click="onResetAll"
           >
             <Icon class="w-4 h-4" name="rotate" />
-            <div class="text-xs">Zrušit výběr</div>
+            <div class="text-xs">{{ t('controls.filter.reset') }}</div>
           </div>
           <Icon name="close" class="w-4" @click="onCloseMenu" />
         </div>
@@ -44,8 +44,8 @@
               <Icon name="arrow" class="w-3 -rotate-90" />
             </div>
             <div class="flex flex-col p-6 py-6 gap-6">
-              <Boolean name="has_image" label="Len s obrázkom" :default="true" />
-              <Boolean name="has_iip" label="Len so zoomom" />
+              <Boolean name="has_image" :label="t('controls.filter.hasImage')" :default="true" />
+              <Boolean name="has_iip" :label="t('controls.filter.hasIip')" />
             </div>
           </div>
           <div v-else class="px-6">
@@ -63,7 +63,7 @@
       </div>
       <div class="flex absolute inset-0 top-auto bg-white justify-center drop-shadow-2xl py-4 px-6">
         <button type="button" class="uppercase bg-dark text-white w-full py-3" @click="onCloseMenu">
-          zobrazit výsledky <span class="font-bold">({{ total }})</span>
+          {{ t('submit') }} <span class="font-bold">({{ total }})</span>
         </button>
       </div>
     </div>
@@ -87,6 +87,7 @@ const emit = defineEmits<{
 }>()
 
 const route = useRoute()
+const { t } = useI18n()
 const { width } = useWindowSize()
 const submenu = ref<null | string>(null)
 const { total, refresh, hasFilters } = await useControls()

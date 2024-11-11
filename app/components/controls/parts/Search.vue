@@ -4,7 +4,7 @@
     <input
       v-bind="attrs"
       v-model="model"
-      placeholder="Napište klíčové slova"
+      :placeholder="t('controls.search.placeholder')"
       class="w-full border-transparent !outline-none"
     />
     <Icon v-if="!prependIcon" name="search" class="w-5" />
@@ -28,4 +28,5 @@ const model = defineModel<string>({
 })
 
 const attrs = useAttrs()
+const { t } = useI18n()
 </script>
