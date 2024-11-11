@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
-import BaseModel from '@/models/_BaseModel'
-import { formatAuthor } from '@/utils/formatters'
+import { formatAuthor } from '~/utils/formatters'
+import BaseModel from '~/models/_BaseModel'
 
 type TreeNode = { label: string; path: string }
 

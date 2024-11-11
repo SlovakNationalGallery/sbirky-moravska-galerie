@@ -30,8 +30,6 @@ interface Response {
   data: Collection[]
 }
 
-const nuxtConfig = useRuntimeConfig()
-
 const collections = await useBaseFetch<Response>('api/collections', {
   query: { featured: true },
   transform: (response) => ({
