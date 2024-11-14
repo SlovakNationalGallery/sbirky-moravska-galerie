@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-3 items-center">
     <ClientOnly>
-      <Filter class="w-full" />
+      <WUFilter class="w-full" />
     </ClientOnly>
 
     <div class="w-full my-4 flex">
@@ -9,7 +9,7 @@
         <span class="font-bold">{{ total }}</span> {{ t('item.resultsCount', total) }}
       </div>
 
-      <Sort v-model:sort-by="sortBy" v-model:sort-direction="sortDirection" />
+      <WUSort v-model:sort-by="sortBy" v-model:sort-direction="sortDirection" />
     </div>
     <div v-if="items.length" class="w-full">
       <masonry-wall
@@ -20,20 +20,15 @@
         :key-mapper="(item: any) => item.id"
       >
         <template #default="{ item }">
-          <Item :key="`item-${item.id}`" :item="item" />
+          <WUItem :key="`item-${item.id}`" :item="item" />
         </template>
       </masonry-wall>
     </div>
 
-    <Pager v-model="page" :is-loading="isLoading" :last-page="lastPage" />
+    <WUPager v-model="page" :is-loading="isLoading" :last-page="lastPage" />
   </div>
 </template>
 <script setup lang="ts">
-import Item from '~/components/general/Item.vue'
-import Sort from '~/components/general/Sort.vue'
-import Pager from '~/components/general/Pager.vue'
-import { useControls } from '~/composables/controls'
-import Filter from '~/components/general/Filter.vue'
 import { formatString } from '~/utils/formatters'
 import { labels } from '~/utils/filter'
 

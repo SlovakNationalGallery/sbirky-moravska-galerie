@@ -1,7 +1,7 @@
 <template>
   <div v-if="collection" class="flex flex-col items-center">
     <TransitionExpand>
-      <Image :url="collection.header_image_src" class="max-h-[400px] w-full mt-8 object-cover" />
+      <WUImage :url="collection.header_image_src" class="max-h-[400px] w-full mt-8 object-cover" />
     </TransitionExpand>
 
     <div class="max-w-[740px]">
@@ -10,7 +10,7 @@
       <div class="md:text-xl md:text-center" v-html="collection.text"></div>
 
       <div class="flex justify-center gap-3 my-6">
-        <FilterAttribute
+        <WUFilterAttribute
           v-for="(value, attribute) in collection.item_filter"
           v-bind="{ attribute, value }"
           :key="attribute"
@@ -22,7 +22,7 @@
       <div class="flex-grow">
         <span class="font-bold">{{ total }}</span> {{ t('item.resultsCount', total) }}
       </div>
-      <Sort v-model:sort-by="sortBy" v-model:sort-direction="sortDirection" />
+      <WUSort v-model:sort-by="sortBy" v-model:sort-direction="sortDirection" />
     </div>
     <div v-if="collection.items.length" class="w-full">
       <masonry-wall
@@ -33,24 +33,18 @@
         :key-mapper="(item: Item) => item.id"
       >
         <template #default="{ item }">
-          <ItemCard :key="`item-${item.id}`" :item="item" />
+          <WUItem :key="`item-${item.id}`" :item="item" />
         </template>
       </masonry-wall>
     </div>
 
-    <Pager v-model="page" :is-loading="isLoading" :last-page="lastPage" />
+    <WUPager v-model="page" :is-loading="isLoading" :last-page="lastPage" />
   </div>
 </template>
 
 <script setup lang="ts">
-import Image from '~/components/general/Image.vue'
 import Item from '~/models/Item'
-import ItemCard from '~/components/general/Item.vue'
 import Collection from '~/models/Collection'
-import Pager from '~/components/general/Pager.vue'
-import FilterAttribute from '~/components/general/FilterAttribute.vue'
-import Sort from '~/components/general/Sort.vue'
-import { useBaseFetch } from '~/composables/fetch'
 const route = useRoute()
 const { t } = useI18n()
 const id = route.params.id as string

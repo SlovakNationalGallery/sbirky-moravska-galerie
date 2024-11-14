@@ -6,7 +6,7 @@
         :class="{ 'opacity-0': idle }"
         @click="onClose"
       >
-        <Icon name="back" class="w-4 mr-1" />
+        <WUIcon name="back" class="w-4 mr-1" />
         <span class="text-sm uppercase">{{ t('controls.back') }}</span>
       </div>
 
@@ -29,30 +29,30 @@
             class="aspect-square block bg-white/70 flex items-center justify-center p-2 cursor-pointer transition-opacity duration-300"
             @click="onZoom(1)"
           >
-            <Icon name="plus" class="w-4" />
+            <WUIcon name="plus" class="w-4" />
           </div>
           <div
             class="aspect-square bg-white/70 flex items-center justify-center p-2 cursor-pointer transition-opacity duration-300"
             @click="onZoom(-1)"
           >
-            <Icon name="minus" class="w-4" />
+            <WUIcon name="minus" class="w-4" />
           </div>
           <div
             class="aspect-square bg-white/70 flex items-center justify-center p-2 cursor-pointer transition-opacity duration-300"
             @click="onPrev"
           >
-            <Icon name="back" class="w-4 rotate-90" />
+            <WUIcon name="back" class="w-4 rotate-90" />
           </div>
 
           <div
             class="aspect-square bg-white/70 flex items-center justify-center p-2 cursor-pointer transition-opacity duration-300"
             @click="onNext"
           >
-            <Icon name="back" class="w-4 -rotate-90" />
+            <WUIcon name="back" class="w-4 -rotate-90" />
           </div>
         </div>
         <div v-if="images.length > 1" class="grid columns-1 gap-2">
-          <Image
+          <WUImage
             v-for="(thumbnail, index) in thumbs"
             :key="index"
             class="cursor-pointer relative z-30 pointer-events-auto"
@@ -65,7 +65,7 @@
       </div>
 
       <TransitionSlide mode="out-in" appear>
-        <ZoomViewer v-if="isVisible" ref="viewer" :tile-source="activeItem" />
+        <WUZoomViewer v-if="isVisible" ref="viewer" :tile-source="activeItem" />
       </TransitionSlide>
     </div>
   </ClientOnly>
@@ -74,11 +74,6 @@
 import { useIdle, watchDebounced } from '@vueuse/core'
 import { TransitionSlide } from '@morev/vue-transitions'
 
-import ZoomViewer from '~/components/general/ZoomViewer.vue'
-import Icon from '~/components/general/Icon.vue'
-import Image from '~/components/general/Image.vue'
-import { useBaseFetch } from '~/composables/fetch'
-import Item from '~/models/Item'
 
 const route = useRoute()
 const router = useRouter()

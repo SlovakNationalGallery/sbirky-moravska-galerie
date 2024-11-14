@@ -21,20 +21,16 @@
         :key-mapper="(collection: Collection) => collection.id"
       >
         <template #default="{ item }">
-          <Collection :key="`collection-${item.id}`" :collection="item" />
+          <WUCollection :key="`collection-${item.id}`" :collection="item" />
         </template>
       </masonry-wall>
     </div>
 
-    <Pager v-model="page" :is-loading="isLoading" :last-page="lastPage" />
+    <WUPager v-model="page" :is-loading="isLoading" :last-page="lastPage" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { useCollections } from '~/composables/collections'
-import Collection from '~/components/general/Collection.vue'
-import Pager from '~/components/general/Pager.vue'
-
 const { collections, total, page, lastPage, isLoading, refresh, reset } = useCollections()
 const { t } = useI18n()
 
