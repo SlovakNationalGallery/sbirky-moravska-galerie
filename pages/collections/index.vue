@@ -1,12 +1,14 @@
 <template>
   <div class="flex flex-col items-center">
     <div class="max-w-[740px]">
-      <h2 class="text-3xl md:text-5xl md:text-center mt-10 mb-6">Kolekce</h2>
+      <h2 class="text-3xl md:text-5xl md:text-center mt-10 mb-6">
+        {{ t('collection.title') }}
+      </h2>
     </div>
 
     <div class="w-full my-4 flex">
       <div class="flex-grow">
-        <span class="font-bold">{{ total }}</span> kolekcí
+        <span class="font-bold">{{ total }}</span> {{ t('collection.resultsCount', total) }}
       </div>
     </div>
 
@@ -34,9 +36,10 @@ import Collection from '~/components/general/Collection.vue'
 import Pager from '~/components/general/Pager.vue'
 
 const { collections, total, page, lastPage, isLoading, refresh, reset } = useCollections()
+const { t } = useI18n()
 
 useHead(() => ({
-  title: 'Kolekce',
+  title: t('collection.title'),
 }))
 
 onMounted(async () => {

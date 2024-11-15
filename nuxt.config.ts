@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     'vue3-carousel-nuxt',
     'floating-vue/nuxt',
     '@zadigetvoltaire/nuxt-gtm',
+    '@nuxtjs/i18n',
   ],
   carousel: {
     prefix: 'Module',
@@ -51,6 +52,11 @@ export default defineNuxtConfig({
     server: {
       preTransformRequests: false,
     },
+  },
+  i18n: {
+    locales: ['cs'],
+    defaultLocale: 'cs',
+    vueI18n: './i18n.config.ts',
   },
   routeRules: createRedirects(),
   runtimeConfig: {
