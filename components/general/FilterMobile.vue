@@ -63,7 +63,7 @@
       </div>
       <div class="flex absolute inset-0 top-auto bg-white justify-center drop-shadow-2xl py-4 px-6">
         <button type="button" class="uppercase bg-dark text-white w-full py-3" @click="onCloseMenu">
-          {{ t('submit') }} <span class="font-bold">({{ total }})</span>
+          {{ t('controls.filter.submit') }} <span class="font-bold">({{ total }})</span>
         </button>
       </div>
     </div>
