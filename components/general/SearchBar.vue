@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <Search
-      ref="input"
+      ref="searchRef"
       v-model="q"
       prepend-icon
       :default="$route.query['q'] || ''"
@@ -47,7 +47,7 @@ const { data } = await useBaseFetch<{
   watch: [q],
 })
 
-const input = ref<null | HTMLInputElement>(null)
+const searchRef = ref<InstanceType<typeof Search>>()
 
 const { filters, routeParams } = await useControls()
 
@@ -71,7 +71,7 @@ const submit = () => {
     delete routeParams['q']
   }
 
-  input.value?.blur()
+  searchRef.value?.blur()
 }
 
 const items = computed(() => data.value?.data.map((item) => new Item(item)) ?? [])
