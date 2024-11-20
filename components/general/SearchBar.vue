@@ -11,7 +11,7 @@
     />
     <transition-fade>
       <div v-if="isOpen && items.length" class="bg-white absolute top-100% w-full p-4 z-30">
-        <div>Díla</div>
+        <div>{{ t('item.title') }}</div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" @click="isOpen = false">
           <NuxtLink v-for="item in items" :key="item.id" :to="item.link" class="flex mt-4">
             <Image :url="item.image" class="!w-[56px] h-[56px] object-cover mr-4" />
@@ -50,6 +50,7 @@ const { data } = await useBaseFetch<{
 const searchRef = ref<InstanceType<typeof Search>>()
 
 const { filters, routeParams } = await useControls()
+const { t } = useI18n()
 
 watch(routeParams, () => {
   q.value = routeParams['q'] as string | undefined

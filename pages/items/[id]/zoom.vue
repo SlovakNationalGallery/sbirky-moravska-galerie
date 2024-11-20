@@ -7,7 +7,7 @@
         @click="onClose"
       >
         <Icon name="back" class="w-4 mr-1" />
-        <span class="text-sm uppercase">zpět</span>
+        <span class="text-sm uppercase">{{ t('controls.back') }}</span>
       </div>
 
       <div
@@ -82,6 +82,7 @@ import Item from '~/models/Item'
 
 const route = useRoute()
 const router = useRouter()
+const { t } = useI18n()
 
 const activeIndex = ref(route.hash ? Number(route.hash.slice(1)) : 0)
 const viewer = ref<InstanceType<typeof ZoomViewer> | null>(null)

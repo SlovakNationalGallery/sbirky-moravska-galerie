@@ -45,14 +45,14 @@
             v-if="item.content.dating"
             class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
           >
-            <div class="font-bold w-1/3 shrink-0">datace</div>
+            <div class="font-bold w-1/3 shrink-0">{{ t('item.attribute.dating') }}</div>
             <div>{{ item.content.dating }}</div>
           </div>
           <div
             v-if="item.content.measurement?.length"
             class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
           >
-            <div class="font-bold w-1/3 shrink-0">rozměry</div>
+            <div class="font-bold w-1/3 shrink-0">{{ t('item.attribute.measurement') }}</div>
             <div>
               <div v-for="(measurement, i) in item.content.measurement" :key="`measurement${i}`">
                 {{ measurement }}
@@ -63,7 +63,7 @@
             v-if="item.workTypeTrees.length"
             class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
           >
-            <div class="font-bold w-1/3 shrink-0">výtvarný druh</div>
+            <div class="font-bold w-1/3 shrink-0">{{ t('item.attribute.workType') }}</div>
             <div>
               <template v-for="(tree, i) in item.workTypeTrees" :key="i">
                 <template v-for="(node, j) in tree" :key="j">
@@ -80,7 +80,7 @@
             v-if="item.content.topic?.length"
             class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
           >
-            <div class="font-bold w-1/3 shrink-0">námět</div>
+            <div class="font-bold w-1/3 shrink-0">{{ t('item.attribute.topic') }}</div>
             <div>
               <NuxtLink
                 v-for="link in item.content.topic"
@@ -93,7 +93,7 @@
             </div>
           </div>
           <div class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1">
-            <div class="font-bold w-1/3 shrink-0">materiál</div>
+            <div class="font-bold w-1/3 shrink-0">{{ t('item.attribute.medium') }}</div>
             <div>
               <NuxtLink
                 v-for="link in item.content.medium"
@@ -106,7 +106,7 @@
             </div>
           </div>
           <div class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1">
-            <div class="font-bold w-1/3 shrink-0">technika</div>
+            <div class="font-bold w-1/3 shrink-0">{{ t('item.attribute.technique') }}</div>
             <div>
               <NuxtLink
                 v-for="link in item.content.technique"
@@ -122,25 +122,25 @@
             v-if="item.content.inscription"
             class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
           >
-            <div class="font-bold w-1/3 shrink-0">značení</div>
+            <div class="font-bold w-1/3 shrink-0">{{ t('item.attribute.inscription') }}</div>
             <div>{{ item.content.inscription }}</div>
           </div>
           <div
             v-if="item.content.acquisition_date"
             class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
           >
-            <div class="font-bold w-1/3">datum akvizice</div>
+            <div class="font-bold w-1/3">{{ t('item.attribute.acquisitionDate') }}</div>
             <div>{{ item.content.acquisition_date }}</div>
           </div>
           <div class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1">
-            <div class="font-bold w-1/3 shrink-0">inventární číslo</div>
+            <div class="font-bold w-1/3 shrink-0">{{ t('item.attribute.identifier') }}</div>
             <div>{{ item.content.identifier }}</div>
           </div>
           <div
             v-if="item.content.tag?.length"
             class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
           >
-            <div class="font-bold w-1/3 shrink-0">tagy</div>
+            <div class="font-bold w-1/3 shrink-0">{{ t('item.attribute.tags') }}</div>
             <div class="flex flex-wrap gap-3">
               <div
                 v-for="tag in item.content.tag"
@@ -155,7 +155,7 @@
             v-if="item.content.exhibition"
             class="flex gap-1 hover:bg-white hover:bg-opacity-40 px-2 py-1"
           >
-            <div class="font-bold w-1/3 shrink-0">kolekce / výstava</div>
+            <div class="font-bold w-1/3 shrink-0">{{ t('item.attribute.exhibition') }}</div>
             <div>
               <NuxtLink :to="`/?exhibition=${item.content.exhibition}`" class="underline">
                 {{ item.content.exhibition }}
@@ -202,6 +202,7 @@ import Skeleton from '~/components/general/Skeleton.vue'
 
 const route = useRoute()
 const router = useRouter()
+const { t } = useI18n()
 const id = route.params.id as string
 
 const { width } = useWindowSize()

@@ -6,8 +6,9 @@
 
     <div class="w-full my-4 flex">
       <div class="flex-grow">
-        <span class="font-bold">{{ total }}</span> děl
-        <template v-if="filters['q']">nalezenych pro „{{ filters['q'] }}“ </template>
+        <span class="font-bold">{{ total }}</span>
+        {{ t('item.resultsCount', total) }}
+        <template v-if="filters['q']">{{ t('item.resultsFor') }} „{{ filters['q'] }}“ </template>
       </div>
 
       <Sort v-model:sort-by="sortBy" v-model:sort-direction="sortDirection" />
@@ -40,6 +41,7 @@ import { labels } from '~/utils/filter'
 
 const { items, total, page, lastPage, isLoading, sortBy, sortDirection, refresh, filters } =
   await useControls()
+const { t } = useI18n()
 
 const pageTitle = computed(() => {
   const attributes = [
