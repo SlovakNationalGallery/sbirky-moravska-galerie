@@ -16,7 +16,7 @@
                 ? 'border-transparent text-light'
                 : 'border-white text-white'
             "
-            >Díla</NuxtLink
+            >{{ t('item.title') }}</NuxtLink
           >
           <NuxtLink
             to="/collections"
@@ -26,7 +26,7 @@
                 ? 'border-transparent text-light'
                 : 'border-white text-white'
             "
-            >Kolekce</NuxtLink
+            >{{ t('collection.title') }}</NuxtLink
           >
           <NuxtLink
             to="/about"
@@ -34,7 +34,7 @@
             :class="
               route.path === '/about' ? 'border-transparent text-light' : 'border-white text-white'
             "
-            >Info</NuxtLink
+            >{{ t('info.title') }}</NuxtLink
           >
         </div>
       </div>
@@ -55,6 +55,7 @@ import SearchBar from '~/components/general/SearchBar.vue'
 import FeaturedCollection from '~/components/general/FeaturedCollection.vue'
 
 const route = useRoute()
+const { t } = useI18n()
 
 const isFrontpage = computed(() => route.path === '/')
 </script>

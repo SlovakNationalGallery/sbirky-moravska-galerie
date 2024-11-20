@@ -7,4 +7,5 @@ export const labels: Record<string, string> = {
   exhibition: 'výstava',
   has_image: 'jen s obrázkem',
   has_iip: 'jen se zoom',
+  q: 'výsledky vyhledávání pro',
 }

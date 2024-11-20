@@ -5,7 +5,8 @@
       <slot />
     </div>
     <div class="text-center my-6">
-      Vyrobil a spravuje <NuxtLink class="underline" to="https://lab.sng.sk/">lab.SNG</NuxtLink>
+      {{ t('site.credits') }}
+      <NuxtLink class="underline" to="https://lab.sng.sk/">lab.SNG</NuxtLink>
     </div>
   </div>
 </template>
@@ -13,6 +14,7 @@
 import Header from '~/components/layout/Header.vue'
 
 const isReady = ref(false)
+const { t } = useI18n()
 
 onMounted(() => {
   isReady.value = true

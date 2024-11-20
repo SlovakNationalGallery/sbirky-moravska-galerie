@@ -15,8 +15,8 @@
     </div>
 
     <div v-show="width >= 768" class="flex flex-wrap gap-4">
-      <Boolean name="has_image" label="Jen s obrázkem" :default="true" />
-      <Boolean name="has_iip" label="Jen se zoomem" />
+      <Boolean name="has_image" :label="t('controls.filter.hasImage')" :default="true" />
+      <Boolean name="has_iip" :label="t('controls.filter.hasIip')" />
     </div>
 
     <FilterMobile
@@ -40,12 +40,12 @@
 
       <div class="flex flex-wrap gap-3">
         <div
-          v-if="selected.length"
+          v-if="hasFilters"
           class="flex py-1 px-3 gap-2 border-2 border-dark items-center cursor-pointer rounded-3xl"
           @click="onResetAll"
         >
           <Icon class="w-4 h-4" name="rotate" />
-          <div class="text-xs">Zrušit výběr</div>
+          <div class="text-xs">{{ t('controls.filter.reset') }}</div>
         </div>
       </div>
     </div>
@@ -66,43 +66,44 @@ const isMobileMenuOpened = ref(false)
 
 const { width } = useWindowSize()
 const componentRef = ref<InstanceType<typeof Select | typeof Hidden>[]>([])
+const { t } = useI18n()
 
 const components = [
   {
     component: Select,
     mobileComponent: SelectMobile,
     key: 'author',
-    label: 'autor',
+    label: t('item.attribute.author'),
   },
   {
     component: Select,
     mobileComponent: SelectMobile,
     key: 'work_type',
-    label: 'výtvarný druh',
+    label: t('item.attribute.workType'),
   },
   {
     component: Select,
     mobileComponent: SelectMobile,
     key: 'topic',
-    label: 'námět',
+    label: t('item.attribute.topic'),
   },
   {
     component: Select,
     mobileComponent: SelectMobile,
     key: 'technique',
-    label: 'technika',
+    label: t('item.attribute.technique'),
   },
   {
     component: Select,
     mobileComponent: SelectMobile,
     key: 'medium',
-    label: 'materiál',
+    label: t('item.attribute.medium'),
   },
   {
     component: Select,
     mobileComponent: SelectMobile,
     key: 'exhibition',
-    label: 'výstava',
+    label: t('item.attribute.exhibition'),
   },
   {
     component: Range,
@@ -111,13 +112,13 @@ const components = [
       min: 'date_earliest',
       max: 'date_latest',
     },
-    label: 'roky',
+    label: t('item.attribute.dateRange'),
   },
   {
     component: Hidden,
     mobileComponent: Hidden,
     key: 'related_work',
-    label: 'ze souboru',
+    label: t('item.attribute.relatedWork'),
   },
 ]
 
@@ -149,7 +150,7 @@ const selected = computed<any[]>(() => {
   return options
 })
 
-const { reset } = await useControls()
+const { reset, hasFilters, routeParams } = await useControls()
 
 const onToggleMobileMenu = (event: MouseEvent) => {
   if (width.value >= 768) {
@@ -166,6 +167,7 @@ const onResetAll = () => {
   componentRef.value.forEach((component) => {
     component.onReset?.()
   })
+  delete routeParams['q']
 }
 
 onUnmounted(() => {
