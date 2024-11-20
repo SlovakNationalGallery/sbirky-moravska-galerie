@@ -90,7 +90,7 @@ const route = useRoute()
 const { t } = useI18n()
 const { width } = useWindowSize()
 const submenu = ref<null | string>(null)
-const { total, refresh, hasFilters } = await useControls()
+const { total, refresh, hasFilters, routeParams } = await useControls()
 
 const selectedFilter = computed(() => props.components.find((c) => c.label === submenu.value))
 
@@ -110,6 +110,7 @@ onMounted(() => {
 const onResetAll = () => {
   selected.value = {}
   emit('resetAll')
+  delete routeParams['q']
 }
 
 const onCloseMenu = ($event: MouseEvent) => {
