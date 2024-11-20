@@ -1,11 +1,18 @@
 import { createRedirects } from './redirects'
+
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 import { resolve } from 'path'
 
 export default defineNuxtConfig({
   compatibilityDate: '2024-10-01',
-  devtools: { enabled: true },
+  devtools: {
+    enabled: true,
+  },
+  debug: true,
+  future: {
+    compatibilityVersion: 4,
+  },
   experimental: {
     renderJsonPayloads: false,
   },
