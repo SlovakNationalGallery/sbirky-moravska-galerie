@@ -9,7 +9,11 @@
       class="absolute -bottom-4 right-[5%] flex h-[72px] w-[72px] -rotate-[15deg] items-center justify-center rounded-full bg-yellow text-center text-primary lg:-bottom-10 lg:h-[180px] lg:w-[180px]"
     >
       <div class="lg:mt-[16px]">
-        <span class="text-2xl uppercase max-lg:hidden">Přejít na<br />seznam děl</span>
+        <span
+          class="text-2xl uppercase max-lg:hidden whitespace-pre-line"
+          v-html="t('featuredCollection.label')"
+        ></span
+        >&NewLine;
         <Icon name="arrow-down" class="mx-auto h-8 w-8 -rotate-90" />
       </div>
     </div>
@@ -31,6 +35,7 @@ interface Response {
 }
 
 const nuxtConfig = useRuntimeConfig()
+const { t } = useI18n()
 
 const collections = await useBaseFetch<Response>('api/collections', {
   query: { featured: true },

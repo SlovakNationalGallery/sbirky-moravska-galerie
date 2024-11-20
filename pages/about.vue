@@ -47,9 +47,10 @@
 import Image from '~/components/general/Image.vue'
 
 const isReady = ref(false)
+const { t } = useI18n()
 
 useHead(() => ({
-  title: 'Info',
+  title: t('info.title'),
 }))
 
 onMounted(async () => {
