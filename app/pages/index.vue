@@ -6,7 +6,9 @@
 
     <div class="w-full my-4 flex">
       <div class="flex-grow">
-        <span class="font-bold">{{ total }}</span> {{ t('item.resultsCount', total) }}
+        <span class="font-bold">{{ total }}</span>
+        {{ t('item.resultsCount', total) }}
+        <template v-if="filters['q']">{{ t('item.resultsFor') }} „{{ filters['q'] }}“ </template>
       </div>
 
       <WUSort v-model:sort-by="sortBy" v-model:sort-direction="sortDirection" />
@@ -38,6 +40,10 @@ const { t } = useI18n()
 
 const pageTitle = computed(() => {
   const attributes = [
+    {
+      key: 'q',
+      label: `${labels.q} „{value}“`,
+    },
     {
       key: 'filter[exhibition][]',
       label: `${labels.exhibtion}: {value}`,

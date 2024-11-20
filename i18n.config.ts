@@ -1,67 +1,24 @@
+import cs from './locales/cs.json'
+
 export default defineI18nConfig(() => ({
   legacy: false,
   locale: 'cs',
-  messages: {
-    cs: {
-      site: {
-        title: 'M',
-        credits: 'Vyrobil a spravuje',
-      },
-      controls: {
-        back: 'Zpět',
-        loading: 'Načítám...',
-        loadMore: 'Načíst další',
-        filter: {
-          title: 'Filtr děl',
-          show: 'Zobrazit filtr',
-          reset: 'Zrušit výběr',
-          submit: 'Zobrazit výsledky',
-          hasImage: 'Jen s obrázkem',
-          hasIip: 'Jen se zoom',
-        },
-        search: {
-          placeholder: 'Napište klíčové slova',
-        },
-      },
-      featuredCollection: {
-        label: 'Přejít na&NewLine;seznam děl',
-      },
-      collection: {
-        title: 'Kolekce',
-        resultsCount: 'kolekcí|kolekce|kolekce|kolekcí',
-      },
-      item: {
-        title: 'Díla',
-        resultsCount: 'děl|dílo|díla|děl',
-        attribute: {
-          author: 'Autor',
-          dating: 'Datace',
-          measurement: 'Rozměry',
-          workType: 'Výtvarný druh',
-          topic: 'Námět',
-          medium: 'Materiál',
-          technique: 'Technika',
-          inscription: 'Značení',
-          acquisitionDate: 'Datum akvizice',
-          identifier: 'Inventární číslo',
-          tags: 'Klíčová slova',
-          exhibition: 'Kolekce / výstava',
-          dateRange: 'Roky',
-          relatedWork: 'Ze souboru',
-        },
-        sortBy: 'podle',
-        sortOptions: {
-          updatedAt: 'poslední změny',
-          createdAt: 'data přidání',
-          title: 'názvu',
-          dateEarliest: 'datování',
-          viewCount: 'počtu zobrazení',
-          random: 'náhodně',
-        },
-      },
-      info: {
-        title: 'Info',
-      },
+  messages: { cs },
+  pluralRules: {
+    cs: function (choice) {
+      if (choice === 0) {
+        return 0
+      }
+
+      if (choice === 1) {
+        return 1
+      }
+
+      if (choice >= 2 && choice <= 4) {
+        return 2
+      }
+
+      return 3
     },
   },
 }))
