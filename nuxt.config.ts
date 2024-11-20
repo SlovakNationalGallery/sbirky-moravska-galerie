@@ -4,8 +4,12 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 import { resolve } from 'path'
 
+const extendPaths = process.env.EXTEND_LOCAL
+  ? ['../online-collections-components']
+  : ['github:SlovakNationalGallery/online-collections-components#v1.0.0']
+
 export default defineNuxtConfig({
-  extends: ['../online-collections-components'],
+  extends: extendPaths,
   compatibilityDate: '2024-10-01',
   devtools: {
     enabled: true,
@@ -43,6 +47,7 @@ export default defineNuxtConfig({
     public: {
       API_URL: process.env.API_URL || '/api',
       APP_URL: process.env.APP_URL || '',
+      APP_X_FRONTEND: process.env.APP_X_FRONTEND || 'moravska-galerie',
       CDN_URL: process.env.CDN_URL || '',
 
       APP_NAME: process.env.npm_package_name,
