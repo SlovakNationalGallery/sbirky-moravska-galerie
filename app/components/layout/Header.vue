@@ -39,10 +39,10 @@
         </div>
       </div>
 
-      <SearchBar class="mt-4 md:mt-8" />
+      <WUSearchBar class="mt-4 md:mt-8" />
 
       <TransitionExpand>
-        <FeaturedCollection v-if="isFrontpage" class="mt-8" />
+        <WUFeaturedCollection v-if="isFrontpage" class="mt-8" />
       </TransitionExpand>
     </div>
   </header>
@@ -51,8 +51,6 @@
 <script setup lang="ts">
 import Logo from '~/assets/svg/logo.svg'
 import Title from '~/assets/svg/title.svg'
-import SearchBar from '~/components/general/SearchBar.vue'
-import FeaturedCollection from '~/components/general/FeaturedCollection.vue'
 
 const route = useRoute()
 const { t } = useI18n()

@@ -19,24 +19,24 @@
       :class="{ 'cursor-pointer': item.content.has_iip }"
     >
       <div class="relative">
-        <CarouselWrapper v-if="item.content.images?.length > 1">
-          <Skeleton v-for="(src, i) in item.content.images" :key="src">
-            <Image
+        <WUCarouselWrapper v-if="item.content.images?.length > 1">
+          <WUSkeleton v-for="(src, i) in item.content.images" :key="src">
+            <WUImage
               :url="item.previewImages[i]"
               :aspect-ratio="item.content.image_ratio"
               class="w-full max-h-[90vh] object-contain"
               @click.prevent="onOpenZoom(item, i)"
             />
-          </Skeleton>
-        </CarouselWrapper>
-        <Skeleton v-else>
-          <Image
+          </WUSkeleton>
+        </WUCarouselWrapper>
+        <WUSkeleton v-else>
+          <WUImage
             class="w-full max-h-[90vh] object-contain"
             :url="item.image"
             :aspect-ratio="item.content.image_ratio"
             @click="onOpenZoom(item)"
           />
-        </Skeleton>
+        </WUSkeleton>
       </div>
 
       <div class="mt-10 lg:mt-0">
@@ -177,16 +177,18 @@
         </div>
       </div>
     </div>
-    <div class="mt-10 text-2xl">
-      <h3>Související díla</h3>
-      <div class="flex mt-6">
-        <CarouselWrapper class="w-full" :items-to-show="itemsToShow">
-          <div v-for="similar in similars" :key="similar.id" class="md:px-3 w-full">
-            <ItemCard :item="similar" />
-          </div>
-        </CarouselWrapper>
+    <ClientOnly>
+      <div class="mt-10 text-2xl">
+        <h3>Související díla</h3>
+        <div class="flex mt-6">
+          <WUCarouselWrapper class="w-full" :items-to-show="itemsToShow">
+            <div v-for="similar in similars" :key="similar.id" class="md:px-3 w-full">
+              <WUItem :item="similar" />
+            </div>
+          </WUCarouselWrapper>
+        </div>
       </div>
-    </div>
+    </ClientOnly>
   </div>
 </template>
 
@@ -194,11 +196,6 @@
 import { useWindowSize } from '@vueuse/core'
 
 import Item from '~/models/Item'
-import ItemCard from '~/components/general/Item.vue'
-import CarouselWrapper from '~/components/general/CarouselWrapper.vue'
-import Image from '~/components/general/Image.vue'
-import { useBaseFetch } from '~/composables/fetch'
-import Skeleton from '~/components/general/Skeleton.vue'
 
 const route = useRoute()
 const router = useRouter()

@@ -4,37 +4,19 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 import { resolve } from 'path'
 
+const extendPaths = process.env.EXTEND_LOCAL
+  ? ['../online-collections-components']
+  : ['github:SlovakNationalGallery/online-collections-components#v1.0.0']
+
 export default defineNuxtConfig({
+  extends: extendPaths,
   compatibilityDate: '2024-10-01',
   devtools: {
     enabled: true,
   },
-  debug: true,
+  debug: false,
   future: {
     compatibilityVersion: 4,
-  },
-  experimental: {
-    renderJsonPayloads: false,
-  },
-  modules: [
-    '@nuxtjs/sitemap',
-    '@nuxtjs/tailwindcss',
-    '@morev/vue-transitions/nuxt',
-    'vue3-carousel-nuxt',
-    'floating-vue/nuxt',
-    '@zadigetvoltaire/nuxt-gtm',
-    '@nuxtjs/i18n',
-  ],
-  carousel: {
-    prefix: 'Module',
-  },
-  sitemap: {
-    cacheMaxAgeSeconds: process.env.NODE_ENV === 'production' ? 60 * 60 * 24 * 31 : 0,
-    autoI18n: false,
-    sitemaps: false,
-  },
-  components: {
-    dirs: ['@/components/controls'],
   },
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
@@ -43,22 +25,15 @@ export default defineNuxtConfig({
     id: process.env.GTM_ID || '',
     enabled: process.env.NODE_ENV === 'production',
   },
+  modules: ['@nuxtjs/tailwindcss'],
   vite: {
-    vue: {
-      script: {
-        defineModel: true,
-      },
-    },
     plugins: [
+      // TODO: replace with NuxtIcon
       createSvgIconsPlugin({
-        iconDirs: [resolve(process.cwd(), 'assets/icons')],
+        iconDirs: [resolve(process.cwd(), 'app/assets/icons')],
         symbolId: 'icon-[name]',
       }),
     ],
-    optimizeDeps: { exclude: ['fsevents'], include: ['vue3-carousel'] },
-    server: {
-      preTransformRequests: false,
-    },
   },
   i18n: {
     locales: ['cs'],
@@ -72,6 +47,7 @@ export default defineNuxtConfig({
     public: {
       API_URL: process.env.API_URL || '/api',
       APP_URL: process.env.APP_URL || '',
+      APP_X_FRONTEND: process.env.APP_X_FRONTEND || 'moravska-galerie',
       CDN_URL: process.env.CDN_URL || '',
 
       APP_NAME: process.env.npm_package_name,
