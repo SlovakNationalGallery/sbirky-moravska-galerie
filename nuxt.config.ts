@@ -60,4 +60,7 @@ export default defineNuxtConfig({
       SENTRY_REPLAY_SAMPLE_RATE: process.env.SENTRY_REPLAY_SAMPLE_RATE || '0.1',
     },
   },
+  sitemap: {
+    sitemaps: true,
+  },
 })

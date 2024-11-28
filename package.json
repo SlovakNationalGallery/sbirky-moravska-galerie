@@ -33,10 +33,12 @@
     "vue-i18n-extract": "^2.0.7"
   },
   "dependencies": {
-    "@sng/nuxt-base": "SlovakNationalGallery/online-collections-components#v1.0.0",
     "@sentry/vue": "^8.32.0",
+    "@sng/nuxt-base": "SlovakNationalGallery/online-collections-components#v1.0.0",
     "@vueuse/core": "^11.1.0",
+    "ioredis": "^5.4.1",
     "nuxt": "^3.13.0",
+    "unstorage": "^1.13.1",
     "vue": "latest",
     "vue-router": "latest",
     "zod": "^3.23.8"

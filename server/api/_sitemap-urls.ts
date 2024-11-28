@@ -1,4 +1,17 @@
-export default defineEventHandler(async () => {
+import { createStorage } from 'unstorage'
+import redisDriver from 'unstorage/drivers/redis'
+
+export default defineEventHandler(async (event) => {
+  const driver = redisDriver({
+    url: process.env.REDIS_DSN || 'redis://localhost:6379',
+  })
+
+  const storage = createStorage({ driver })
+
+  if (!event.node.req.headers.host?.match(/^localhost(:\d+)?$/)) {
+    return storage.getItem('sitemap-urls')
+  }
+
   const { data: collections } = await $fetch<any>('api/collections?size=1000', {
     baseURL: process.env.APP_URL,
   })
@@ -55,9 +68,8 @@ export default defineEventHandler(async () => {
   }
 
   const items = await fetchAllItems()
-  // const items = []
 
-  return [
+  const sitemapUrls = [
     ...pages,
     ...items,
     ...collections.map((i: any) => ({
@@ -70,4 +82,8 @@ export default defineEventHandler(async () => {
     changefreq: 'monthly',
     priority: 0.8,
   }))
+
+  storage.setItem('sitemap-urls', sitemapUrls)
+
+  return sitemapUrls
 })
