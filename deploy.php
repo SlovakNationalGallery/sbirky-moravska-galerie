@@ -4,7 +4,8 @@ namespace Deployer;
 
 require 'recipe/common.php';
 
-set('bin/npm', 'n --offline exec 20 npm');
+set('n', 'n --offline exec 20');
+set('bin/npm', '{{n}} npm');
 set('repository', 'git@github.com:SlovakNationalGallery/sbirky-moravska-galerie.git');
 
 add('shared_files', ['.env']);
@@ -22,7 +23,7 @@ task('build', function () {
 });
 
 after('deploy:symlink', function () {
-    run('pm2 reload {{app_name}}');
+    run('{{n}} pm2 reload {{app_name}}');
 });
 
 after('deploy:prepare', 'build');
