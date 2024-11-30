@@ -12,6 +12,7 @@ export default defineEventHandler(async (event) => {
   const { lastPage } = await $fetch(`/api/generate-sitemap?page=${page}&token=${token}`)
 
   for (let i = 2; i <= lastPage; i++) {
+    console.log(`Generating sitemap page ${i} of ${lastPage}`)
     await $fetch(`/api/generate-sitemap?page=${i}&token=${token}`)
   }
 
