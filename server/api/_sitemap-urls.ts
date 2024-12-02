@@ -6,14 +6,5 @@ export default defineEventHandler(async () => {
     url: process.env.REDIS_DSN || 'redis://localhost:6379',
   })
   const storage = createStorage({ driver })
-  const pages = await storage.getItem('sitemap-entries')
-
-  if (!pages) {
-    throw createError({
-      statusCode: 404,
-      statusMessage: 'Page Not Found',
-    })
-  }
-
-  return pages
+  return await storage.getItem('sitemap-entries')
 })
