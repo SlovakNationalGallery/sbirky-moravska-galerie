@@ -2,9 +2,8 @@ import redisDriver from 'unstorage/drivers/redis'
 import { createStorage } from 'unstorage'
 
 export default defineEventHandler(async (event) => {
-  const { page, token } = getQuery(event)
-
-  if (!page || token !== process.env.SITEMAP_TOKEN) {
+  const { token } = getQuery(event)
+  if (token !== process.env.SITEMAP_TOKEN) {
     throw createError({
       statusCode: 404,
       statusMessage: 'Page Not Found',
@@ -12,39 +11,44 @@ export default defineEventHandler(async (event) => {
   }
 
   const now = new Date().toISOString()
+  const urls: string[] = ['/', '/collections', '/about']
 
-  const items: any[] = []
+  let page, lastPage
+  for (page = lastPage = 1; page <= lastPage; page++) {
+    const { data, meta } = await $fetch<any>(`/api/collections?size=1000&page=${page}`, {
+      baseURL: process.env.APP_URL,
+    })
+    lastPage = meta.last_page
+    urls.push(...data.map((i: any) => `/collections/${i.id}`))
+  }
 
-  const { data: pageItems, meta } = await $fetch<any>(
-    `${process.env.API_URL}/v2/items?size=1000&page=${page}`,
-    {
+  for (page = lastPage = 1; page <= lastPage; page++) {
+    const endpoint = `${process.env.API_URL}/v2/items?size=1000&page=${page}`
+    const { data, meta } = await $fetch<any>(endpoint, {
       headers: {
         'X-Frontend': 'moravska-galerie',
         'Accept-Language': 'cs',
       },
-    }
-  )
-
-  items.push(
-    ...pageItems.map((i: any) => ({
-      url: `/items/${i.id}`,
-      updatedAt: now,
-    }))
-  )
-
-  const lastPage = meta.last_page
-  try {
-    const driver = redisDriver({
-      url: process.env.REDIS_DSN || 'redis://localhost:6379',
     })
+    lastPage = meta.last_page
+    urls.push(...data.map((i: any) => `/items/${i.id}`))
+  }
 
-    const storage = createStorage({ driver })
+  const entries = urls.map((url) => ({
+    loc: url,
+    lastmod: now,
+    changefreq: 'monthly',
+    priority: 0.5,
+  }))
 
-    await storage.setItem('sitemap-urls-pages', lastPage)
-    await storage.setItem(`sitemap-urls-${page}`, items)
-  } finally {
-    return {
-      lastPage: meta.last_page,
-    }
+  const driver = redisDriver({
+    url: process.env.REDIS_DSN || 'redis://localhost:6379',
+  })
+
+  const storage = createStorage({ driver })
+  await storage.setItem('sitemap-entries', entries)
+
+  return {
+    status: 'ok',
   }
 })
