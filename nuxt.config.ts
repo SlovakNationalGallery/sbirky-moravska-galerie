@@ -61,7 +61,6 @@ export default defineNuxtConfig({
     },
   },
   sitemap: {
-    cacheMaxAgeSeconds: 0, // todo testing
     sitemaps: true,
   },
 })
