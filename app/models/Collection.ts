@@ -20,7 +20,7 @@ export default class Collection extends BaseModel {
     text: z.string(),
     header_image_src: z.string(),
     header_image_srcset: z.string(),
-    item_filter: z.record(z.union([z.string(), z.array(z.string())])),
+    item_filter: z.record(z.union([z.string(), z.array(z.string())])).optional(),
   })
 
   constructor(data: z.infer<typeof Collection.parser>) {
