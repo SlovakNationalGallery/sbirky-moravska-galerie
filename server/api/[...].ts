@@ -14,7 +14,7 @@ const getProxy = () => {
       target: config.API_URL,
       pathRewrite: { ['^' + prefix]: '' },
       headers: {
-        'X-Frontend': 'moravska-galerie',
+        'X-Frontend': config.public.APP_X_FRONTEND,
         'Accept-Language': 'cs',
       },
     })
