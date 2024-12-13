@@ -3,6 +3,7 @@ import { createStorage } from 'unstorage'
 
 export default defineEventHandler(async (event) => {
   const { token } = getQuery(event)
+
   if (token !== process.env.SITEMAP_TOKEN) {
     throw createError({
       statusCode: 404,
@@ -10,6 +11,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  const frontend = useRuntimeConfig().public.APP_X_FRONTEND
   const now = new Date().toISOString()
   const urls: string[] = ['/', '/collections', '/about']
 
@@ -26,7 +28,7 @@ export default defineEventHandler(async (event) => {
     const endpoint = `${process.env.API_URL}/v2/items?size=1000&page=${page}`
     const { data, meta } = await $fetch<any>(endpoint, {
       headers: {
-        'X-Frontend': 'moravska-galerie',
+        'X-Frontend': frontend,
         'Accept-Language': 'cs',
       },
     })
