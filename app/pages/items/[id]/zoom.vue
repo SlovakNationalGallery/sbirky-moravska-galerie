@@ -73,6 +73,8 @@
 <script setup lang="ts">
 import { useIdle, watchDebounced } from '@vueuse/core'
 import { TransitionSlide } from '@morev/vue-transitions'
+import Item from '~/models/Item'
+import { WUZoomViewer } from '#components'
 
 
 const route = useRoute()
