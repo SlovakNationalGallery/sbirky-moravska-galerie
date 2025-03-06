@@ -1,5 +1,6 @@
 @import "popper.css";
 @import "slider.css";
+@import "overrides.css";
 
 @tailwind base;
 @tailwind components;

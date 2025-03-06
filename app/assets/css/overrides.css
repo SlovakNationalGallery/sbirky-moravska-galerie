@@ -1,0 +1,13 @@
+.wu-filter {
+    hr {
+        opacity: 0;
+    }
+}
+
+.wu-dropdown {
+    background: white;
+
+    &.is--disabled {
+        opacity: 0.5;
+    }
+}

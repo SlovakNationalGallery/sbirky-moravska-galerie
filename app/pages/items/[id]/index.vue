@@ -8,6 +8,7 @@
           :key="`author${i}`"
           :to="`/?author=${item.content.author[i]}`"
           class="underline"
+          @click="reset('author', item.content.author[i])"
         >
           <h2 class="font-serif text-lg">{{ author }}</h2>
         </NuxtLink>
@@ -67,7 +68,7 @@
             <div>
               <template v-for="(tree, i) in item.workTypeTrees" :key="i">
                 <template v-for="(node, j) in tree" :key="j">
-                  <NuxtLink :to="`/?work_type=${node.path}`" class="underline">
+                  <NuxtLink :to="`/?work_type=${node.path}`" class="underline" @click="reset('work_type', node.path)">
                     {{ node.label }}
                   </NuxtLink>
                   <span v-if="j < tree.length - 1" class="px-1">›</span>
@@ -87,6 +88,7 @@
                 :key="link"
                 :to="`/?topic=${link}`"
                 class="underline"
+                @click="reset('topic', link)"
               >
                 {{ link }}
               </NuxtLink>
@@ -100,6 +102,7 @@
                 :key="link"
                 :to="`/?medium=${link}`"
                 class="underline"
+                @click="reset('medium', link)"
               >
                 {{ link }}
               </NuxtLink>
@@ -113,6 +116,7 @@
                 :key="link"
                 :to="`/?technique=${link}`"
                 class="underline"
+                @click="reset('technique', link)"
               >
                 {{ link }}
               </NuxtLink>
@@ -157,7 +161,7 @@
           >
             <div class="font-bold w-1/3 shrink-0">{{ t('item.attribute.exhibition') }}</div>
             <div>
-              <NuxtLink :to="`/?exhibition=${item.content.exhibition}`" class="underline">
+              <NuxtLink :to="`/?exhibition=${item.content.exhibition}`" class="underline" @click="reset('exhibition', item.content.exhibition)">
                 {{ item.content.exhibition }}
               </NuxtLink>
             </div>
@@ -168,7 +172,7 @@
           >
             <div class="font-bold w-1/3 shrink-0">{{ item.content.relationship_type }}</div>
             <div>
-              <NuxtLink :to="`/?related_work=${item.content.related_work}`" class="underline">
+              <NuxtLink :to="`/?related_work=${item.content.related_work}`" class="underline" @click="reset('related_work', item.content.related_work)">
                 {{ item.content.related_work }}
               </NuxtLink>
             </div>
@@ -203,6 +207,7 @@ const { t } = useI18n()
 const id = route.params.id as string
 
 const { width } = useWindowSize()
+const { reset } = await useControls()
 
 const [itemData, similarData] = await Promise.all([
   useBaseFetch<any>(`${Item.endpoint}/${id}`),

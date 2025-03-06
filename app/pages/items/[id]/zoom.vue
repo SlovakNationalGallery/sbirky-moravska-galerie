@@ -73,6 +73,8 @@
 <script setup lang="ts">
 import { useIdle, watchDebounced } from '@vueuse/core'
 import { TransitionSlide } from '@morev/vue-transitions'
+import Item from '~/models/Item'
+import { WUZoomViewer } from '#components'
 
 
 const route = useRoute()
@@ -80,7 +82,7 @@ const router = useRouter()
 const { t } = useI18n()
 
 const activeIndex = ref(route.hash ? Number(route.hash.slice(1)) : 0)
-const viewer = ref<InstanceType<typeof ZoomViewer> | null>(null)
+const viewer = ref<InstanceType<typeof WUZoomViewer> | null>(null)
 const { idle } = useIdle(3 * 1000)
 const isVisible = ref(true)
 

@@ -7,6 +7,72 @@
 <script setup lang="ts">
 import 'virtual:svg-icons-register'
 
+const config = useRuntimeConfig()
+const { t } = useI18n()
+
+const filterConfig = [
+  {
+    key: 'author',
+    type: 'select',
+    label: t('item.attribute.author'),
+  },
+  {
+    key: 'work_type',
+    type: 'select',
+    label: t('item.attribute.workType'),
+  },
+  {
+    key: 'topic',
+    type: 'select',
+    label: t('item.attribute.topic'),
+  },
+  {
+    key: 'technique',
+    type: 'select',
+    label: t('item.attribute.technique'),
+  },
+  {
+    key: 'medium',
+    type: 'select',
+    label: t('item.attribute.medium'),
+  },
+  {
+    key: 'exhibition',
+    type: 'select',
+    label: t('item.attribute.exhibition'),
+  },
+  {
+    key: 'years',
+    type: 'range',
+    label: t('item.attribute.dateRange'),
+    extra: {
+      rangeKeys: {
+        min: 'date_earliest',
+        max: 'date_latest',
+      },
+    },
+  },
+  {
+    key: 'hr',
+    type: 'hr',
+  },
+  {
+    key: 'has_image',
+    type: 'boolean',
+    label: t('controls.filter.hasImage'),
+    defaultValue: true,
+  },
+  {
+    key: 'has_iip',
+    type: 'boolean',
+    label: t('controls.filter.hasIip'),
+    // defaultValue: true,
+  },
+]
+
+const controls = await useControls()
+controls.init(filterConfig)
+
 useHead({
   titleTemplate: (title) =>
     (title ? `${title} | ` : '') + 'Moravská galerie v Brně | sbírky online',
