@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col items-center">
-    <Header />
-    <div class="px-4 pt-3 pb-6 md:px-16 md:pt-6 md:pb-12 max-w-[1320px] w-full">
+  <Header class="px-4 md:px-16" />
+  <div class="px-4 md:px-16 flex flex-col items-center">
+    <div class="max-w-[1320px] w-full border-b pb-8">
       <slot />
     </div>
     <div class="text-center my-6">
@@ -10,13 +10,9 @@
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
 import Header from '~/components/layout/Header.vue'
 
-const isReady = ref(false)
 const { t } = useI18n()
-
-onMounted(() => {
-  isReady.value = true
-})
 </script>

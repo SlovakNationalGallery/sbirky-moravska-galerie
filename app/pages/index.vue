@@ -1,109 +1,58 @@
 <template>
-  <div class="flex flex-col gap-3 items-center">
-    <ClientOnly>
-      <WUFilter class="w-full" />
-    </ClientOnly>
+  <div class="flex flex-col gap-7 items-center">
+    <WUFilter class="w-full mt-6" />
 
-    <div class="w-full my-4 flex">
+    <div class="w-full flex items-center">
       <div class="flex-grow">
-        <span class="font-bold">{{ total }}</span>
-        {{ t('item.resultsCount', total) }}
-        <template v-if="filters['q']">{{ t('item.resultsFor') }} „{{ filters['q'] }}“ </template>
+        <span class="font-bold">{{ total }}</span> {{ t('item.resultsCount', total) }}
       </div>
-
-      <WUSort v-model:sort-by="sortBy" v-model:sort-direction="sortDirection" />
+      <WUSort />
     </div>
-    <div v-if="items.length" class="w-full">
+    <div
+      v-if="items.length"
+      class="w-full"
+    >
       <masonry-wall
         :items="items"
-        :ssr-columns="3"
+        :ssr-columns="$masonrySsrColumns"
         :column-width="300"
         :gap="24"
         :key-mapper="(item: any) => item.id"
       >
         <template #default="{ item }">
-          <WUItem :key="`item-${item.id}`" :item="item" />
+          <WUItem
+            :key="`item-${item.id}`"
+            :item="item"
+          />
         </template>
       </masonry-wall>
     </div>
 
-    <WUPager v-model="page" :is-loading="isLoading" :last-page="lastPage" />
+    <WUPager
+      v-model="page"
+      :is-loading="isLoading"
+      :last-page="lastPage"
+      :enabled="page > 1 && page < lastPage"
+    />
   </div>
 </template>
-<script setup lang="ts">
-import { formatString } from '~/utils/formatters'
-import { labels } from '~/utils/filter'
 
-const { items, total, page, lastPage, isLoading, sortBy, sortDirection, refresh, filters } =
-  await useControls()
+<script setup lang="ts">
+const { items, total, page, lastPage, isLoading, selectedFilters, controls } = await useControls()
 const { t } = useI18n()
 
+const { $masonrySsrColumns } = useNuxtApp()
+
 const pageTitle = computed(() => {
-  const attributes = [
-    {
-      key: 'q',
-      label: `${labels.q} „{value}“`,
-    },
-    {
-      key: 'filter[exhibition][]',
-      label: `${labels.exhibtion}: {value}`,
-    },
-    {
-      key: 'filter[author][]',
-      label: `${labels.author}: {value}`,
-    },
-    {
-      key: 'filter[work_type][]',
-      label: `${labels.work_type}: {value}`,
-    },
-    {
-      key: 'filter[topic][]',
-      label: `${labels.topic}: {value}`,
-    },
-    {
-      key: 'filter[medium][]',
-      label: `${labels.medium}: {value}`,
-    },
-    {
-      key: 'filter[technique][]',
-      label: `${labels.technique}: {value}`,
-    },
-    {
-      key: 'filter[related_work]',
-      label: `${labels.related_work}: {value}`,
-    },
-    {
-      key: 'filter[has_image]',
-      label: labels.has_image,
-    },
-    {
-      key: 'filter[has_iip]',
-      label: labels.has_iip,
-    },
-  ]
+  return selectedFilters.value.map(({ key, value }) => {
+    if (key === 'author')
+      value = formatAuthor(value)
 
-  return attributes
-    .map((attribute) => {
-      const values =
-        attribute.key === 'filter[author][]' && filters[attribute.key]
-          ? filters[attribute.key].map((value) => formatAuthor(value))
-          : filters[attribute.key]
-
-      const value = Array.isArray(values) ? values.join(', ') : values
-
-      if (value) {
-        return formatString(attribute.label, { value })
-      }
-    })
-    .filter(Boolean)
-    .join(' • ')
+    return `${controls[key].label}: ${value}`
+  }).join(', ')
 })
 
 useHead(() => ({
-  title: pageTitle.value,
+  title: pageTitle,
 }))
-
-onMounted(() => {
-  refresh()
-})
 </script>
