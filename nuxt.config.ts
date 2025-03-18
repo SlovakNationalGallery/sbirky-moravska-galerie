@@ -6,7 +6,7 @@ import { resolve } from 'path'
 
 const extendPaths = process.env.EXTEND_LOCAL
   ? ['../online-collections-components']
-  : ['github:SlovakNationalGallery/online-collections-components#v1.0.0']
+  : ['github:SlovakNationalGallery/online-collections-components']
 
 export default defineNuxtConfig({
   extends: extendPaths,
